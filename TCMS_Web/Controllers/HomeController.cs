@@ -1,13 +1,13 @@
-﻿using Front_end.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using TCMS_Web.Models;
 
-namespace Front_end.Controllers
+namespace TCMS_Web.Controllers
 {
     public class HomeController : Controller
     {
