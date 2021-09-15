@@ -1,9 +1,13 @@
+using DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +27,57 @@ namespace TCMS_Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register AppDbContext, use to connect to MS SQL Server
+            services.AddDbContext<TCMS_Context>(options => {
+                // Read Connection String
+                string connectstring = Configuration.GetConnectionString("TCMS_Context");
+                // Use MS SQL Server
+                options.UseSqlServer(connectstring);
+            });
+
+            // Register Identity services
+            services.AddIdentity<Employee, IdentityRole>()
+                .AddEntityFrameworkStores<TCMS_Context>()
+                .AddDefaultTokenProviders();
+
+            // Access IdentityOptions
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Config Password
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Config User
+                options.User.AllowedUserNameCharacters = // Characters allowed for username
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+
+                // Config SignIn
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+
+                // Config Cookie
+                services.ConfigureApplicationCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.LoginPath = $"/login/";                                 // Url login page
+                    options.LogoutPath = $"/logout/";
+                    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";   // User access denial page
+                });
+                services.Configure<SecurityStampValidatorOptions>(options =>
+                {
+                    // Re login after 10 seconds will have to re-enter login info
+                    // SecurityStamp in User table change -> re-enter info for Security
+                    options.ValidationInterval = TimeSpan.FromSeconds(10);
+                });
+
+                
+            });
+            services.AddAuthorization();
             services.AddControllersWithViews();
         }
 
@@ -44,13 +99,19 @@ namespace TCMS_Web
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication(); // Recover login info (confirmation)
+
+            app.UseAuthorization(); // Recover User role info
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                      name: "areas",
+                      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
             });
         }
     }

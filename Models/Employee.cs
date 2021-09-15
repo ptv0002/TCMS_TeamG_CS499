@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using System.Text;
 
 namespace Models
 {
     [Table("Employee")]
-    public class Employee
+    public class Employee : IdentityUser
     {
         public Employee()
         {
@@ -52,9 +53,6 @@ namespace Models
         public double? PayRate { get; set; }
 
         public DateTime? StartDate { get; set; }
-
-        [StringLength(50)]
-        public string Email { get; set; }
 
         public virtual ICollection<MaintenanceInfo> MaintenanceInfo { get; set; }
 
