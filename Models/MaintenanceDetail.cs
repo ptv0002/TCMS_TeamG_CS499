@@ -9,17 +9,11 @@ namespace Models
     [Table("MaintenanceDetail")]
     public class MaintenanceDetail
     {
-        public int ID { get; set; }
-
-        public int? MaintenanceInfoID { get; set; }
-
-        [StringLength(50)]
+        public int Id { get; set; }
+        public int? MaintenanceInfoId { get; set; }
         public string Service { get; set; }
-
         public double? EstimateCost { get; set; }
-
         public string Notes { get; set; }
-
         public bool? Status { get; set; }
 
         public virtual MaintenanceInfo MaintenanceInfo { get; set; }

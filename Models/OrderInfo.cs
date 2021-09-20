@@ -11,45 +11,27 @@ namespace Models
     {
         public OrderInfo()
         {
-            AssignmentDetail = new HashSet<AssignmentDetail>();
+            AssignmentDetails = new HashSet<AssignmentDetail>();
         }
 
-        public int ID { get; set; }
-
-        public int? SourceID { get; set; }
-
-        public int? DestinationID { get; set; }
-
-        [StringLength(50)]
+        public int Id { get; set; }
+        public int? SourceId { get; set; }
+        public int? DestinationId { get; set; }
         public string SourceAddress { get; set; }
-
-        [StringLength(50)]
         public string DestinationAddresss { get; set; }
-
         public bool? Status { get; set; }
-
-        [StringLength(100)]
         public string DocName { get; set; }
-
-        [StringLength(100)]
         public string DocType { get; set; }
-
         public byte[] DocData { get; set; }
-
         public bool? SourcePay { get; set; }
-
         public bool? PayStatus { get; set; }
-
         public double? TotalOrder { get; set; }
-
         public double? ShippingFee { get; set; }
-
         public DateTime? EstimateArrivalTime { get; set; }
 
-        public virtual ICollection<AssignmentDetail> AssignmentDetail { get; set; }
-
-        public virtual Company Company { get; set; }
-
-        public virtual Company Company1 { get; set; }
+        public Company Destination { get; set; }
+        [InverseProperty("OrderInfoSources")]
+        public Company Source { get; set; }
+        public virtual ICollection<AssignmentDetail> AssignmentDetails { get; set; }
     }
 }

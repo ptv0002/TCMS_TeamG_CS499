@@ -30,7 +30,7 @@ namespace TCMS_Web
             // Register AppDbContext, use to connect to MS SQL Server
             services.AddDbContext<TCMS_Context>(options => {
                 // Read Connection String
-                string connectstring = Configuration.GetConnectionString("TCMS_Context");
+                string connectstring = Configuration.GetConnectionString("DefaultConnection");
                 // Use MS SQL Server
                 options.UseSqlServer(connectstring);
             });
