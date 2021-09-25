@@ -12,7 +12,7 @@ namespace DataAccess
 {
     public class TCMS_Context : IdentityDbContext
     {
-        public const string ConnectString = "Data Source=.; Initial Catalog=TCMS_Database;Integrated Security=True;MultipleActiveResultSets=True";
+        public const string ConnectString = "Data Source=.; Initial Catalog=TCMS_DB;Integrated Security=True;MultipleActiveResultSets=True";
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer(ConnectString);
