@@ -27,7 +27,7 @@ namespace TCMS_Web.Controllers
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost, ActionName("Login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (_signInManager.IsSignedIn(User)) return RedirectToAction("Index","Home");
@@ -65,7 +65,7 @@ namespace TCMS_Web.Controllers
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost, ActionName("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(MailContent model)
         {
             if (ModelState.IsValid)
@@ -80,7 +80,7 @@ namespace TCMS_Web.Controllers
 
                     // Build the password reset link
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
-                            new { email = model.To, token = token }, Request.Scheme);
+                            new { email = model.To, code = token }, Request.Scheme);
                     //---------------TESTING-----------------
                     //Get service sendmailservice
                     MailContent content = new()
@@ -116,7 +116,7 @@ namespace TCMS_Web.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("ResetPassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
