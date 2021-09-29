@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCMS_Web", "TCMS_Web\TCMS_Web.csproj", "{C342EBAC-FC36-4ABF-AF3F-D22A7AB686B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCMS_Web", "TCMS_Web\TCMS_Web.csproj", "{C342EBAC-FC36-4ABF-AF3F-D22A7AB686B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{32B09D8B-251F-4311-BF31-69B48AC63EE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{32B09D8B-251F-4311-BF31-69B48AC63EE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{7B76A569-CB7E-4AE8-8D41-CBA41A32AEC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{7B76A569-CB7E-4AE8-8D41-CBA41A32AEC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

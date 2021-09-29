@@ -107,10 +107,10 @@ namespace TCMS_Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Company}/{action=Index}/{id?}"); //change Company to home
                 endpoints.MapControllerRoute(
                       name: "areas",
-                      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                      pattern: "{area:exists}/{controller=Company}/{action=Index}/{id?}");//change Company to home
 
             });
         }
