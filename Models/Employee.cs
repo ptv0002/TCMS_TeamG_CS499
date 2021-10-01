@@ -16,8 +16,11 @@ namespace Models
             ShippingAssignments = new HashSet<ShippingAssignment>();
         }
 
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Middle Name")]
         public string MiddleName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         public string Position { get; set; }
         public bool? Status { get; set; }
@@ -25,8 +28,11 @@ namespace Models
         public string City { get; set; }
         public string State { get; set; }
         public int? Zip { get; set; }
+        [Display(Name = "Home Phone Number")]
         public string HomePhoneNum { get; set; }
+        [Display(Name = "Pay Rate")]
         public double? PayRate { get; set; }
+        [Display(Name = "Start Date")]
         public DateTime? StartDate { get; set; }
 
         public virtual ICollection<MaintenanceInfo> MaintenanceInfos { get; set; }

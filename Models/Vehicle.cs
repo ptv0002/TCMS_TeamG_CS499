@@ -20,10 +20,13 @@ namespace Models
         public int? Year { get; set; }
         public string Model { get; set; }
         public string Type { get; set; }
+        [Display(Name = "Ready Status")]
         public bool? ReadyStatus { get; set; }
         public bool? Status { get; set; }
         public string Parts { get; set; }
+        [Display(Name = "Last Maintenance Date")]
         public DateTime? LastMaintenanceDate { get; set; }
+        [Display(Name = "Maintenance Cycle")]
         public int? MaintenanceCycle { get; set; }
 
         public virtual ICollection<MaintenanceInfo> MaintenanceInfos { get; set; }

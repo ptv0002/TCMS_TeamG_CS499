@@ -22,6 +22,7 @@ namespace Models
         public string City { get; set; }
         public string State { get; set; }
         public int? Zip { get; set; }
+        [Display(Name = "Contact Person")]
         public string ContactPerson { get; set; }
 
         public virtual ICollection<OrderInfo> OrderInfoDestinations { get; set; }

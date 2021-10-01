@@ -17,6 +17,7 @@ namespace Models
         public int Id { get; set; }
         public string VehicleId { get; set; }
         public string EmployeeId { get; set; }
+        [Display(Name = "Departure Time")]
         public DateTime? DepartureTime { get; set; }
         public bool? Status { get; set; }
 
