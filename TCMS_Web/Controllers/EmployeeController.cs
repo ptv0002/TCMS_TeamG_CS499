@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataAccess;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -12,20 +13,25 @@ namespace TCMS_Web.Controllers
     public class EmployeeController : Controller
     {
         private readonly UserManager<Employee> _userManager;
+        private TCMS_Context _context;
+        public EmployeeController(TCMS_Context context)
+        {
+            _context = context;
+        }
         // GET: EmployeeController
         public ActionResult Index()
         {
-            return View();
+            return View(_context.Employees.ToList());
         }
 
         // GET: EmployeeController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            return View(_context.Employees.Single(e => e.Id == id));
         }
 
         // GET: EmployeeController/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
@@ -33,28 +39,32 @@ namespace TCMS_Web.Controllers
         // POST: EmployeeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection collection)
+        public async Task<ActionResult> Create(Employee employee)
         {
-            //var user = new Employee { UserName = collection., Email = Input.Email };
-            //var result = await _userManager.CreateAsync(user, Input.Password);
+            var user = new Employee { 
+                FirstName = employee.FirstName,
+                MiddleName = employee.MiddleName,
+                LastName = employee.LastName,
+            };
+            var result = await _userManager.CreateAsync(user, employee.PasswordHash);
 
-            //if (result.Succeeded)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
         // GET: EmployeeController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            return View(_context.Employees.Where(e => e.Id == id));
         }
 
         // POST: EmployeeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(string id, Employee employee)
         {
             try
             {

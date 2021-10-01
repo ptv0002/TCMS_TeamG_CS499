@@ -23,12 +23,22 @@ namespace TCMS_Web.Controllers
             _sendMailService = sendMailService;
         }
         [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost, ActionName("Register")]
+        public async Task<IActionResult> Register(AccountViewModel model)
+        {
+            return View();
+        }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
         [HttpPost, ActionName("Login")]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(AccountViewModel model)
         {
             if (_signInManager.IsSignedIn(User)) return RedirectToAction("Index","Home");
             if (ModelState.IsValid)
@@ -66,12 +76,12 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpPost, ActionName("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(MailContent model)
+        public async Task<IActionResult> ForgotPassword(AccountViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // Find user by email
-                var user = await _userManager.FindByEmailAsync(model.To);
+                var user = await _userManager.FindByEmailAsync(model.UsernameOrEmail);
                 // If the user is found
                 if (user != null)
                 {
@@ -80,12 +90,12 @@ namespace TCMS_Web.Controllers
 
                     // Build the password reset link
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
-                            new { email = model.To, code = token }, Request.Scheme);
+                            new { email = model.UsernameOrEmail, code = token }, Request.Scheme);
                     //---------------TESTING-----------------
                     //Get service sendmailservice
                     MailContent content = new()
                     {
-                        To = model.To,
+                        To = model.UsernameOrEmail,
                         Subject = "Reset Password",
                         Body = "<p><strong>Please use the link below to reset your password.\n" +
                         passwordResetLink +"</strong></p>"
@@ -117,12 +127,12 @@ namespace TCMS_Web.Controllers
         }
 
         [HttpPost, ActionName("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword(AccountViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // Find the user by email
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.UsernameOrEmail);
 
                 if (user != null)
                 {

@@ -58,12 +58,14 @@ namespace TCMS_Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
 
-                
+                // Config SignIn
+                options.SignIn.RequireConfirmedEmail = true;
+
                 // Config Cookie
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.LoginPath = $"/login/";                                 // Url login page
+                    options.LoginPath = $"Account/Login/";                                 // Url login page
                     options.LogoutPath = $"/logout/";
                 });
                 services.Configure<SecurityStampValidatorOptions>(options =>
