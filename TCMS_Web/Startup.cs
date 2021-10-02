@@ -65,8 +65,9 @@ namespace TCMS_Web
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.LoginPath = $"Account/Login/";                                 // Url login page
-                    options.LogoutPath = $"/logout/";
+                    options.LoginPath = $"/Account/Login";                                 // Url login page
+                    options.LogoutPath = $"/Account/Logout";
+                    options.AccessDeniedPath = $"/Account/AccessDenied";
                 });
                 services.Configure<SecurityStampValidatorOptions>(options =>
                 {

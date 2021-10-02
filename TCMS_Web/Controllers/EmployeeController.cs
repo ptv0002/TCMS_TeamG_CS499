@@ -31,29 +31,29 @@ namespace TCMS_Web.Controllers
         }
 
         // GET: EmployeeController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: EmployeeController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Employee employee)
-        {
-            var user = new Employee { 
-                FirstName = employee.FirstName,
-                MiddleName = employee.MiddleName,
-                LastName = employee.LastName,
-            };
-            var result = await _userManager.CreateAsync(user, employee.PasswordHash);
+        //// POST: EmployeeController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Create(Employee employee)
+        //{
+        //    var user = new Employee { 
+        //        FirstName = employee.FirstName,
+        //        MiddleName = employee.MiddleName,
+        //        LastName = employee.LastName,
+        //    };
+        //    var result = await _userManager.CreateAsync(user, employee.PasswordHash);
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            return View();
-        }
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View();
+        //}
 
         // GET: EmployeeController/Edit/5
         public ActionResult Edit(string id)

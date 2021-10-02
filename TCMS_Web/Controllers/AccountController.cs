@@ -22,6 +22,10 @@ namespace TCMS_Web.Controllers
             _signInManager = signInManager;
             _sendMailService = sendMailService;
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         [HttpGet]
         public IActionResult Register()
         {
@@ -30,7 +34,69 @@ namespace TCMS_Web.Controllers
         [HttpPost, ActionName("Register")]
         public async Task<IActionResult> Register(AccountViewModel model)
         {
-            return View();
+
+            if (ModelState.IsValid)
+            {
+                // Copy data from RegisterViewModel to IdentityUser
+                var user = new Employee
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.UsernameOrEmail,
+                    Id = model.Id             
+                };
+
+                // Store user data in AspNetUsers database table
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, code = token }, Request.Scheme);
+                    //Get service sendmailservice
+                    MailContent content = new()
+                    {
+                        To = model.UsernameOrEmail,
+                        Subject = "Email Confirmation",
+                        Body = "<p><strong>Please use the link below to confirm your email.\n" +
+                        confirmationLink + "</strong></p>"
+                    };
+
+                    await _sendMailService.SendMail(content);
+
+                    // Return to register confirmation page and remind user to confirm email before proceeding
+                    ViewBag.PageTitle = "Register Confirmation";
+                    ViewBag.Message = "Registration successful! Before you can Login, please confirm your email, " +
+                                        "by clicking on the confirmation link we have emailed you.";
+                    return View("Confirmation");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            return View(model);
+        }
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
+                return View("NotFound");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            ViewBag.Title = "";
+            ViewBag.ErrorTitle = "Email cannot be confirmed";
+            return View("Error");
         }
         [HttpGet]
         public IActionResult Login()
@@ -78,6 +144,8 @@ namespace TCMS_Web.Controllers
         [HttpPost, ActionName("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(AccountViewModel model)
         {
+            ViewBag.PageTitle = "Forgot Password Confirmation";
+            ViewBag.Message = "If you have an account with us, we have sent an email with the instructions to reset your password.";
             if (ModelState.IsValid)
             {
                 // Find user by email
@@ -106,11 +174,11 @@ namespace TCMS_Web.Controllers
                     //---------------TESTING-----------------
 
                     // Send the user to Forgot Password Confirmation view
-                    return View("ForgotPasswordConfirmation");
+                    return View("Confirmation");
                 }
 
                 // To avoid account enumeration and brute force attacks, don't reveal that the user does not exist or is not confirmed
-                return View("ForgotPasswordConfirmation");
+                return View("Confirmation");
             }
 
             return View(model);
@@ -133,14 +201,15 @@ namespace TCMS_Web.Controllers
             {
                 // Find the user by email
                 var user = await _userManager.FindByEmailAsync(model.UsernameOrEmail);
-
+                ViewBag.PageTitle = "Reset Password Confirmation";
+                ViewBag.Message = "Your password is reset.";
                 if (user != null)
                 {
                     // reset the user password
                     var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
                     {
-                        return View("ResetPasswordConfirmation");
+                        return View("Confirmation");
                     }
                     // Display validation error description (assigned in ResetPasswordViewModel)
                     foreach (var error in result.Errors)
@@ -151,7 +220,7 @@ namespace TCMS_Web.Controllers
                 }
 
                 // To avoid account enumeration and brute force attacks, don't reveal that the user does not exist
-                return View("ResetPasswordConfirmation");
+                return View("Confirmation");
             }
             // Display validation errors if model state is not valid
             return View(model);
