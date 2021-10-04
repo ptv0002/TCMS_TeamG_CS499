@@ -22,7 +22,7 @@ namespace TCMS_Web.Controllers
         // GET: Company
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Company.ToListAsync());
+            return View(await _context.Companies.ToListAsync());
         }
 
         // GET: Company/Details/5
@@ -33,7 +33,7 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company
+            var company = await _context.Companies
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (company == null)
             {
@@ -73,7 +73,7 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company.FindAsync(id);
+            var company = await _context.Companies.FindAsync(id);
             if (company == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company
+            var company = await _context.Companies
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (company == null)
             {
@@ -139,15 +139,15 @@ namespace TCMS_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _context.Company.FindAsync(id);
-            _context.Company.Remove(company);
+            var company = await _context.Companies.FindAsync(id);
+            _context.Companies.Remove(company);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CompanyExists(int id)
         {
-            return _context.Company.Any(e => e.ID == id);
+            return _context.Companies.Any(e => e.ID == id);
         }
     }
 }

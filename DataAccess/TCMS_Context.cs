@@ -93,7 +93,7 @@ namespace DataAccess
             {
                 entity.ToTable("Company");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.ID).HasColumnName("ID");
             });
 
             modelBuilder.Entity<MaintenanceDetail>(entity =>
