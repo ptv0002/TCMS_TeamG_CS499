@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+
 
 namespace Models
 {
@@ -11,13 +13,16 @@ namespace Models
     {
         public Company()
         {
-            OrderInfo = new HashSet<OrderInfo>();
-            OrderInfo1 = new HashSet<OrderInfo>();
+            //OrderInfo = new HashSet<OrderInfo>();
+           // OrderInfo1 = new HashSet<OrderInfo>();
         }
 
         public int ID { get; set; }
 
         [StringLength(50)]
+
+        [Required(ErrorMessage ="This Field is required.")]
+        [DisplayName("Full Name")]
         public string Name { get; set; }
 
         public bool? Status { get; set; }
@@ -35,8 +40,8 @@ namespace Models
 
         public string ContactPerson { get; set; }
 
-        public virtual ICollection<OrderInfo> OrderInfo { get; set; }
+       // public virtual ICollection<OrderInfo> OrderInfo { get; set; }
 
-        public virtual ICollection<OrderInfo> OrderInfo1 { get; set; }
+        //public virtual ICollection<OrderInfo> OrderInfo1 { get; set; }
     }
 }

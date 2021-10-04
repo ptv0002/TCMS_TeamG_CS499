@@ -5,16 +5,15 @@
 }
 
 <h1>Company Data</h1>
-<hr/>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Add" >Add new</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ID)
+                @Html.DisplayName("")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -44,7 +43,8 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
