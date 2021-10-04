@@ -3,16 +3,15 @@
 }
 @model IEnumerable<Models.Employee>
 
+<h1>Employee Data</h1>
+
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Add" >Add new</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th></th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -43,9 +42,6 @@
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.Id)
-            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>

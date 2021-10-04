@@ -42,8 +42,9 @@ namespace TCMS_Web.Controllers
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Email = model.UsernameOrEmail,
-                    Id = model.Id             
+                    Email = model.Email,
+                    Id = model.Id, 
+                    UserName = model.Username
                 };
 
                 // Store user data in AspNetUsers database table
@@ -58,7 +59,7 @@ namespace TCMS_Web.Controllers
                     //Get service sendmailservice
                     MailContent content = new()
                     {
-                        To = model.UsernameOrEmail,
+                        To = model.Email,
                         Subject = "Email Confirmation",
                         Body = "<p><strong>Please use the link below to confirm your email.\n" +
                         confirmationLink + "</strong></p>"
@@ -82,11 +83,19 @@ namespace TCMS_Web.Controllers
         }
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
+            // If email confirmation token or userId is null, most likely the user tried to tamper the email confirmation link
+            if (token == null || userId == null)
+            {
+                ViewBag.PageTitle = "Invalid";
+                ViewBag.Message = "The email confirmation token is invalid";
+                return View("Error");
+            }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
-                return View("NotFound");
+                ViewBag.PageTitle = "Invalid";
+                ViewBag.Message = $"The User ID {userId} is invalid";
+                return View("Error");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
@@ -94,8 +103,8 @@ namespace TCMS_Web.Controllers
             {
                 return View();
             }
-            ViewBag.Title = "";
-            ViewBag.ErrorTitle = "Email cannot be confirmed";
+            ViewBag.PageTitle = "Error";
+            ViewBag.Message = "Email cannot be confirmed";
             return View("Error");
         }
         [HttpGet]
@@ -104,7 +113,7 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpPost, ActionName("Login")]
-        public async Task<IActionResult> Login(AccountViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (_signInManager.IsSignedIn(User)) return RedirectToAction("Index","Home");
             if (ModelState.IsValid)
@@ -142,14 +151,14 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpPost, ActionName("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(AccountViewModel model)
+        public async Task<IActionResult> ForgotPassword(MailContent model)
         {
             ViewBag.PageTitle = "Forgot Password Confirmation";
             ViewBag.Message = "If you have an account with us, we have sent an email with the instructions to reset your password.";
             if (ModelState.IsValid)
             {
                 // Find user by email
-                var user = await _userManager.FindByEmailAsync(model.UsernameOrEmail);
+                var user = await _userManager.FindByEmailAsync(model.To);
                 // If the user is found
                 if (user != null)
                 {
@@ -158,12 +167,12 @@ namespace TCMS_Web.Controllers
 
                     // Build the password reset link
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
-                            new { email = model.UsernameOrEmail, code = token }, Request.Scheme);
+                            new { email = model.To, code = token }, Request.Scheme);
                     //---------------TESTING-----------------
                     //Get service sendmailservice
                     MailContent content = new()
                     {
-                        To = model.UsernameOrEmail,
+                        To = model.To,
                         Subject = "Reset Password",
                         Body = "<p><strong>Please use the link below to reset your password.\n" +
                         passwordResetLink +"</strong></p>"
@@ -200,7 +209,7 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
                 // Find the user by email
-                var user = await _userManager.FindByEmailAsync(model.UsernameOrEmail);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 ViewBag.PageTitle = "Reset Password Confirmation";
                 ViewBag.Message = "Your password is reset.";
                 if (user != null)
