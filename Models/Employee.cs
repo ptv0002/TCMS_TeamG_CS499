@@ -12,50 +12,31 @@ namespace Models
     {
         public Employee()
         {
-            MaintenanceInfo = new HashSet<MaintenanceInfo>();
-            ShippingAssignment = new HashSet<ShippingAssignment>();
+            MaintenanceInfos = new HashSet<MaintenanceInfo>();
+            ShippingAssignments = new HashSet<ShippingAssignment>();
         }
 
-        [StringLength(10)]
-        public string ID { get; set; }
-
-        [StringLength(50)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
-
-        [StringLength(50)]
+        [Display(Name = "Middle Name")]
         public string MiddleName { get; set; }
-
-        [StringLength(50)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
-
-        [StringLength(50)]
         public string Position { get; set; }
-
         public bool? Status { get; set; }
-
-        [StringLength(50)]
         public string Address { get; set; }
-
-        [StringLength(50)]
         public string City { get; set; }
-
-        [StringLength(50)]
         public string State { get; set; }
-
         public int? Zip { get; set; }
-
-        [StringLength(50)]
+        [Display(Name = "Home Phone Number")]
         public string HomePhoneNum { get; set; }
-
-        [StringLength(50)]
-        public string CellPhone { get; set; }
-
+        [Display(Name = "Pay Rate")]
         public double? PayRate { get; set; }
-
+        [Display(Name = "Start Date")]
         public DateTime? StartDate { get; set; }
 
-        public virtual ICollection<MaintenanceInfo> MaintenanceInfo { get; set; }
+        public virtual ICollection<MaintenanceInfo> MaintenanceInfos { get; set; }
 
-        public virtual ICollection<ShippingAssignment> ShippingAssignment { get; set; }
+        public virtual ICollection<ShippingAssignment> ShippingAssignments { get; set; }
     }
 }

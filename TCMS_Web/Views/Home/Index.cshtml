@@ -3,52 +3,11 @@
 *@
 
 @{
-    ViewData["Title"] = "Display Data";
-    string[] TableHeaders = new string[] {"ID"
-        ,"Name"
-        ,"Status"
-        ,"Address"
-        ,"City"
-        ,"State"
-        ,"Zip"
-        ,"ContactPerson"
-    };
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="table">
-    <table>
-        <thead>
-            <tr>
-                @{ 
-                    foreach (var head in TableHeaders)
-                    {
-                        <th>
-                            @head
-                        </th>
-                    }
-
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                if (Model != null)
-                {
-                    foreach (var Data in Model)
-                    {
-                        <tr>
-                            <td>@Data.ID</td>
-                            <td>@Data.Name</td>
-                            <td>@Data.Status</td>
-                            <td>@Data.Address</td>
-                            <td>@Data.City</td>
-                            <td>@Data.State</td>
-                            <td>@Data.Zip</td>
-                            <td>@Data.ContactPerson</td>
-                        </tr>
-                    }
-                }
-            }
-        </tbody>
-    </table>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+ 

@@ -11,45 +11,33 @@ namespace Models
     {
         public OrderInfo()
         {
-            AssignmentDetail = new HashSet<AssignmentDetail>();
+            AssignmentDetails = new HashSet<AssignmentDetail>();
         }
 
-        public int ID { get; set; }
-
-        public int? SourceID { get; set; }
-
-        public int? DestinationID { get; set; }
-
-        [StringLength(50)]
+        public int Id { get; set; }
+        public int? SourceId { get; set; }
+        public int? DestinationId { get; set; }
+        [Display(Name = "Source Address")]
         public string SourceAddress { get; set; }
-
-        [StringLength(50)]
+        [Display(Name = "Destination Address")]
         public string DestinationAddresss { get; set; }
-
         public bool? Status { get; set; }
-
-        [StringLength(100)]
         public string DocName { get; set; }
-
-        [StringLength(100)]
         public string DocType { get; set; }
-
         public byte[] DocData { get; set; }
-
+        [Display(Name = "Source Pay")]
         public bool? SourcePay { get; set; }
-
+        [Display(Name = "Pay Status")]
         public bool? PayStatus { get; set; }
-
         public double? TotalOrder { get; set; }
-
+        [Display(Name = "Shipping Fee")]
         public double? ShippingFee { get; set; }
-
+        [Display(Name = "Estimated Arrival Time")]
         public DateTime? EstimateArrivalTime { get; set; }
 
-        public virtual ICollection<AssignmentDetail> AssignmentDetail { get; set; }
-
-        public virtual Company Company { get; set; }
-
-        public virtual Company Company1 { get; set; }
+        public Company Destination { get; set; }
+        [InverseProperty("OrderInfoSources")]
+        public Company Source { get; set; }
+        public virtual ICollection<AssignmentDetail> AssignmentDetails { get; set; }
     }
 }

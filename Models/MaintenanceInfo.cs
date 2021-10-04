@@ -13,27 +13,18 @@ namespace Models
     {
         public MaintenanceInfo()
         {
-            MaintenanceDetail = new HashSet<MaintenanceDetail>();
+            MaintenanceDetails = new HashSet<MaintenanceDetail>();
         }
 
-        public int ID { get; set; }
-
-        [StringLength(10)]
-        public string EmployeeID { get; set; }
-
-        [StringLength(10)]
-        public string VehicleID { get; set; }
-
+        public int Id { get; set; }
+        public string EmployeeId { get; set; }
+        public string VehicleId { get; set; }
         public DateTime? Datetime { get; set; }
-
         public string Notes { get; set; }
-
         public bool? Status { get; set; }
 
         public virtual Employee Employee { get; set; }
-
-        public virtual ICollection<MaintenanceDetail> MaintenanceDetail { get; set; }
-
         public virtual Vehicle Vehicle { get; set; }
+        public virtual ICollection<MaintenanceDetail> MaintenanceDetails { get; set; }
     }
 }

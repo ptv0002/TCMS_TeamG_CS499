@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Models.Mail;
+using Microsoft.AspNetCore.Http;
 
 namespace TCMS_Web
 {
@@ -30,7 +32,7 @@ namespace TCMS_Web
             // Register AppDbContext, use to connect to MS SQL Server
             services.AddDbContext<TCMS_Context>(options => {
                 // Read Connection String
-                string connectstring = Configuration.GetConnectionString("TCMS_Context");
+                string connectstring = Configuration.GetConnectionString("DefaultConnection");
                 // Use MS SQL Server
                 options.UseSqlServer(connectstring);
             });
@@ -58,15 +60,14 @@ namespace TCMS_Web
 
                 // Config SignIn
                 options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
 
                 // Config Cookie
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.LoginPath = $"/login/";                                 // Url login page
-                    options.LogoutPath = $"/logout/";
-                    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";   // User access denial page
+                    options.LoginPath = $"/Account/Login";                                 // Url login page
+                    options.LogoutPath = $"/Account/Logout";
+                    options.AccessDeniedPath = $"/Account/AccessDenied";
                 });
                 services.Configure<SecurityStampValidatorOptions>(options =>
                 {
@@ -79,6 +80,12 @@ namespace TCMS_Web
             });
             services.AddAuthorization();
             services.AddControllersWithViews();
+
+            // Handle email settings
+            services.AddOptions();                                         // Activate Options
+            var mailsettings = Configuration.GetSection("MailSettings");   // Read config
+            services.Configure<MailSettings>(mailsettings);                // Register to inject
+            services.AddTransient<ISendMailService, SendMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,11 +114,32 @@ namespace TCMS_Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"); //change Company to home
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
                 endpoints.MapControllerRoute(
                       name: "areas",
-                      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");//change Company to home
+                      pattern: "{area:exists}/{controller=Account}/{action=Login}/{id?}");
 
+
+                // Test Email directory
+                //endpoints.MapGet("/", async context => {
+                //    await context.Response.WriteAsync("Hello World!");
+                //});
+
+                endpoints.MapGet("/testmail", async context => {
+
+                    // Get service sendmailservice
+                    var sendmailservice = context.RequestServices.GetService<ISendMailService>();
+
+                    MailContent content = new MailContent
+                    {
+                        To = "ptv0002@uah.edu",
+                        Subject = "TCMS email test",
+                        Body = "<p><strong>Test test test...............</strong></p>"
+                    };
+
+                    await sendmailservice.SendMail(content);
+                    await context.Response.WriteAsync("Send mail");
+                });
             });
         }
     }

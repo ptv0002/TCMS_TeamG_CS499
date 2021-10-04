@@ -11,25 +11,18 @@ namespace Models
     {
         public ShippingAssignment()
         {
-            AssignmentDetail = new HashSet<AssignmentDetail>();
+            AssignmentDetails = new HashSet<AssignmentDetail>();
         }
 
-        public int ID { get; set; }
-
-        [StringLength(10)]
-        public string VehicleID { get; set; }
-
-        [StringLength(10)]
-        public string EmployeeID { get; set; }
-
+        public int Id { get; set; }
+        public string VehicleId { get; set; }
+        public string EmployeeId { get; set; }
+        [Display(Name = "Departure Time")]
         public DateTime? DepartureTime { get; set; }
-
         public bool? Status { get; set; }
 
-        public virtual ICollection<AssignmentDetail> AssignmentDetail { get; set; }
-
         public virtual Employee Employee { get; set; }
-
         public virtual Vehicle Vehicle { get; set; }
+        public virtual ICollection<AssignmentDetail> AssignmentDetails { get; set; }
     }
 }
