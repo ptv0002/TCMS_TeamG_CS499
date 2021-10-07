@@ -6,7 +6,7 @@
 <form asp-action="AdditionalDetails">
     <div asp-validation-summary="All" class="text-danger"></div>
     <input asp-for="ControllerName" class="form-control" type="hidden" />
-    <input asp-for="IsIncoming" class="form-control" type="hidden" />
+    <input asp-for="IsIncoming_Individual" class="form-control" type="hidden" />
     @if (Model.ControllerName == "Vehicle")
     {
         <div class="form-group">

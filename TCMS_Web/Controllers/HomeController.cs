@@ -32,12 +32,12 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult AdditionalDetails (string controllerName, bool isIncoming)
+        public IActionResult AdditionalDetails (string controllerName, bool isIncoming_Individual)
         {
             ReportViewModel model = new()
             {
                 ControllerName = controllerName,
-                IsIncoming = isIncoming
+                IsIncoming_Individual = isIncoming_Individual
             };
 
             return View(model);
@@ -48,7 +48,7 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
                 string methodName = "MonthlyReport";
-                if (model.ControllerName == "Vehicle" || model.ControllerName == "Maintenance" || model.ControllerName == "Shipping")
+                if (model.ControllerName == "Maintenance" || model.ControllerName == "Shipping")
                 {
                     return RedirectToAction(methodName, model.ControllerName, model);
                 }

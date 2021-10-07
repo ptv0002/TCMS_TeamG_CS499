@@ -27,6 +27,6 @@ namespace TCMS_Web.Models
         public string Id { get; set; }
         public Months Months { get; set; }
         public int SelectedMonth { get; set; }
-        public bool IsIncoming { get; set; }
+        public bool IsIncoming_Individual { get; set; }
     }
 }
