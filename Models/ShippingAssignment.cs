@@ -13,11 +13,15 @@ namespace Models
         {
             AssignmentDetails = new HashSet<AssignmentDetail>();
         }
-
+        [Key]
         public int Id { get; set; }
+        [Column(TypeName = "ForeignKey")]
         public string VehicleId { get; set; }
+        [Column(TypeName = "ForeignKey")]
         public string EmployeeId { get; set; }
+        [Column(TypeName= "DateTime")]
         public DateTime? DepartureTime { get; set; }
+        [Column(TypeName= "bit")]
         public bool? Status { get; set; }
 
         public virtual Employee Employee { get; set; }

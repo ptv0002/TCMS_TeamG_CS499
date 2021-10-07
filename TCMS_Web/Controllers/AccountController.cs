@@ -57,13 +57,13 @@ namespace TCMS_Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-
             return RedirectToAction("Login","Account");
         }
         [HttpGet]
         public IActionResult ForgotPassword()
         {
-            return View();
+            return RedirectToAction("Index,", "Home");
+            //return View();
         }
         [HttpPost, ActionName("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(MailContent model)

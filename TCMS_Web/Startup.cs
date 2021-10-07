@@ -111,7 +111,7 @@ namespace TCMS_Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                       name: "areas",
                       pattern: "{area:exists}/{controller=Account}/{action=Login}/{id?}");
