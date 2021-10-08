@@ -16,12 +16,7 @@ namespace Models
             OrderInfoDestinations = new HashSet<OrderInfo>();
             OrderInfoSources = new HashSet<OrderInfo>();
         }
-
-        public int ID { get; set; }
-
-        [StringLength(50)]
-
-        [Required(ErrorMessage ="This Field is required.")]
+        public int Id { get; set; }
         [DisplayName("Full Name")]
         public string Name { get; set; }
         public bool? Status { get; set; }

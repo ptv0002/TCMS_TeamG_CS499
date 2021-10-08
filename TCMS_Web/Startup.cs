@@ -74,13 +74,11 @@ namespace TCMS_Web
                     // Re login after 10 seconds will have to re-enter login info
                     // SecurityStamp in User table change -> re-enter info for Security
                     options.ValidationInterval = TimeSpan.FromSeconds(10);
-                });
-
-                
+                }); 
             });
-            services.AddAuthorization();
-            services.AddControllersWithViews();
 
+            services.AddAuthorization();
+            services.AddControllersWithViews();  
             // Handle email settings
             services.AddOptions();                                         // Activate Options
             var mailsettings = Configuration.GetSection("MailSettings");   // Read config
