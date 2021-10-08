@@ -1,9 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Edit Employee";
+    ViewData["Title"] = "Profile";
 }
 @model Models.Employee
 <hr />
-<form asp-action="Edit">
+<form asp-action="Profile">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group row">
         <div class="col-sm-4 mb-3 mb-sm-0">
@@ -24,29 +24,37 @@
     </div>
     <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-            <label class="control-label">Employee ID</label>
-            <input asp-for="Id" class="form-control" required />
-            <span asp-validation-for="Id" class="text-danger"></span>
-        </div>
-        <div class="col-sm-6 col">
             <div>
-                @Html.DisplayNameFor(model => model.Email)
+                <label>Employee ID</label>
+                <input asp-for="Id" class="form-control" type="hidden"/>
             </div>
             <div>
-                @Html.DisplayFor(model => model.Email)
+                @Html.DisplayFor(model => model.Id)
+            </div>
+        </div>
+        <div class="col col-sm-6">
+            <div>
+                @Html.DisplayNameFor(model => model.Position)
+                <input asp-for="Position" class="form-control" type="hidden" />
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.Position)
             </div>
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-            <label asp-for="Position" class="control-label"></label>
-            <input asp-for="Position" class="form-control" required />
-            <span asp-validation-for="Position" class="text-danger"></span>
+            <div>
+                @Html.DisplayNameFor(model => model.Email)
+                <input asp-for="Email" class="form-control" type="hidden" />
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.Email)
+            </div>
         </div>
-        <div class="col-sm-6">
-            <label asp-for="Status" class="control-label"></label>
-            <input asp-for="Status" class="form-control" required />
-            <span asp-validation-for="Status" class="text-danger"></span>
+
+        <div>
+            <a asp-action="UpdateEmail" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
         </div>
     </div>
     <div class="form-group">
@@ -84,34 +92,29 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-6 mb-3 mb-sm-0">
-            <label asp-for="PayRate" class="control-label"></label>
-            <input asp-for="PayRate" class="form-control" required />
-            <span asp-validation-for="PayRate" class="text-danger"></span>
+        <div class="col-sm-6 mb-3 mb-sm-0 col">
+            <div>
+                @Html.DisplayNameFor(model => model.PayRate)
+                <input asp-for="PayRate" class="form-control" type="hidden" />
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.PayRate)
+            </div>
         </div>
-        <div class="col-sm-6">
-            <label asp-for="StartDate" class="control-label"></label>
-            <input asp-for="StartDate" class="form-control" required />
-            <span asp-validation-for="StartDate" class="text-danger"></span>
+        <div class="col-sm-6 col">
+            <div>
+                @Html.DisplayNameFor(model => model.StartDate)
+                <input asp-for="StartDate" class="form-control" type="hidden" />
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.StartDate)
+            </div>
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" formmethod="post" value="Save" class="btn btn-primary" />        
+            <input type="submit" formmethod="post" value="Update Profile" class="btn btn-primary" />
     </div>
 </form>
-<div class="mb-3">
-    <a asp-action="Index">Back to List</a>
-</div>
-<div class="card">
-    <div class="card-header">
-        <h3>User Roles</h3>
-    </div>
-    <div class="card-body">
-        @ViewBag.UserRoles
-    </div>
-    <div class="card-footer">
-        <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">
-            Manage Roles
-        </a>
-    </div>
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to Dashboard</a>
 </div>

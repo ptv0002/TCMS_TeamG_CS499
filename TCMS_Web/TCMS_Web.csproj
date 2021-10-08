@@ -22,10 +22,6 @@
     <Folder Include="Areas\Driver\Data\" />
     <Folder Include="Areas\Driver\Models\" />
     <Folder Include="Areas\Driver\Views\" />
-    <Folder Include="Areas\Shipping\Controllers\" />
-    <Folder Include="Areas\Shipping\Data\" />
-    <Folder Include="Areas\Shipping\Models\" />
-    <Folder Include="Areas\Shipping\Views\" />
   </ItemGroup>
 
 </Project>

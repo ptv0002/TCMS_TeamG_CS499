@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using TCMS_Web.Models;
 using Models.Mail;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace TCMS_Web.Controllers
 {
@@ -26,6 +27,12 @@ namespace TCMS_Web.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Login", "Account");
+        }
         [HttpGet]
         public IActionResult Register()
         {
@@ -37,7 +44,12 @@ namespace TCMS_Web.Controllers
 
             if (ModelState.IsValid)
             {
-                // Copy data from RegisterViewModel to IdentityUser
+                // Check if Employee ID is already in the DB, if yes, insert a different ID
+                if (_userManager.FindByIdAsync(model.Id) != null)
+                {
+                    ModelState.AddModelError(string.Empty,"Employee ID is already taken.");
+                }
+                // Copy data from ViewModel to IdentityUser
                 var user = new Employee
                 {
                     FirstName = model.FirstName,
@@ -50,28 +62,39 @@ namespace TCMS_Web.Controllers
                 // Store user data in AspNetUsers database table
                 var result = await _userManager.CreateAsync(user, model.Password);
 
+                // ----------------- Replace if needed -----------------
+                // Make the first account full access,
+                // just in case after hosting FindUserAsync doesn't recognize users in AspNetUsers
+                if (_userManager.Users.Count() == 1)
+                {
+                    await _userManager.AddToRoleAsync(user, "Full Access");
+                }
+                    
+                // ----------------- Replace if needed -----------------
                 if (result.Succeeded)
                 {
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                        new { userId = user.Id, code = token }, Request.Scheme);
-                    //Get service sendmailservice
-                    MailContent content = new()
-                    {
-                        To = model.Email,
-                        Subject = "Email Confirmation",
-                        Body = "<p><strong>Please use the link below to confirm your email.\n" +
-                        confirmationLink + "</strong></p>"
-                    };
-
-                    await _sendMailService.SendMail(content);
-
                     // Return to register confirmation page and remind user to confirm email before proceeding
+                    ViewBag.Layout = "~/Views/Shared/_ShareLogin.cshtml";
                     ViewBag.PageTitle = "Register Confirmation";
                     ViewBag.Message = "Registration successful! Before you can Login, please confirm your email, " +
                                         "by clicking on the confirmation link we have emailed you.";
+
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token}, Request.Scheme);
+                    //Get service sendmailservice
+                    MailContent content = new()
+                    {
+                        To = user.Email,
+                        Subject = "Email Confirmation",
+                        Body = "<p><strong>Please confirm your email by clicking this <a href=\"" +
+                        confirmationLink + "\">link</a></strong></p>"
+                    };
+
+                    await _sendMailService.SendMail(content);
                     return View("Confirmation");
+
                 }
                 foreach (var error in result.Errors)
                 {
@@ -86,6 +109,7 @@ namespace TCMS_Web.Controllers
             // If email confirmation token or userId is null, most likely the user tried to tamper the email confirmation link
             if (token == null || userId == null)
             {
+                ViewBag.Layout = "~/Views/Shared/_EmptyLayout.cshtml";
                 ViewBag.PageTitle = "Invalid";
                 ViewBag.Message = "The email confirmation token is invalid";
                 return View("Error");
@@ -93,6 +117,7 @@ namespace TCMS_Web.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
+                ViewBag.Layout = "~/Views/Shared/_EmptyLayout.cshtml";
                 ViewBag.PageTitle = "Invalid";
                 ViewBag.Message = $"The User ID {userId} is invalid";
                 return View("Error");
@@ -101,8 +126,12 @@ namespace TCMS_Web.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                return View();
+                ViewBag.Layout = "~/Views/Shared/_ShareLogin.cshtml";
+                ViewBag.PageTitle = "Email Confirmation";
+                ViewBag.Message = "Thank you for confirming your email.";
+                return View("Confirmation");
             }
+            ViewBag.Layout = "~/Views/Shared/_EmptyLayout.cshtml";
             ViewBag.PageTitle = "Error";
             ViewBag.Message = "Email cannot be confirmed";
             return View("Error");
@@ -129,7 +158,8 @@ namespace TCMS_Web.Controllers
                     ModelState.AddModelError(string.Empty, "Account doesn't exist.");
                     return View(model);
                 }
-                var result = await _signInManager.PasswordSignInAsync(model.UsernameOrEmail,
+                // Email MUST be confirmed, or else result = false
+                var result = await _signInManager.PasswordSignInAsync(user.UserName,
                                     model.Password, model.RememberMe, false); // false value applies for NO Logout feature
                 if (result.Succeeded)
                 {
@@ -139,12 +169,6 @@ namespace TCMS_Web.Controllers
             }
             return View(model);
         }
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-
-            return RedirectToAction("Login","Account");
-        }
         [HttpGet]
         public IActionResult ForgotPassword()
         {
@@ -153,34 +177,32 @@ namespace TCMS_Web.Controllers
         [HttpPost, ActionName("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(MailContent model)
         {
+            ViewBag.Layout = "~/Views/Shared/_ShareLogin.cshtml";
             ViewBag.PageTitle = "Forgot Password Confirmation";
             ViewBag.Message = "If you have an account with us, we have sent an email with the instructions to reset your password.";
             if (ModelState.IsValid)
             {
                 // Find user by email
                 var user = await _userManager.FindByEmailAsync(model.To);
-                // If the user is found
-                if (user != null)
+                // If the user is found and email is confirmed
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
                 {
                     // Generate the reset password token
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                     // Build the password reset link
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
-                            new { email = model.To, code = token }, Request.Scheme);
-                    //---------------TESTING-----------------
+                            new { email = model.To, token}, Request.Scheme);
                     //Get service sendmailservice
                     MailContent content = new()
                     {
                         To = model.To,
                         Subject = "Reset Password",
-                        Body = "<p><strong>Please use the link below to reset your password.\n" +
-                        passwordResetLink +"</strong></p>"
+                        Body = "<p><strong>Please click this <a href=\"" +
+                        passwordResetLink + "\">link</a> to reset your password.</strong></p>"
                     };
 
                     await _sendMailService.SendMail(content);
-
-                    //---------------TESTING-----------------
 
                     // Send the user to Forgot Password Confirmation view
                     return View("Confirmation");
@@ -198,7 +220,7 @@ namespace TCMS_Web.Controllers
             // If password reset token or email is null, most likely the user tried to tamper the password reset link
             if (token == null || email == null)
             {
-                ModelState.AddModelError("", "Invalid password reset token");
+                ModelState.AddModelError(string.Empty, "Invalid password reset token");
             }
             return View();
         }
@@ -210,6 +232,7 @@ namespace TCMS_Web.Controllers
             {
                 // Find the user by email
                 var user = await _userManager.FindByEmailAsync(model.Email);
+                ViewBag.Layout = "~/Views/Shared/_ShareLogin.cshtml";
                 ViewBag.PageTitle = "Reset Password Confirmation";
                 ViewBag.Message = "Your password is reset.";
                 if (user != null)
@@ -223,7 +246,7 @@ namespace TCMS_Web.Controllers
                     // Display validation error description (assigned in ResetPasswordViewModel)
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                     return View(model);
                 }

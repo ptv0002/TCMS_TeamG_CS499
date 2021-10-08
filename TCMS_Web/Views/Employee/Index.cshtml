@@ -1,13 +1,9 @@
 ﻿@{ 
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Employee Data";
+
 }
 @model IEnumerable<Models.Employee>
-
-<h1>Employee Data</h1>
-
-<p>
-    <a asp-action="Add" >Add new</a>
-</p>
 <table class="table">
     <thead>
         <tr>

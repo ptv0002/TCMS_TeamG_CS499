@@ -22,7 +22,7 @@ namespace TCMS_Web.Controllers
         // GET: Company
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Company.ToListAsync());
+            return View(await _context.Companies.ToListAsync());
         }
 
         // GET: Company/Details/5
@@ -33,8 +33,8 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (company == null)
             {
                 return NotFound();
@@ -44,7 +44,7 @@ namespace TCMS_Web.Controllers
         }
 
         // GET: Company/Create
-        public IActionResult Add(int id = 0)
+        public IActionResult Add()
         {
             return View(new Company());
         }
@@ -54,7 +54,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add ([Bind("ID,Name,Status,Address,City,State,Zip,ContactPerson")] Company company)
+        public async Task<IActionResult> Add ([Bind("Name,Status,Address,City,State,Zip,ContactPerson")] Company company)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Company.FindAsync(id);
+            var company = await _context.Companies.FindAsync(id);
             if (company == null)
             {
                 return NotFound();
@@ -86,9 +86,9 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Status,Address,City,State,Zip,ContactPerson")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Status,Address,City,State,Zip,ContactPerson")] Company company)
         {
-            if (id != company.ID)
+            if (id != company.Id)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace TCMS_Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CompanyExists(company.ID))
+                    if (!CompanyExists(company.Id))
                     {
                         return NotFound();
                     }
@@ -116,38 +116,10 @@ namespace TCMS_Web.Controllers
             return View(company);
         }
 
-        // GET: Company/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var company = await _context.Company
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (company == null)
-            {
-                return NotFound();
-            }
-
-            return View(company);
-        }
-
-        // POST: Company/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var company = await _context.Company.FindAsync(id);
-            _context.Company.Remove(company);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool CompanyExists(int id)
         {
-            return _context.Company.Any(e => e.ID == id);
+            return _context.Companies.Any(e => e.Id == id);
         }
     }
 }
