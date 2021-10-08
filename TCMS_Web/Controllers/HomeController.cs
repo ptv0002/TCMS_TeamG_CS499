@@ -105,7 +105,7 @@ namespace TCMS_Web.Controllers
                 //Get service sendmailservice
                 MailContent content = new()
                 {
-                    To = user.Email,
+                    To = model.NewEmail,
                     Subject = "Email Confirmation",
                     Body = "<p><strong>Please confirm your email by clicking this <a href=\"" +
                     confirmationLink + "\">link</a></strong></p>"
