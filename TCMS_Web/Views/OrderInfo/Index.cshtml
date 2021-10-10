@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Models.OrderInfo>
+
+@{
+    ViewData["Title"] = "OrderInfo Page";
+}
+
+
+<p>
+    <a asp-action="Add"> Add </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            @*
+            <th>
+                @Html.DisplayNameFor(model => model.DocName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocData)
+            </th>
+            *@
+            <th>
+                @Html.DisplayNameFor(model => model.SourcePay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimateArrivalTime)
+            </th>
+            @*
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Source)
+            </th>
+            *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DestinationAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            @*
+            <td>
+                @Html.DisplayFor(modelItem => item.DocName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocData)
+            </td>
+            *@
+            <td>
+                @Html.DisplayFor(modelItem => item.SourcePay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShippingFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimateArrivalTime)
+            </td>
+            @*
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Source.Id)
+            </td>
+            *@
+        </tr>
+}
+    </tbody>
+</table>

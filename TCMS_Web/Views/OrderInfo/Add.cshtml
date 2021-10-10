@@ -1,0 +1,74 @@
+﻿@model Models.OrderInfo
+
+@{
+    ViewData["Title"] = "Add OrderInfo";
+}
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SourceId" class="control-label"></label>
+                <select asp-for="SourceId" class ="form-control" asp-items="ViewBag.SourceId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationId" class="control-label"></label>
+                <select asp-for="DestinationId" class ="form-control" asp-items="ViewBag.DestinationId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourceAddress" class="control-label"></label>
+                <input asp-for="SourceAddress" class="form-control" required />
+                <span asp-validation-for="SourceAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationAddress" class="control-label"></label>
+                <input asp-for="DestinationAddress" class="form-control" required />
+                <span asp-validation-for="DestinationAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" required />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourcePay" class="control-label"></label>
+                <input asp-for="SourcePay" class="form-control" required />
+                <span asp-validation-for="SourcePay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PayStatus" class="control-label"></label>
+                <input asp-for="PayStatus" class="form-control" required />
+                <span asp-validation-for="PayStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalOrder" class="control-label"></label>
+                <input asp-for="TotalOrder" class="form-control" required />
+                <span asp-validation-for="TotalOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingFee" class="control-label"></label>
+                <input asp-for="ShippingFee" class="form-control" required />
+                <span asp-validation-for="ShippingFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimateArrivalTime" class="control-label"></label>
+                <input asp-for="EstimateArrivalTime" class="form-control" required />
+                <span asp-validation-for="EstimateArrivalTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add OrderInfo" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

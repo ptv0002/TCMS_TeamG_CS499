@@ -10,85 +10,85 @@ using Models;
 
 namespace TCMS_Web.Controllers
 {
-    public class CompanyController : Controller
+    public class VehiclesController : Controller
     {
         private readonly TCMS_Context _context;
 
-        public CompanyController(TCMS_Context context)
+        public VehiclesController(TCMS_Context context)
         {
             _context = context;
         }
 
-        // GET: Company
+        // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Companies.ToListAsync());
+            return View(await _context.Vehicles.ToListAsync());
         }
 
-        // GET: Company/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Vehicles/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var company = await _context.Companies
+            var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(vehicle);
         }
 
-        // GET: Company/Create
-        public IActionResult Add()
+        // GET: Vehicles/Create
+        public IActionResult Add( string id = "0")
         {
-            return View(new Company());
+            return View(new Vehicle());
         }
 
-        // POST: Company/Create
+        // POST: Vehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("Id,Name,Status,Address,City,State,Zip,ContactPerson")] Company company)
+        public async Task<IActionResult> Add ([Bind("Id,Brand,Year,Model,Type,ReadyStatus,Status,Parts,LastMaintenanceDate,MaintenanceCycle")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(company);
+                _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(vehicle);
         }
 
-        // GET: Company/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Vehicles/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var company = await _context.Companies.FindAsync(id);
-            if (company == null)
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle == null)
             {
                 return NotFound();
             }
-            return View(company);
+            return View(vehicle);
         }
 
-        // POST: Company/Edit/5
+        // POST: Vehicles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Status,Address,City,State,Zip,ContactPerson")] Company company)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Brand,Year,Model,Type,ReadyStatus,Status,Parts,LastMaintenanceDate,MaintenanceCycle")] Vehicle vehicle)
         {
-            if (id != company.Id)
+            if (id != vehicle.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace TCMS_Web.Controllers
             {
                 try
                 {
-                    _context.Update(company);
+                    _context.Update(vehicle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CompanyExists(company.Id))
+                    if (!VehicleExists(vehicle.Id))
                     {
                         return NotFound();
                     }
@@ -113,41 +113,41 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(vehicle);
         }
 
-        // GET: Company/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Vehicles/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var company = await _context.Companies
+            var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(vehicle);
         }
 
-        // POST: Company/Delete/5
+        // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var company = await _context.Companies.FindAsync(id);
-            _context.Companies.Remove(company);
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            _context.Vehicles.Remove(vehicle);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CompanyExists(int id)
+        private bool VehicleExists(string id)
         {
-            return _context.Companies.Any(e => e.Id == id);
+            return _context.Vehicles.Any(e => e.Id == id);
         }
     }
 }
