@@ -2,8 +2,28 @@
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
- 
+@*@if (User.IsInRole("Full Access"))
+{*@
+    <hr />
+    <h2>Monthly Reports</h2>
+    <div class="mb-2">
+        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-primary shadow-md mb-1" >
+            <i class="fas fa-download fa-sm text-white-50"></i> Payroll
+        </a>
+        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-success shadow-md mb-1">
+            <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (All Vehicles)
+        </a>
+        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-info shadow-md mb-1">
+            <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (Individual Vehicle                                       )
+        </a>
+        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-warning shadow-md mb-1">
+            <i class="fas fa-download fa-sm text-white-50"></i> Incoming Shipment
+        </a>
+        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-danger shadow-md mb-1">
+            <i class="fas fa-download fa-sm text-white-50"></i> Outgoing Shipment
+        </a>
+    </div>
+    <hr />
+@*}*@
+
+<h2>Routine Maintenance</h2>

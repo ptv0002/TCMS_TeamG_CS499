@@ -30,7 +30,30 @@ namespace TCMS_Web.Controllers
         {
             return View();
         }
-
+        [HttpGet]
+        public IActionResult AdditionalDetails (string controllerName, bool isIndividual)
+        {
+            ReportViewModel model = new()
+            {
+                ControllerName = controllerName,
+                IsIndividual = isIndividual
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult AdditionalDetails(ReportViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string methodName = "MonthlyReport";
+                if (model.ControllerName == "Employee" || model.ControllerName == "Vehicle" || model.ControllerName == "Maintenance")
+                {
+                    return RedirectToAction(methodName, model.ControllerName, model);
+                }
+                ModelState.AddModelError(string.Empty, "Invalid Input");
+            }
+            return View(model);
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -42,7 +65,7 @@ namespace TCMS_Web.Controllers
             return View(user);
         }
         [HttpPost, ActionName("Profile")]
-        public async Task<IActionResult> Profile([Bind("FirstName,MiddleName,LastName,Address,City,State,Zip,PhoneNumber,HomePhoneNum")] Employee model)
+        public async Task<IActionResult> Profile(Employee model)
         {
             if (ModelState.IsValid)
             {

@@ -32,7 +32,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <li>
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Home" asp-action="Index">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -53,24 +53,27 @@
                 </a>
             </li>
 
+
+            @*@if (signInManager.IsSignedIn(User) && User.IsInRole("Full Access"))
+        {*@
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
             </li>
-
-            @*@if (signInManager.IsSignedIn(User) && User.IsInRole("Full"))
-        {*@
+            <li class="sidebar-heading">
+                Human Resources
+            </li>
             <!-- Nav Item - Employee -->
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Employee" asp-action="Index">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-users"></i>
                     <span>Employee</span>
                 </a>
 
             </li>
             @*}
         @if (signInManager.IsSignedIn(User) &&
-            (User.IsInRole("Shipping") || User.IsInRole("Full") || User.IsInRole("Maintenance")))
+            (!User.IsInRole("Driver")))
         {*@
             <!-- Divider -->
             <li>
@@ -93,14 +96,14 @@
             <!-- Nav Item - Vehicle -->
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Vehicle" asp-action="Index">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-fw fa-car"></i>
                     <span>Vehicle</span>
                 </a>
 
             </li>
             @*}
         @if (signInManager.IsSignedIn(User) &&
-            (User.IsInRole("Shipping") || User.IsInRole("Full")))
+            (User.IsInRole("Shipping") || User.IsInRole("Full Access")))
         {*@
             <!-- Divider -->
             <li>
@@ -114,7 +117,7 @@
             <!-- Nav Item - Shipping Assignment -->
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Shipping" asp-action="Index">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-box-open"></i>
                     <span>Shipping Assignment</span>
                 </a>
             </li>
@@ -122,7 +125,7 @@
             <!-- Nav Item - Order Info -->
             <li class="nav-item">
                 <a class="nav-link" asp-controller="OrderInfo" asp-action="Index">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-sticky-note"></i>
                     <span>Order Info</span>
                 </a>
             </li>
@@ -130,7 +133,7 @@
             <!-- Nav Item - Company -->
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Company" asp-action="Index">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fas fa-fw fa-building"></i>
                     <span>Company</span>
                 </a>
             </li>
@@ -226,7 +229,6 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
                     @RenderBody()
 

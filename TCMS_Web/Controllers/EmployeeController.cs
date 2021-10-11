@@ -29,7 +29,11 @@ namespace TCMS_Web.Controllers
         {
             return View(_context.Employees.ToList());
         }
-
+        public async Task<IActionResult> MonthlyReport(ReportViewModel model)
+        {
+            //_context.Employees.FindAsync(model.Id);
+            return View(model);
+        }
         // GET: EmployeeController/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -82,7 +86,7 @@ namespace TCMS_Web.Controllers
         // POST: EmployeeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("FirstName,MiddleName,LastName,Id,Position,Status,Address,City,State,Zip,PhoneNumber,HomePhoneNum,PayRate,StartDate")] Employee model)
+        public async Task<IActionResult> Edit(string id, Employee model)
         {  
 
             if (id != model.Id)
