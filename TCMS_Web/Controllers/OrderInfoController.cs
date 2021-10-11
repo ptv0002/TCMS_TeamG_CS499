@@ -51,6 +51,8 @@ namespace TCMS_Web.Controllers
         {
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id");
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id");
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address");
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address");
             return View(new OrderInfo ());
         }
 
@@ -69,6 +71,8 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
 
@@ -87,8 +91,8 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
 
@@ -126,42 +130,10 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
-
-        // GET: OrderInfo/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var orderInfo = await _context.OrderInfos
-                .Include(o => o.Destination)
-                .Include(o => o.Source)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (orderInfo == null)
-            {
-                return NotFound();
-            }
-
-            return View(orderInfo);
-        }
-
-        // POST: OrderInfo/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var orderInfo = await _context.OrderInfos.FindAsync(id);
-            _context.OrderInfos.Remove(orderInfo);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool OrderInfoExists(int id)
         {
             return _context.OrderInfos.Any(e => e.Id == id);

@@ -20,13 +20,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="SourceAddress" class="control-label"></label>
-                <input asp-for="SourceAddress" class="form-control" required />
+                <select asp-for="SourceAddress" class="form-control" asp-items="ViewBag.SourceAddress"></select>
                 <span asp-validation-for="SourceAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DestinationAddress" class="control-label"></label>
-                <input asp-for="DestinationAddress" class="form-control" required />
-                <span asp-validation-for="DestinationAddress" class="text-danger"></span>
+                <label asp-for="DestinationAddresss" class="control-label"></label>
+                <select asp-for="DestinationAddresss" class="form-control" asp-items="ViewBag.DestinationAddress"></select>
+                <span asp-validation-for="DestinationAddresss" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>

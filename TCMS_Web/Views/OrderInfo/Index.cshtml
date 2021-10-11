@@ -18,7 +18,7 @@
                 @Html.DisplayNameFor(model => model.SourceAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DestinationAddress)
+                @Html.DisplayNameFor(model => model.DestinationAddresss)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -57,7 +57,6 @@
                 @Html.DisplayNameFor(model => model.Source)
             </th>
             *@
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -71,7 +70,7 @@
                 @Html.DisplayFor(modelItem => item.SourceAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DestinationAddress)
+                @Html.DisplayFor(modelItem => item.DestinationAddresss)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
@@ -94,9 +93,11 @@
                 @Html.DisplayFor(modelItem => item.PayStatus)
             </td>
             <td>
+                @Html.DisplayName("$")
                 @Html.DisplayFor(modelItem => item.TotalOrder)
             </td>
             <td>
+                @Html.DisplayName("$")
                 @Html.DisplayFor(modelItem => item.ShippingFee)
             </td>
             <td>

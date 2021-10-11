@@ -20,7 +20,7 @@ namespace Models
         [Display(Name = "Source Address")]
         public string SourceAddress { get; set; }
         [Display(Name = "Destination Address")]
-        public string DestinationAddress { get; set; }
+        public string DestinationAddresss { get; set; }
         public bool? Status { get; set; }
         public string DocName { get; set; }
         public string DocType { get; set; }
