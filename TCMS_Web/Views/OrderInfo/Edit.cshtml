@@ -35,21 +35,21 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             @*
-            <div class="form-group">
-                <label asp-for="DocName" class="control-label"></label>
-                <input asp-for="DocName" class="form-control" />
-                <span asp-validation-for="DocName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DocType" class="control-label"></label>
-                <input asp-for="DocType" class="form-control" />
-                <span asp-validation-for="DocType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DocData" class="control-label"></label>
-                <input asp-for="DocData" class="form-control" />
-                <span asp-validation-for="DocData" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="DocName" class="control-label"></label>
+                    <input asp-for="DocName" class="form-control" />
+                    <span asp-validation-for="DocName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DocType" class="control-label"></label>
+                    <input asp-for="DocType" class="form-control" />
+                    <span asp-validation-for="DocType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DocData" class="control-label"></label>
+                    <input asp-for="DocData" class="form-control" />
+                    <span asp-validation-for="DocData" class="text-danger"></span>
+                </div>
             *@
             <div class="form-group">
                 <label asp-for="SourcePay" class="control-label"></label>
@@ -80,6 +80,67 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+
+<h4>Current Source Company Info</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-4">
+        @Html.DisplayName("Source Company Name:")
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Source.Name)
+    </dd>
+    <dt class="col-sm-4">
+        @Html.DisplayName("Source Company Address:")
+    </dt>
+    <dd class="col-sm-12">
+        @Html.DisplayFor(model => model.Source.Address)
+        @Html.DisplayName(" ")
+        @Html.DisplayFor(model => model.Source.City)
+        @Html.DisplayName(",")
+        @Html.DisplayFor(model => model.Source.State)
+        @Html.DisplayName(" ")
+        @Html.DisplayFor(model => model.Source.Zip)
+    </dd>
+    <dt class="col-sm-4">
+        @Html.DisplayName("Source Company Contact Info:")
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Source.ContactPerson)
+    </dd>
+</dl>
+
+<hr />
+<h4>Current Destination Company Info</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-4">
+        @Html.DisplayName("Destination Company Name:")
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Destination.Name)
+    </dd>
+    <dt class="col-sm-4">
+        @Html.DisplayName("Destination Company Address:")
+    </dt>
+    <dd class="col-sm-12">
+        @Html.DisplayFor(model => model.Destination.Address)
+        @Html.DisplayName(" ")
+        @Html.DisplayFor(model => model.Destination.City)
+        @Html.DisplayName(",")
+        @Html.DisplayFor(model => model.Destination.State)
+        @Html.DisplayName(" ")
+        @Html.DisplayFor(model => model.Destination.Zip)
+    </dd>
+    <dt class="col-sm-4">
+        @Html.DisplayName("Destination Company Contact Info:")
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Destination.ContactPerson)
+    </dd>
+</dl>
+
+
 
 <div>
     <a asp-action="Index">Back to List</a>

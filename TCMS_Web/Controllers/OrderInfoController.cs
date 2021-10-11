@@ -51,6 +51,8 @@ namespace TCMS_Web.Controllers
         {
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id");
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id");
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address");
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address");
             return View(new OrderInfo ());
         }
 
@@ -69,6 +71,8 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
 
@@ -87,8 +91,8 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
 
@@ -126,8 +130,8 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["Source"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
         private bool OrderInfoExists(int id)
