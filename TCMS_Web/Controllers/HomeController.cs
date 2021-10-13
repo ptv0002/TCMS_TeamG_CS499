@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models;
@@ -19,7 +20,7 @@ namespace TCMS_Web.Controllers
         private readonly TCMS_Context _context;
         private readonly UserManager<Employee> _userManager;
         private readonly ISendMailService _sendMailService;
-
+       
         public HomeController(UserManager<Employee> userManager, ISendMailService sendMailService)
         {
             _userManager = userManager;
@@ -31,13 +32,14 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult AdditionalDetails (string controllerName, bool isIndividual)
+        public IActionResult AdditionalDetails (string controllerName, bool isIncoming)
         {
             ReportViewModel model = new()
             {
                 ControllerName = controllerName,
-                IsIndividual = isIndividual
+                IsIncoming = isIncoming
             };
+
             return View(model);
         }
         [HttpPost]
@@ -46,7 +48,7 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
                 string methodName = "MonthlyReport";
-                if (model.ControllerName == "Employee" || model.ControllerName == "Vehicle" || model.ControllerName == "Maintenance")
+                if (model.ControllerName == "Vehicle" || model.ControllerName == "Maintenance" || model.ControllerName == "Shipping")
                 {
                     return RedirectToAction(methodName, model.ControllerName, model);
                 }

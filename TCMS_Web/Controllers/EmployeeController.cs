@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
@@ -25,14 +26,21 @@ namespace TCMS_Web.Controllers
 
         }
         // GET: EmployeeController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_context.Employees.ToList());
+            return View(await _userManager.Users.ToListAsync());
         }
-        public async Task<IActionResult> MonthlyReport(ReportViewModel model)
+        public IActionResult MonthlyReport()
         {
-            //_context.Employees.FindAsync(model.Id);
-            return View(model);
+            List<MonthlyPayroll> list = _context.Employees.Select(m => new MonthlyPayroll()
+            {
+                FirstName = m.FirstName,
+                MiddleName = m.MiddleName,
+                LastName = m.LastName,
+                Id = m.Id,
+                Compensation = m.PayRate / 12
+            }).ToList();
+            return View(list);
         }
         // GET: EmployeeController/Details/5
         public async Task<IActionResult> Details(string id)
@@ -99,8 +107,6 @@ namespace TCMS_Web.Controllers
                 try
                 {
                     await _userManager.UpdateAsync(model);
-                    //_context.Update(model);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -175,5 +181,21 @@ namespace TCMS_Web.Controllers
             }
             return RedirectToAction("Edit", new { Id = userId });
         }
+    }
+
+    public class MonthlyPayroll
+    {
+        public MonthlyPayroll()
+        {
+        }
+        [Display (Name="First Name")]
+        public string FirstName { get; set; }
+        [Display(Name = "Middle Name")]
+        public string MiddleName { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Display(Name = "Employee ID")]
+        public string Id { get; set; }
+        public double? Compensation { get; set; }
     }
 }

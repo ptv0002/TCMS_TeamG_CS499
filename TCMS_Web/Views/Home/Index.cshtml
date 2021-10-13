@@ -3,27 +3,54 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @*@if (User.IsInRole("Full Access"))
-{*@
-    <hr />
-    <h2>Monthly Reports</h2>
-    <div class="mb-2">
-        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-primary shadow-md mb-1" >
-            <i class="fas fa-download fa-sm text-white-50"></i> Payroll
-        </a>
-        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-success shadow-md mb-1">
-            <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (All Vehicles)
-        </a>
-        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-info shadow-md mb-1">
-            <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (Individual Vehicle                                       )
-        </a>
-        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-warning shadow-md mb-1">
-            <i class="fas fa-download fa-sm text-white-50"></i> Incoming Shipment
-        </a>
-        <a asp-action="AdditionalDetails" asp-controller="Home" class="d-none d-md-inline-block btn btn-md btn-danger shadow-md mb-1">
-            <i class="fas fa-download fa-sm text-white-50"></i> Outgoing Shipment
-        </a>
+    {*@
+<hr />
+<h2>Monthly Reports</h2>
+<div class="row">
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-primary text-white shadow">
+            <a asp-action="MonthlyReport" asp-controller="Employee" class="card-body btn btn-primary shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Payroll
+            </a>
+        </div>
     </div>
-    <hr />
-@*}*@
+    <div class="col-lg-3 mb-4">
+        <div class="card bg-success text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Maintenance" asp-route-isIncoming="false" class="card-body btn btn-success shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (All Vehicles)
+            </a>
 
+
+
+        </div>
+    </div>
+    <div class="col-lg-3 mb-4">
+        <div class="card bg-info text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Vehicle" asp-route-isIncoming="false" class="card-body btn btn-info shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (Individual Vehicle)
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-warning text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Shipping" asp-route-isIncoming="true" class="card-body btn btn-warning shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Incoming Shipment
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-danger text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Shipping" asp-route-isIncoming="false" class="card-body btn btn-danger shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Outgoing Shipment
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+@*}
+    @if (User.IsInRole("Full Access") || User.IsInRole("Maintenance"))
+        {*@
+<hr />
 <h2>Routine Maintenance</h2>
