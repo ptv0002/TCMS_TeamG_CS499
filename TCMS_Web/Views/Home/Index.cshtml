@@ -2,29 +2,58 @@
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<br />
-<div>
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-            <a href="#first" aria-controls="first" role="tab" data-toggle="tab">First</a>
-        </li>
-        <li role="presentation">
-            <a href="#second" aria-controls="second" role="tab" data-toggle="tab">Second</a>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="first">
-            @await Component.InvokeAsync("Company");
-        </div>
-        <div role="tabpanel" class="tab-pane" id="second">
-            Yet be added
+@*@if (User.IsInRole("Full Access"))
+    {*@
+<hr />
+<h2>Monthly Reports</h2>
+<div class="row">
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-primary text-white shadow">
+            <a asp-action="MonthlyReport" asp-controller="Employee" class="card-body btn btn-primary shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Payroll
+            </a>
         </div>
     </div>
+    <div class="col-lg-3 mb-4">
+        <div class="card bg-success text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Maintenance" asp-route-isIncoming_Individual="false" class="card-body btn btn-success shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (All Vehicles)
+            </a>
+
+
+
+        </div>
+    </div>
+    <div class="col-lg-3 mb-4">
+        <div class="card bg-info text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Maintenance" asp-route-isIncoming_Individual="true" class="card-body btn btn-info shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (Individual Vehicle)
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-warning text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Shipping" asp-route-isIncoming_Individual="true" class="card-body btn btn-warning shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Incoming Shipment
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-danger text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Shipping" asp-route-isIncoming_Individual="false" class="card-body btn btn-danger shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Outgoing Shipment
+            </a>
+        </div>
+    </div>
+
 </div>
+
+
+@*}
+    @if (!User.IsInRole("Driver"))
+        {*@
+<hr />
+<h2>Routine Maintenance</h2>
+@*}
+    @if (!User.IsInRole("Driver"))
+        {*@

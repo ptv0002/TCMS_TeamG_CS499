@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
@@ -25,11 +27,71 @@ namespace TCMS_Web.Controllers
 
         }
         // GET: EmployeeController
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            return View(_context.Employees.ToList());
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = "true", // Default choice: Only ACTIVE employees
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+            return View( new GroupViewModel<Employee>() { StatusViewModel = statusModel,
+                ClassModel = _context.Employees.Where(m => m.Status == true).ToList()
+            });
         }
+        [HttpPost]
+        public IActionResult Index(GroupViewModel<Employee> model)
+        {
+            // Get user's input from dropdown
+            int status = Convert.ToInt32(model.StatusViewModel.SelectedValue);
 
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = model.StatusViewModel.SelectedValue,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+            
+            // Display all employees
+            if (status == 2)
+            {
+                return View(new GroupViewModel<Employee>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.Employees.ToList()
+                });
+            }
+            // Display employees depending on their status
+            return View(new GroupViewModel<Employee>()
+            {
+                StatusViewModel = statusModel,
+                ClassModel = _context.Employees.Where(m => m.Status == Convert.ToBoolean(status)).ToList()
+            });
+        }
+        public IActionResult MonthlyReport()
+        {
+            List<MonthlyPayroll> list = _context.Employees.Where(m => m.Status == true).Select(m => new MonthlyPayroll()
+            {
+                FirstName = m.FirstName,
+                MiddleName = m.MiddleName,
+                LastName = m.LastName,
+                Id = m.Id,
+                Compensation = m.PayRate / 12
+            }).ToList();
+            return View(list);
+        }
         // GET: EmployeeController/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -67,7 +129,7 @@ namespace TCMS_Web.Controllers
             {
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
-                    ViewBag.UserRoles = role.Name + "\n";
+                    ViewBag.UserRoles += role.Name + ". ";
                 }
 
             }
@@ -82,7 +144,7 @@ namespace TCMS_Web.Controllers
         // POST: EmployeeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("FirstName,MiddleName,LastName,Id,Position,Status,Address,City,State,Zip,PhoneNumber,HomePhoneNum,PayRate,StartDate")] Employee model)
+        public async Task<IActionResult> Edit(string id, Employee model)
         {  
 
             if (id != model.Id)
@@ -95,8 +157,6 @@ namespace TCMS_Web.Controllers
                 try
                 {
                     await _userManager.UpdateAsync(model);
-                    //_context.Update(model);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -171,5 +231,21 @@ namespace TCMS_Web.Controllers
             }
             return RedirectToAction("Edit", new { Id = userId });
         }
+    }
+
+    public class MonthlyPayroll
+    {
+        public MonthlyPayroll()
+        {
+        }
+        [Display (Name="First Name")]
+        public string FirstName { get; set; }
+        [Display(Name = "Middle Name")]
+        public string MiddleName { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Display(Name = "Employee ID")]
+        public string Id { get; set; }
+        public double? Compensation { get; set; }
     }
 }

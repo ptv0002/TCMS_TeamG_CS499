@@ -47,7 +47,7 @@ namespace TCMS_Web.Controllers
         }
 
         // GET: OrderInfo/Create
-        public IActionResult Add(int id = 0)
+        public IActionResult Add()
         {
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id");
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id");

@@ -31,6 +31,7 @@
         <div class="col-sm-6 col">
             <div>
                 @Html.DisplayNameFor(model => model.Email)
+                <input asp-for="Email" class="form-control" type="hidden" />
             </div>
             <div>
                 @Html.DisplayFor(model => model.Email)

@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models;
@@ -20,7 +21,7 @@ namespace TCMS_Web.Controllers
         private readonly TCMS_Context _context;
         private readonly UserManager<Employee> _userManager;
         private readonly ISendMailService _sendMailService;
-
+       
         public HomeController(UserManager<Employee> userManager, ISendMailService sendMailService)
         {
             _userManager = userManager;
@@ -31,7 +32,31 @@ namespace TCMS_Web.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult AdditionalDetails (string controllerName, bool isIncoming_Individual)
+        {
+            ReportViewModel model = new()
+            {
+                ControllerName = controllerName,
+                IsIncoming_Individual = isIncoming_Individual
+            };
 
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult AdditionalDetails(ReportViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string methodName = "MonthlyReport";
+                if (model.ControllerName == "Maintenance" || model.ControllerName == "Shipping")
+                {
+                    return RedirectToAction(methodName, model.ControllerName, model);
+                }
+                ModelState.AddModelError(string.Empty, "Invalid Input");
+            }
+            return View(model);
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -43,7 +68,7 @@ namespace TCMS_Web.Controllers
             return View(user);
         }
         [HttpPost, ActionName("Profile")]
-        public async Task<IActionResult> Profile([Bind("FirstName,MiddleName,LastName,Address,City,State,Zip,PhoneNumber,HomePhoneNum")] Employee model)
+        public async Task<IActionResult> Profile(Employee model)
         {
             if (ModelState.IsValid)
             {
