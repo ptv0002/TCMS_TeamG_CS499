@@ -1,13 +1,30 @@
-﻿@*Code added by Nicholas DeSanctis   Date added: 9/25/21
-  Purpose: Changes home page to where it displays, creates, and fills in the Company table 
-*@
-
-@{
+﻿@{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
- 
+
+<br />
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#first" aria-controls="first" role="tab" data-toggle="tab">First</a>
+        </li>
+        <li role="presentation">
+            <a href="#second" aria-controls="second" role="tab" data-toggle="tab">Second</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="first">
+            @await Component.InvokeAsync("Company");
+        </div>
+        <div role="tabpanel" class="tab-pane" id="second">
+            Yet be added
+        </div>
+    </div>
+</div>

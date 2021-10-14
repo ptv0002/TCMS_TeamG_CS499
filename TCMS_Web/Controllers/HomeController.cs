@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
 using System.Data.SqlClient;
-using Models;
 
 namespace TCMS_Web.Controllers
 {
