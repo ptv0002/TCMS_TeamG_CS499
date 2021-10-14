@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -26,13 +27,62 @@ namespace TCMS_Web.Controllers
 
         }
         // GET: EmployeeController
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _userManager.Users.ToListAsync());
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = "true", // Default choice: Only ACTIVE employees
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+            return View( new GroupViewModel<Employee>() { StatusViewModel = statusModel,
+                ClassModel = _context.Employees.Where(m => m.Status == true).ToList()
+            });
+        }
+        [HttpPost]
+        public IActionResult Index(GroupViewModel<Employee> model)
+        {
+            // Get user's input from dropdown
+            int status = Convert.ToInt32(model.StatusViewModel.SelectedValue);
+
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = model.StatusViewModel.SelectedValue,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+            
+            // Display all employees
+            if (status == 2)
+            {
+                return View(new GroupViewModel<Employee>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.Employees.ToList()
+                });
+            }
+            // Display employees depending on their status
+            return View(new GroupViewModel<Employee>()
+            {
+                StatusViewModel = statusModel,
+                ClassModel = _context.Employees.Where(m => m.Status == Convert.ToBoolean(status)).ToList()
+            });
         }
         public IActionResult MonthlyReport()
         {
-            List<MonthlyPayroll> list = _context.Employees.Select(m => new MonthlyPayroll()
+            List<MonthlyPayroll> list = _context.Employees.Where(m => m.Status == true).Select(m => new MonthlyPayroll()
             {
                 FirstName = m.FirstName,
                 MiddleName = m.MiddleName,
@@ -79,7 +129,7 @@ namespace TCMS_Web.Controllers
             {
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
-                    ViewBag.UserRoles = role.Name + "\n";
+                    ViewBag.UserRoles += role.Name + ". ";
                 }
 
             }

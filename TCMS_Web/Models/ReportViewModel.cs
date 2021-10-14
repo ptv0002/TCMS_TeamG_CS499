@@ -22,7 +22,6 @@ namespace TCMS_Web.Models
     }
     public class ReportViewModel
     {
-        
         public string ControllerName { get; set;}
         public string Id { get; set; }
         public Months Months { get; set; }

@@ -71,7 +71,7 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
             ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
@@ -91,7 +91,7 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
             ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
@@ -130,7 +130,7 @@ namespace TCMS_Web.Controllers
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddresss);
+            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
             ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
             return View(orderInfo);
         }
