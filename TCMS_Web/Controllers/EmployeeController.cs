@@ -29,32 +29,22 @@ namespace TCMS_Web.Controllers
         // GET: EmployeeController
         public IActionResult Index()
         {
-            // Populate status dropdown
-            var statusModel = new StatusViewModel
-            {
-                SelectedValue = "true", // Default choice: Only ACTIVE employees
-                KeyValues = new Dictionary<string, string> // Populate status options
-                {
-                    { "1", "Active" },
-                    { "0", "Inactive" },
-                    { "2", "Full" }
-                }
-            };
-            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
-            return View( new GroupStatusViewModel<Employee>() { StatusViewModel = statusModel,
-                ClassModel = _context.Employees.Where(m => m.Status == true).ToList()
-            });
+            return IndexGenerator("1");
         }
         [HttpPost]
         public IActionResult Index(GroupStatusViewModel<Employee> model)
         {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selected)
+        {
             // Get user's input from dropdown
-            int status = Convert.ToInt32(model.StatusViewModel.SelectedValue);
+            int status = Convert.ToInt32(selected);
 
             // Populate status dropdown
             var statusModel = new StatusViewModel
             {
-                SelectedValue = model.StatusViewModel.SelectedValue,
+                SelectedValue = selected,
                 KeyValues = new Dictionary<string, string> // Populate status options
                 {
                     { "1", "Active" },
@@ -63,7 +53,7 @@ namespace TCMS_Web.Controllers
                 }
             };
             ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
-            
+
             // Display all employees
             if (status == 2)
             {

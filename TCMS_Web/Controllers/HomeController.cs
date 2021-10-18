@@ -21,15 +21,65 @@ namespace TCMS_Web.Controllers
         private readonly UserManager<Employee> _userManager;
         private readonly ISendMailService _sendMailService;
        
-        public HomeController(UserManager<Employee> userManager, ISendMailService sendMailService)
+        public HomeController(TCMS_Context context, UserManager<Employee> userManager, ISendMailService sendMailService)
         {
+            _context = context;
             _userManager = userManager;
             _sendMailService = sendMailService;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return IndexGenerator("1", "1");
+        }
+        [HttpPost]
+        public IActionResult Index(HomeIndexViewModel model)
+        {
+            return IndexGenerator(model.RoutineStatus.SelectedValue, model.ShippingStatus.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selectedRoutine, string selectedShipping)
+        {
+            // Populate status dropdown
+            var routineStatusModel = new StatusViewModel
+            {
+                SelectedValue = selectedRoutine,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Today" },
+                    { "7", "Next 7 days" },
+                    { "15", "Next 15 days" }
+                }
+            };
+            ViewData["routineStatusModel"] = new SelectList(routineStatusModel.KeyValues, "Key", "Value", routineStatusModel.SelectedValue);
+
+            // Populate status dropdown
+            var shippingStatusModel = new StatusViewModel
+            {
+                SelectedValue = selectedShipping,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Today" },
+                    { "7", "Next 7 days" },
+                    { "15", "Next 15 days" }
+                }
+            };
+            ViewData["shippingStatusModel"] = new SelectList(shippingStatusModel.KeyValues, "Key", "Value", shippingStatusModel.SelectedValue);
+
+            // Display routine maintenance and shipping assignment depending on days selected
+            return View(new HomeIndexViewModel()
+            {
+                RoutineStatus = routineStatusModel,
+                RoutineList = _context.Vehicles.Where(m => m.Status == true &&
+                m.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(m.MaintenanceCycle))
+                .Subtract(DateTime.Today).TotalDays < Convert.ToInt32(routineStatusModel.SelectedValue) &&
+                m.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(m.MaintenanceCycle))
+                .Subtract(DateTime.Today).TotalDays > 0).ToList(),
+
+                ShippingStatus = shippingStatusModel,
+                ShippingList = _context.ShippingAssignments.Where(m => m.Status == true &&
+                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays < Convert.ToInt32(shippingStatusModel.SelectedValue) &&
+                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays > 0).ToList()
+            });
         }
         [HttpGet]
         public IActionResult AdditionalDetails (string controllerName, bool isIncoming_Individual)

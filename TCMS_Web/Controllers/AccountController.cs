@@ -177,7 +177,7 @@ namespace TCMS_Web.Controllers
                     return RedirectToAction("Index", "Home");
                 else if (result.Succeeded && await _userManager.IsInRoleAsync(user, "Driver")) 
                     return RedirectToAction("Index", "Driver", new { Areas = "Other" });
-                else if (_signInManager.IsSignedIn(User) && !(await _userManager.IsInRoleAsync(user, "Driver") ||
+                else if (result.Succeeded && !(await _userManager.IsInRoleAsync(user, "Driver") ||
                     await _userManager.IsInRoleAsync(user, "Full Access") ||
                     await _userManager.IsInRoleAsync(user, "Shipping") ||
                     await _userManager.IsInRoleAsync(user, "Maintenance")))

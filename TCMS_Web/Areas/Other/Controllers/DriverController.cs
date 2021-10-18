@@ -23,42 +23,26 @@ namespace TCMS_Web.Areas.Other.Controllers
         // GET: HomeController
         public IActionResult Index()
         {
-            // Get current user's Id
-            var id = _userManager.GetUserId(HttpContext.User);
-            // Populate status dropdown
-            var statusModel = new StatusViewModel
-            {
-                SelectedValue = "-1", // Default choice: Only ACTIVE employees
-                KeyValues = new Dictionary<string, string> // Populate status options
-                {
-                    { "-1", "Today" },
-                    { "-3", "Next 3 days" },
-                    { "-7", "Next 7 days" }
-                }
-            };
-            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
-            return View(new GroupStatusViewModel<ShippingAssignment>()
-            {
-                StatusViewModel = statusModel,
-                ClassModel = _context.ShippingAssignments.Where(m => m.Status == true && m.EmployeeId == id && 
-                0 > DateTime.Today.Subtract((DateTime)m.DepartureTime).TotalDays && 
-                DateTime.Today.Subtract((DateTime)m.DepartureTime).TotalDays > -1).ToList()
-            });
+            return IndexGenerator("1");
         }
         [HttpPost]
         public IActionResult Index(GroupStatusViewModel<ShippingAssignment> model)
+        {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public ActionResult IndexGenerator(string selected)
         {
             // Get current user's Id
             var id = _userManager.GetUserId(HttpContext.User);
             // Populate status dropdown
             var statusModel = new StatusViewModel
             {
-                SelectedValue = model.StatusViewModel.SelectedValue,
+                SelectedValue = selected,
                 KeyValues = new Dictionary<string, string> // Populate status options
                 {
-                    { "-1", "Today" },
-                    { "-3", "Next 3 days" },
-                    { "-7", "Next 7 days" }
+                    { "1", "Today" },
+                    { "3", "Next 3 days" },
+                    { "7", "Next 7 days" }
                 }
             };
             ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
@@ -68,8 +52,8 @@ namespace TCMS_Web.Areas.Other.Controllers
             {
                 StatusViewModel = statusModel,
                 ClassModel = _context.ShippingAssignments.Where(m => m.Status == true && m.EmployeeId == id &&
-                0 > DateTime.Today.Subtract((DateTime)m.DepartureTime).TotalDays &&
-                DateTime.Today.Subtract((DateTime)m.DepartureTime).TotalDays > Convert.ToInt32(statusModel.SelectedValue)).ToList()
+                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays < Convert.ToInt32(statusModel.SelectedValue) &&
+                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays > 0).ToList()
             });
         }
         // GET: HomeController/Details/5

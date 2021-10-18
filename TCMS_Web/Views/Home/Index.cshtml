@@ -51,17 +51,76 @@
     @if (!User.IsInRole("Driver"))
         {*@
 <hr />
-<h2 class="text-gray-800">Maintenance Assignment</h2>
+<h2 class="text-gray-800">Routine Maintenance</h2>
 <form asp-action="Index">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group col">
         <label class="mr-1 text-gray-800">Show</label>
-        <select asp-for="MaintenanceStatus.SelectedValue" class="mr-1" asp-items="ViewBag.maintenanceStatusModel"></select>
+        <select asp-for="RoutineStatus.SelectedValue" class="mr-1" asp-items="ViewBag.routineStatusModel"></select>
         <label class="mr-3 text-gray-800">records</label>
         <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
     </div>
 </form>
-
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Vehicle ID
+            </th>
+            <th>
+                Last Maintenance Date
+            </th>
+            <th>
+                Maintenance Cycle
+            </th>
+            <th>
+                Brand
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RoutineList)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Vehicle">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Vehicle">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastMaintenanceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintenanceCycle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 @*}
     @if (User.IsInRole("Full Access") || User.IsInRole("Shipping"))
         {*@
@@ -76,3 +135,39 @@
         <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
     </div>
 </form>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Vehicle ID
+            </th>
+            <th>
+                Employee ID
+            </th>
+            <th>
+                Departure Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShippingList)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Shipping">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Shipping">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
