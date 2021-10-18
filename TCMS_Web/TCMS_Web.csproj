@@ -22,10 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Driver\Controllers\" />
-    <Folder Include="Areas\Driver\Data\" />
-    <Folder Include="Areas\Driver\Models\" />
-    <Folder Include="Areas\Driver\Views\" />
+    <Folder Include="Areas\Other\Data\" />
+    <Folder Include="Areas\Other\Models\" />
   </ItemGroup>
 
 </Project>

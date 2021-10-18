@@ -61,38 +61,44 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Profile(string type)
         {
+            GetViewBags(type);
             var user = await _userManager.GetUserAsync(HttpContext.User);
             return View(user);
         }
         [HttpPost, ActionName("Profile")]
-        public async Task<IActionResult> Profile(Employee model)
+        public async Task<IActionResult> Profile(Employee model, string type)
         {
+            GetViewBags(type);
             if (ModelState.IsValid)
             {
-                try
+                var user = await _userManager.FindByIdAsync(model.Id);
+                user.FirstName = model.FirstName;
+                user.MiddleName = model.MiddleName;
+                user.LastName = model.LastName;
+                user.UserName = model.UserName;
+                user.Address = model.Address;
+                user.City = model.City;
+                user.State = model.State;
+                user.Zip = model.Zip;
+                user.PhoneNumber = model.PhoneNumber;
+                user.HomePhoneNum = model.HomePhoneNum;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
                 {
-                    await _userManager.UpdateAsync(model);
+                    return RedirectToAction("Index",ViewBag.Controller, new { Areas = ViewBag.Area });
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_userManager.FindByIdAsync(model.Id) == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Invalid update attempt");
             }
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> UpdateEmail(string id)
+        public async Task<IActionResult> UpdateEmail(string id, string type)
         {
+            GetViewBags(type);
             Employee user;
             if (id == null)
             {
@@ -111,8 +117,9 @@ namespace TCMS_Web.Controllers
             return View(model);
         }
         [HttpPost, ActionName("UpdateEmail")]
-        public async Task<IActionResult> UpdateEmail(UpdateEmailViewModel model)
+        public async Task<IActionResult> UpdateEmail(UpdateEmailViewModel model, string type)
         {
+            GetViewBags(type);
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(model.Id);
@@ -172,6 +179,30 @@ namespace TCMS_Web.Controllers
             ViewBag.PageTitle = "Error";
             ViewBag.Message = "Email cannot be confirmed";
             return View("Error");
+        }
+        public void GetViewBags (string type)
+        {
+            if (type == "Normal")
+            {
+                ViewBag.Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.Controller = "Home";
+                ViewBag.Area = "";
+                ViewBag.Type = "Normal";
+            }
+            else if (type == "Driver")
+            {
+                ViewBag.Layout = "~/Areas/_Layout.cshtml";
+                ViewBag.Controller = "Driver";
+                ViewBag.Area = "Other";
+                ViewBag.Type = "Driver";
+            }
+            else
+            {
+                ViewBag.Layout = "~/Areas/_Layout.cshtml";
+                ViewBag.Controller = "NoRole";
+                ViewBag.Area = "Other";
+                ViewBag.Type = "NoRole";
+            }
         }
     }
 }

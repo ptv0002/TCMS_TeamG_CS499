@@ -3,13 +3,13 @@
     ViewData["Title"] = "Employee Page";
 
 }
-@model GroupViewModel<Models.Employee> 
+@model GroupStatusViewModel<Models.Employee> 
 <form asp-action="Index">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group col">
-        <label class="mr-1">Show</label>
+        <label class="mr-1 text-gray-800">Show</label>
         <select asp-for="StatusViewModel.SelectedValue" class="mr-1" asp-items="ViewBag.statusModel"></select>
-        <label class="mr-3">records</label>
+        <label class="mr-3 text-gray-800">records</label>
         <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
     </div>
 </form>
@@ -25,6 +25,9 @@
             </th>
             <th>
                 Last Name
+            </th>
+            <th>
+                Position
             </th>
             <th>
                 Status
@@ -46,36 +49,39 @@
     <tbody>
         @foreach (var item in Model.ClassModel)
         {
-            <tr>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.State)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Zip)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zip)
+            </td>
+        </tr>
         }
     </tbody>
 </table>

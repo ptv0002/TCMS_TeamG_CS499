@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Update Email";
+    Layout = ViewBag.Layout;
 }
 @model UpdateEmailViewModel
 <hr />
@@ -33,5 +34,5 @@
     </div>
 </form>
 <div>
-    <a asp-action="Index" asp-controller="Home">Back to Dashboard</a>
+    <a asp-action="Index" asp-controller="@ViewBag.Controller" asp-area="@ViewBag.Area" asp-route-type="@ViewBag.Type">Back to Dashboard</a>
 </div>

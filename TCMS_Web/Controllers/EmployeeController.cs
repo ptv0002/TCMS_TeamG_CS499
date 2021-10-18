@@ -41,12 +41,12 @@ namespace TCMS_Web.Controllers
                 }
             };
             ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
-            return View( new GroupViewModel<Employee>() { StatusViewModel = statusModel,
+            return View( new GroupStatusViewModel<Employee>() { StatusViewModel = statusModel,
                 ClassModel = _context.Employees.Where(m => m.Status == true).ToList()
             });
         }
         [HttpPost]
-        public IActionResult Index(GroupViewModel<Employee> model)
+        public IActionResult Index(GroupStatusViewModel<Employee> model)
         {
             // Get user's input from dropdown
             int status = Convert.ToInt32(model.StatusViewModel.SelectedValue);
@@ -67,14 +67,14 @@ namespace TCMS_Web.Controllers
             // Display all employees
             if (status == 2)
             {
-                return View(new GroupViewModel<Employee>()
+                return View(new GroupStatusViewModel<Employee>()
                 {
                     StatusViewModel = statusModel,
                     ClassModel = _context.Employees.ToList()
                 });
             }
             // Display employees depending on their status
-            return View(new GroupViewModel<Employee>()
+            return View(new GroupStatusViewModel<Employee>()
             {
                 StatusViewModel = statusModel,
                 ClassModel = _context.Employees.Where(m => m.Status == Convert.ToBoolean(status)).ToList()
@@ -88,7 +88,8 @@ namespace TCMS_Web.Controllers
                 MiddleName = m.MiddleName,
                 LastName = m.LastName,
                 Id = m.Id,
-                Compensation = m.PayRate / 12
+                Compensation = m.PayRate / 12,
+                Position = m.Position
             }).ToList();
             return View(list);
         }
@@ -154,22 +155,28 @@ namespace TCMS_Web.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var user = await _context.Employees.FindAsync(id);
+                user.FirstName = model.FirstName;
+                user.MiddleName = model.MiddleName;
+                user.LastName = model.LastName;
+                user.Position = model.Position;
+                user.Status = model.Status;
+                user.Address = model.Address;
+                user.City = model.City;
+                user.State = model.State;
+                user.Zip = model.Zip;
+                user.PhoneNumber = model.PhoneNumber;
+                user.HomePhoneNum = model.HomePhoneNum;
+                user.PayRate = model.PayRate;
+                user.StartDate = model.StartDate;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
                 {
-                    await _userManager.UpdateAsync(model);
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_userManager.FindByIdAsync(model.Id) == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Invalid update attempt");
             }
             return View(model);
         }
@@ -247,5 +254,6 @@ namespace TCMS_Web.Controllers
         [Display(Name = "Employee ID")]
         public string Id { get; set; }
         public double? Compensation { get; set; }
+        public string Position { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+﻿@model TCMS_Web.Models.GroupStatusViewModel<Models.ShippingAssignment>
+@{
+    Layout = "~/Areas/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard";
+    ViewBag.Type = "Driver";
+
+}
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col">
+        <label class="mr-1 text-gray-800">Show</label>
+        <select asp-for="StatusViewModel.SelectedValue" class="mr-1" asp-items="ViewBag.statusModel"></select>
+        <label class="mr-3 text-gray-800">records</label>
+        <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Departure Time
+            </th>
+            <th>
+                Employee
+            </th>
+            <th>
+                Vehicle
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ClassModel)
+        {
+        <tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vehicle.Id)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -17,11 +17,14 @@ namespace TCMS_Web.Controllers
         private readonly UserManager<Employee> _userManager;
         private readonly SignInManager<Employee> _signInManager;
         private readonly ISendMailService _sendMailService;
-        public AccountController(UserManager<Employee> userManager,SignInManager<Employee> signInManager, ISendMailService sendMailService)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(UserManager<Employee> userManager,SignInManager<Employee> signInManager, 
+            ISendMailService sendMailService, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _sendMailService = sendMailService;
+            _roleManager = roleManager;
         }
         public IActionResult AccessDenied()
         {
@@ -144,7 +147,14 @@ namespace TCMS_Web.Controllers
         [HttpPost, ActionName("Login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (_signInManager.IsSignedIn(User)) return RedirectToAction("Index","Home");
+            if (_signInManager.IsSignedIn(User) && (User.IsInRole("Full Access") || 
+                User.IsInRole("Shipping") || User.IsInRole("Maintenance"))) 
+                return RedirectToAction("Index", "Home");
+            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Driver")) 
+                return RedirectToAction("Index", "Driver", new { Areas = "Other" });
+            else if (_signInManager.IsSignedIn(User) && !(User.IsInRole("Driver") || User.IsInRole("Full Access") || 
+                User.IsInRole("Shipping") || User.IsInRole("Maintenance")))
+                return RedirectToAction("Index", "NoRole", new { Areas = "Other" });
             if (ModelState.IsValid)
             {
                 // Check if input email is in the database
@@ -161,10 +171,17 @@ namespace TCMS_Web.Controllers
                 // Email MUST be confirmed, or else result = false
                 var result = await _signInManager.PasswordSignInAsync(user.UserName,
                                     model.Password, model.RememberMe, false); // false value applies for NO Logout feature
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index","Home");
-                }
+                if (result.Succeeded && (await _userManager.IsInRoleAsync(user,"Full Access") || 
+                    await _userManager.IsInRoleAsync(user, "Shipping") || 
+                    await _userManager.IsInRoleAsync(user, "Maintenance")))
+                    return RedirectToAction("Index", "Home");
+                else if (result.Succeeded && await _userManager.IsInRoleAsync(user, "Driver")) 
+                    return RedirectToAction("Index", "Driver", new { Areas = "Other" });
+                else if (_signInManager.IsSignedIn(User) && !(await _userManager.IsInRoleAsync(user, "Driver") ||
+                    await _userManager.IsInRoleAsync(user, "Full Access") ||
+                    await _userManager.IsInRoleAsync(user, "Shipping") ||
+                    await _userManager.IsInRoleAsync(user, "Maintenance")))
+                    return RedirectToAction("Index", "NoRole", new { Areas = "Other" });
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);

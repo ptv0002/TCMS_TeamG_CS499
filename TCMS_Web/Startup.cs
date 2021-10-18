@@ -115,7 +115,7 @@ namespace TCMS_Web
                     pattern: "{controller=Account}/{action=Login}/{id?}");
                 endpoints.MapControllerRoute(
                       name: "areas",
-                      pattern: "{area:exists}/{controller=Account}/{action=Login}/{id?}");
+                      pattern: "{area:exists}/{controller=NoRole}/{action=Index}/{id?}");
 
 
                 // Test Email directory
