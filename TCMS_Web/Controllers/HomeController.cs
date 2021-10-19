@@ -28,16 +28,16 @@ namespace TCMS_Web.Controllers
             _sendMailService = sendMailService;
         }
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return IndexGenerator("1", "1");
+            return await IndexGenerator("35", "35");
         }
         [HttpPost]
-        public IActionResult Index(HomeIndexViewModel model)
+        public async Task<IActionResult> Index(HomeIndexViewModel model)
         {
-            return IndexGenerator(model.RoutineStatus.SelectedValue, model.ShippingStatus.SelectedValue);
+            return await IndexGenerator(model.RoutineStatus.SelectedValue, model.ShippingStatus.SelectedValue);
         }
-        public IActionResult IndexGenerator(string selectedRoutine, string selectedShipping)
+        public async Task<IActionResult> IndexGenerator(string selectedRoutine, string selectedShipping)
         {
             // Populate status dropdown
             var routineStatusModel = new StatusViewModel
@@ -64,21 +64,25 @@ namespace TCMS_Web.Controllers
                 }
             };
             ViewData["shippingStatusModel"] = new SelectList(shippingStatusModel.KeyValues, "Key", "Value", shippingStatusModel.SelectedValue);
-
+            
+            DateTime now = DateTime.Today;
+            var nowPlusSelected =  now.AddDays(Convert.ToDouble(shippingStatusModel.SelectedValue));
+            
+            var shippingList = await _context.ShippingAssignments.Where(m => m.Status == true &&
+                m.DepartureTime <= nowPlusSelected).ToListAsync();
+            
+            var routineList = await _context.Vehicles.Where(m => m.Status == true &&
+            m.LastMaintenanceDate.Value.AddDays
+            (Convert.ToDouble((int)m.MaintenanceCycle)) <= nowPlusSelected).ToListAsync();
+            
             // Display routine maintenance and shipping assignment depending on days selected
             return View(new HomeIndexViewModel()
             {
                 RoutineStatus = routineStatusModel,
-                RoutineList = _context.Vehicles.Where(m => m.Status == true &&
-                m.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(m.MaintenanceCycle))
-                .Subtract(DateTime.Today).TotalDays < Convert.ToInt32(routineStatusModel.SelectedValue) &&
-                m.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(m.MaintenanceCycle))
-                .Subtract(DateTime.Today).TotalDays > 0).ToList(),
+                RoutineList = routineList,
 
                 ShippingStatus = shippingStatusModel,
-                ShippingList = _context.ShippingAssignments.Where(m => m.Status == true &&
-                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays < Convert.ToInt32(shippingStatusModel.SelectedValue) &&
-                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays > 0).ToList()
+                ShippingList = shippingList
             });
         }
         [HttpGet]
