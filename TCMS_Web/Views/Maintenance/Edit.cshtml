@@ -1,0 +1,28 @@
+﻿@model Models.MaintenanceInfo
+
+@{
+    ViewData["Title"] = "Edit Maintenance Info";
+}
+
+
+<hr />
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#first" aria-controls="first" role="tab" data-toggle="tab">Maintenance Info </a>
+        </li>
+        <li role="presentation">
+            <a href="#second" aria-controls="second" role="tab" data-toggle="tab">Maintenace Detail</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="first">
+           @await Component.InvokeAsync("Company") 
+        </div>
+        <div role="tabpanel" class="tab-pane" id="second">
+            Displays Maintenance Detail edit form
+        </div>
+    </div>
+</div>
+   
