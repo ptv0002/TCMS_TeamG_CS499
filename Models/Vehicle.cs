@@ -26,7 +26,7 @@ namespace Models
         public string Parts { get; set; }
         [Display(Name = "Last Maintenance Date")]
         public DateTime? LastMaintenanceDate { get; set; }
-        [Display(Name = "Maintenance Cycle")]
+        [Display(Name = "Maintenance Cycle (in Days)")]
         public int? MaintenanceCycle { get; set; }
 
         public virtual ICollection<MaintenanceInfo> MaintenanceInfos { get; set; }

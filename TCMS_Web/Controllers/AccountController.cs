@@ -151,10 +151,10 @@ namespace TCMS_Web.Controllers
                 User.IsInRole("Shipping") || User.IsInRole("Maintenance"))) 
                 return RedirectToAction("Index", "Home");
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Driver")) 
-                return RedirectToAction("Index", "Driver", new { Areas = "Other" });
+                return RedirectToAction("Index", "Driver");
             else if (_signInManager.IsSignedIn(User) && !(User.IsInRole("Driver") || User.IsInRole("Full Access") || 
                 User.IsInRole("Shipping") || User.IsInRole("Maintenance")))
-                return RedirectToAction("Index", "NoRole", new { Areas = "Other" });
+                return RedirectToAction("Index", "NoRole");
             if (ModelState.IsValid)
             {
                 // Check if input email is in the database
@@ -176,12 +176,12 @@ namespace TCMS_Web.Controllers
                     await _userManager.IsInRoleAsync(user, "Maintenance")))
                     return RedirectToAction("Index", "Home");
                 else if (result.Succeeded && await _userManager.IsInRoleAsync(user, "Driver")) 
-                    return RedirectToAction("Index", "Driver", new { Areas = "Other" });
+                    return RedirectToAction("Index", "Driver");
                 else if (result.Succeeded && !(await _userManager.IsInRoleAsync(user, "Driver") ||
                     await _userManager.IsInRoleAsync(user, "Full Access") ||
                     await _userManager.IsInRoleAsync(user, "Shipping") ||
                     await _userManager.IsInRoleAsync(user, "Maintenance")))
-                    return RedirectToAction("Index", "NoRole", new { Areas = "Other" });
+                    return RedirectToAction("Index", "NoRole"/*, new { Areas = "Other" }*/);
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);

@@ -8,6 +8,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
@@ -72,15 +73,19 @@ namespace TCMS_Web.Controllers
         }
         public IActionResult MonthlyReport()
         {
+            var month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Today.Month);
+            var year = DateTime.Today.Year;    
+            ViewData["Title"] = "Monthly Payroll for " + month + " " + year;
+
             List<MonthlyPayroll> list = _context.Employees.Where(m => m.Status == true).Select(m => new MonthlyPayroll()
             {
                 FirstName = m.FirstName,
-                MiddleName = m.MiddleName,
                 LastName = m.LastName,
                 Id = m.Id,
-                Compensation = m.PayRate / 12,
+                Compensation = Math.Round((decimal)(m.PayRate / 12), 2),
                 Position = m.Position
             }).ToList();
+            
             return View(list);
         }
         // GET: EmployeeController/Details/5
@@ -237,13 +242,11 @@ namespace TCMS_Web.Controllers
         }
         [Display (Name="First Name")]
         public string FirstName { get; set; }
-        [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Display(Name = "Employee ID")]
         public string Id { get; set; }
-        public double? Compensation { get; set; }
+        public decimal? Compensation { get; set; }
         public string Position { get; set; }
     }
 }

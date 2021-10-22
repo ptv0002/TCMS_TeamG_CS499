@@ -30,7 +30,7 @@ namespace Models
         public int? Zip { get; set; }
         [Display(Name = "Home Phone Number")]
         public string HomePhoneNum { get; set; }
-        [Display(Name = "Pay Rate")]
+        [Display(Name = "Pay Rate (Yearly)")]
         public double? PayRate { get; set; }
         [Display(Name = "Start Date")]
         public DateTime? StartDate { get; set; }

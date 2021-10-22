@@ -9,6 +9,8 @@ using DataAccess;
 using System.Data.Entity.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
+using System.Globalization;
+using System.ComponentModel.DataAnnotations;
 
 namespace TCMS_Web.Controllers
 {
@@ -19,6 +21,22 @@ namespace TCMS_Web.Controllers
         public ShippingController(TCMS_Context context)
         {
             _context = context;
+        }
+        public IActionResult MonthlyReport(ReportViewModel model)
+        {
+            var month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(model.Months.SelectedValue));
+            var year = model.Years.SelectedValue;
+            string type;
+            if (model.IsIncoming_Individual) type = "Incoming Shipment";
+            else type = "Outgoing Shipment";
+            ViewData["Title"] = "Monthly Report for " + type + " " + month + " " + year;
+
+            List<MonthlyShippingReport> list = _context.Employees.Where(m => m.Status == true ).Select(m => new MonthlyShippingReport()
+            {
+                
+            }).ToList();
+
+            return View();
         }
         public IActionResult Index()
         {
@@ -105,5 +123,13 @@ namespace TCMS_Web.Controllers
         {
             return _context.ShippingAssignments.Any(e => e.Id == Id);
         }
+    }
+    public class MonthlyShippingReport
+    {
+        public MonthlyShippingReport()
+        {
+        }
+        [Display(Name = "Employee ID")]
+        public string Id { get; set; }
     }
 }
