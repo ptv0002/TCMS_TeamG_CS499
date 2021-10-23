@@ -14,7 +14,7 @@ using TCMS_Web.Models;
 namespace TCMS_Web.Areas.Other.Controllers
 {
     [Area("Other")]
-    [Route("[controller]")]
+    [Route("Other/[Controller]/[Action]")]
     public class DriverController : Controller
     {
         private readonly TCMS_Context _context;
@@ -54,9 +54,10 @@ namespace TCMS_Web.Areas.Other.Controllers
             DateTime now = DateTime.Today;
             var nowPlusSelected = now.AddDays(Convert.ToDouble(statusModel.SelectedValue));
 
+            // Get shipping assignment list that's in the range [now, selected days from now]
             var shippingList = await _context.ShippingAssignments.Where(m => m.Status == true
             && m.EmployeeId == id
-            && m.DepartureTime <= nowPlusSelected).ToListAsync();
+            && m.DepartureTime <= nowPlusSelected && m.DepartureTime >= now).ToListAsync();
 
             // Display shipping assignment depending on days selected
             return View(new GroupStatusViewModel<ShippingAssignment>()

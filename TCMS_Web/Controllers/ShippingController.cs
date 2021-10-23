@@ -31,10 +31,7 @@ namespace TCMS_Web.Controllers
             else type = "Outgoing Shipment";
             ViewData["Title"] = "Monthly Report for " + type + " " + month + " " + year;
 
-            List<MonthlyShippingReport> list = _context.Employees.Where(m => m.Status == true ).Select(m => new MonthlyShippingReport()
-            {
-                
-            }).ToList();
+            //var list = _context.AssignmentDetails.Where(m => m.Status == true ).Include(m => m.ShippingAssignment).Where(m=>m.ShippingAssignmentId == ShippingAssignment.Id).ToList();
 
             return View();
         }
@@ -130,6 +127,11 @@ namespace TCMS_Web.Controllers
         {
         }
         [Display(Name = "Employee ID")]
-        public string Id { get; set; }
+        public string EmployeeId { get; set; }
+        [Display(Name = "Vehicle ID")]
+        public string VehicleId { get; set; }
+        [Display(Name = "Departure Time")]
+        public string DepartureTime { get; set; }
+
     }
 }

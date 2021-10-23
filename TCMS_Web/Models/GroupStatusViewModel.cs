@@ -18,7 +18,6 @@ namespace TCMS_Web.Models
     }
     public class HomeIndexViewModel
     {
-        public StatusViewModel RoutineStatus { get; set; }
         public IEnumerable<Vehicle> RoutineList { get; set; }
         public StatusViewModel ShippingStatus { get; set; }
         public IEnumerable<ShippingAssignment> ShippingList { get; set; }

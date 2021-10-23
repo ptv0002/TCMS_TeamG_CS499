@@ -9,6 +9,7 @@ using TCMS_Web.Models;
 using Models.Mail;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using DataAccess;
 
 namespace TCMS_Web.Controllers
 {
@@ -18,13 +19,15 @@ namespace TCMS_Web.Controllers
         private readonly SignInManager<Employee> _signInManager;
         private readonly ISendMailService _sendMailService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly TCMS_Context _context;
         public AccountController(UserManager<Employee> userManager,SignInManager<Employee> signInManager, 
-            ISendMailService sendMailService, RoleManager<IdentityRole> roleManager)
+            ISendMailService sendMailService, RoleManager<IdentityRole> roleManager, TCMS_Context context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _sendMailService = sendMailService;
             _roleManager = roleManager;
+            _context = context;
         }
         public IActionResult AccessDenied()
         {
@@ -68,7 +71,7 @@ namespace TCMS_Web.Controllers
                 // ----------------- Replace if needed -----------------
                 // Make the first account full access,
                 // just in case after hosting FindUserAsync doesn't recognize users in AspNetUsers
-                if (_userManager.Users.Count() == 1)
+                if (_context.Employees.Count() == 1)
                 {
                     await _userManager.AddToRoleAsync(user, "Full Access");
                 }
@@ -120,6 +123,7 @@ namespace TCMS_Web.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
+                // Return error if userId is invalid
                 ViewBag.Layout = "~/Views/Shared/_EmptyLayout.cshtml";
                 ViewBag.PageTitle = "Invalid";
                 ViewBag.Message = $"The User ID {userId} is invalid";
@@ -129,6 +133,7 @@ namespace TCMS_Web.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
+                // If email is update successfully, display confirmation page
                 ViewBag.Layout = "~/Views/Shared/_ShareLogin.cshtml";
                 ViewBag.PageTitle = "Email Confirmation";
                 ViewBag.Message = "Thank you for confirming your email.";
@@ -149,12 +154,12 @@ namespace TCMS_Web.Controllers
         {
             if (_signInManager.IsSignedIn(User) && (User.IsInRole("Full Access") || 
                 User.IsInRole("Shipping") || User.IsInRole("Maintenance"))) 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home"); // Return to Home Index if user role is Full, Shipping or Maintenance
             else if (_signInManager.IsSignedIn(User) && User.IsInRole("Driver")) 
-                return RedirectToAction("Index", "Driver");
+                return RedirectToAction("Index", "Driver", new { area = "Other" }); // Return to Driver Index if user role is Driver
             else if (_signInManager.IsSignedIn(User) && !(User.IsInRole("Driver") || User.IsInRole("Full Access") || 
                 User.IsInRole("Shipping") || User.IsInRole("Maintenance")))
-                return RedirectToAction("Index", "NoRole");
+                return RedirectToAction("Index", "NoRole", new { area = "Other" }); // Return to NoRole Index if user role is null
             if (ModelState.IsValid)
             {
                 // Check if input email is in the database
@@ -174,14 +179,13 @@ namespace TCMS_Web.Controllers
                 if (result.Succeeded && (await _userManager.IsInRoleAsync(user,"Full Access") || 
                     await _userManager.IsInRoleAsync(user, "Shipping") || 
                     await _userManager.IsInRoleAsync(user, "Maintenance")))
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home"); // Return to Home Index if user role is Full, Shipping or Maintenance
                 else if (result.Succeeded && await _userManager.IsInRoleAsync(user, "Driver")) 
-                    return RedirectToAction("Index", "Driver");
+                    return RedirectToAction("Index", "Driver", new { area = "Other" }); // Return to Driver Index if user role is Driver
                 else if (result.Succeeded && !(await _userManager.IsInRoleAsync(user, "Driver") ||
-                    await _userManager.IsInRoleAsync(user, "Full Access") ||
-                    await _userManager.IsInRoleAsync(user, "Shipping") ||
+                    await _userManager.IsInRoleAsync(user, "Full Access") || await _userManager.IsInRoleAsync(user, "Shipping") ||
                     await _userManager.IsInRoleAsync(user, "Maintenance")))
-                    return RedirectToAction("Index", "NoRole"/*, new { Areas = "Other" }*/);
+                    return RedirectToAction("Index", "NoRole", new { area = "Other" }); // Return to NoRole Index if user role is null
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);

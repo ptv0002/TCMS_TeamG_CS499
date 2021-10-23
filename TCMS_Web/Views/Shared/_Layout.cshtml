@@ -146,7 +146,7 @@
         </ul>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column min-vh-100">
 
             <!-- Main Content -->
             <div id="content">
@@ -203,11 +203,11 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" asp-action="Profile" asp-controller="Home" asp-route-type="Normal">
+                                <a class="dropdown-item" asp-action="Profile" asp-controller="Home" asp-route-controller="Home">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" asp-action="UpdateEmail" asp-controller="Home" asp-route-type="Normal">
+                                <a class="dropdown-item" asp-action="UpdateEmail" asp-controller="Home" asp-route-controller="Home">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Update Email
                                 </a>

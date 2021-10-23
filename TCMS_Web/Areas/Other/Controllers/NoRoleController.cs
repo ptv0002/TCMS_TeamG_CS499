@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace TCMS_Web.Areas.Other.Controllers
 {
-    //[Area ("Other")]
-    //[Route("[controller]")]
+    [Area("Other")]
+    [Route("Other/[Controller]/[Action]")]
     public class NoRoleController : Controller
     {
         // GET: NoRoleController
