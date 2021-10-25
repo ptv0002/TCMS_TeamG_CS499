@@ -19,6 +19,7 @@ namespace Models
         public string VehicleId { get; set; }
         [Column(TypeName = "ForeignKey")]
         public string EmployeeId { get; set; }
+        [Display(Name = "Departure Time")]
         [Column(TypeName= "DateTime")]
         public DateTime? DepartureTime { get; set; }
         [Column(TypeName= "bit")]

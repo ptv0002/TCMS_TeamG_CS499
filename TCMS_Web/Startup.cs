@@ -58,26 +58,27 @@ namespace TCMS_Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
 
-                
+                // Config SignIn
+                options.SignIn.RequireConfirmedEmail = true;
+
                 // Config Cookie
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.LoginPath = $"/login/";                                 // Url login page
-                    options.LogoutPath = $"/logout/";
+                    options.LoginPath = $"/Account/Login";                                 // Url login page
+                    options.LogoutPath = $"/Account/Logout";
+                    options.AccessDeniedPath = $"/Account/AccessDenied";
                 });
                 services.Configure<SecurityStampValidatorOptions>(options =>
                 {
                     // Re login after 10 seconds will have to re-enter login info
                     // SecurityStamp in User table change -> re-enter info for Security
                     options.ValidationInterval = TimeSpan.FromSeconds(10);
-                });
-
-                
+                }); 
             });
-            services.AddAuthorization();
-            services.AddControllersWithViews();
 
+            services.AddAuthorization();
+            services.AddControllersWithViews();  
             // Handle email settings
             services.AddOptions();                                         // Activate Options
             var mailsettings = Configuration.GetSection("MailSettings");   // Read config
@@ -114,7 +115,7 @@ namespace TCMS_Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                       name: "areas",
-                      pattern: "{area:exists}/{controller=Account}/{action=Login}/{id?}");
+                      pattern: "{area:exists}/{controller=NoRole}/{action=Index}/{id?}");
 
 
                 // Test Email directory

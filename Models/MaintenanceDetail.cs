@@ -12,6 +12,7 @@ namespace Models
         public int Id { get; set; }
         public int? MaintenanceInfoId { get; set; }
         public string Service { get; set; }
+        [Display(Name = "Estimated Cost")]
         public double? EstimateCost { get; set; }
         public string Notes { get; set; }
         public bool? Status { get; set; }

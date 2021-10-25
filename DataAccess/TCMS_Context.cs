@@ -23,7 +23,7 @@ namespace DataAccess
         public virtual DbSet<OrderInfo> OrderInfos { get; set; }
         public virtual DbSet<ShippingAssignment> ShippingAssignments { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
-
+        public virtual DbSet<Employee> Employees { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

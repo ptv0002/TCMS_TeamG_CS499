@@ -1,9 +1,173 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model HomeIndexViewModel
+@*@if (User.IsInRole("Full Access"))
+    {*@
+<hr />
+<h2 class="text-gray-800">Monthly Reports</h2>
+<div class="row">
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-primary text-white shadow">
+            <a asp-action="MonthlyReport" asp-controller="Employee" class="card-body btn btn-primary shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Payroll
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 mb-4">
+        <div class="card bg-success text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Maintenance" asp-route-isIncoming_Individual="false" class="card-body btn btn-success shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (All Vehicles)
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 mb-4">
+        <div class="card bg-info text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Maintenance" asp-route-isIncoming_Individual="true" class="card-body btn btn-info shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Maintenance (Individual Vehicle)
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-warning text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Shipping" asp-route-isIncoming_Individual="true" class="card-body btn btn-warning shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Incoming Shipment
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-2 mb-4">
+        <div class="card bg-danger text-white shadow">
+            <a asp-action="AdditionalDetails" asp-controller="Home" asp-route-controllerName="Shipping" asp-route-isIncoming_Individual="false" class="card-body btn btn-danger shadow">
+                <i class="fas fa-download fa-sm text-white-50"></i> Outgoing Shipment
+            </a>
+        </div>
+    </div>
+
 </div>
- 
+
+
+@*}
+    @if (!User.IsInRole("Driver"))
+        {*@
+<hr />
+<h2 class="text-gray-800">Routine Maintenance</h2>
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col">
+        <label class="mr-1 text-gray-800">Show</label>
+        <select asp-for="RoutineStatus.SelectedValue" class="mr-1" asp-items="ViewBag.routineStatusModel"></select>
+        <label class="mr-3 text-gray-800">records</label>
+        <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Vehicle ID
+            </th>
+            <th>
+                Last Maintenance Date
+            </th>
+            <th>
+                Maintenance Cycle
+            </th>
+            <th>
+                Brand
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RoutineList)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Vehicle">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Vehicle">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastMaintenanceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintenanceCycle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*}
+    @if (User.IsInRole("Full Access") || User.IsInRole("Shipping"))
+        {*@
+<hr />
+<h2 class="text-gray-800">Shipping Assignment</h2>
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col">
+        <label class="mr-1 text-gray-800">Show</label>
+        <select asp-for="ShippingStatus.SelectedValue" class="mr-1" asp-items="ViewBag.shippingStatusModel"></select>
+        <label class="mr-3 text-gray-800">records</label>
+        <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Vehicle ID
+            </th>
+            <th>
+                Employee ID
+            </th>
+            <th>
+                Departure Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShippingList)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Shipping">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Shipping">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

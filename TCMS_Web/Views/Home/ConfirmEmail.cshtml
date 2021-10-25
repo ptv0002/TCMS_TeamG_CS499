@@ -1,0 +1,11 @@
+﻿@{
+    Layout = ViewBag.Layout;
+    ViewData["Title"] = ViewBag.PageTitle;
+}
+<hr/>
+<p class="lead text-gray-800">
+    @ViewBag.Message
+</p>
+<div>
+    <a asp-action="Index" asp-controller="@ViewBag.Controller" asp-area="@ViewBag.Area">Back to Dashboard</a>
+</div>
