@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using TCMS_Web.Models;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access")]
     public class EmployeeController : Controller
     {
         private readonly TCMS_Context _context;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access,Shipping")]
     public class OrderInfoController : Controller
     {
         private readonly TCMS_Context _context;

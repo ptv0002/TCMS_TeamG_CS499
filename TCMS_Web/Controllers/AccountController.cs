@@ -10,9 +10,11 @@ using Models.Mail;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TCMS_Web.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<Employee> _userManager;

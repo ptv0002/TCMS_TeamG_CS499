@@ -3,8 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model HomeIndexViewModel
-@*@if (User.IsInRole("Full Access"))
-    {*@
+@if (User.IsInRole("Full Access"))
+{
 <hr />
 <h2 class="text-gray-800">Monthly Reports</h2>
 <div class="row">
@@ -46,9 +46,9 @@
     </div>
 
 </div>
-@*
+}
     @if (User.IsInRole("Full Access") || User.IsInRole("Shipping"))
-        {*@
+        {
 <hr />
 <h2 class="text-gray-800">Shipping Assignment</h2>
 <form asp-action="Index">
@@ -96,7 +96,7 @@
         }
     </tbody>
 </table>
-@*}*@
+}
 <hr />
 <h2 class="text-gray-800">Routine Maintenance (Next 15 Days)</h2>
 <table class="table">

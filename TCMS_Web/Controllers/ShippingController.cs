@@ -11,9 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
 using System.Globalization;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access,Shipping")]
     public class ShippingController : Controller
     {
 
@@ -22,6 +24,7 @@ namespace TCMS_Web.Controllers
         {
             _context = context;
         }
+        [Authorize(Roles = "Full Access")]
         public IActionResult MonthlyReport(int month, int year, bool IsIncoming_Individual)
         {
             var strMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);

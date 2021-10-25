@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access,Shipping,Maintenance")]
     public class MaintenanceController : Controller
     {
         private readonly TCMS_Context _context;
@@ -18,7 +20,7 @@ namespace TCMS_Web.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Full Access")]
         public IActionResult MonthlyReport(int month, int year, bool IsIncoming_Individual, string id)
         {
             var strMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
@@ -43,7 +45,7 @@ namespace TCMS_Web.Controllers
             else
             {
                 type = "";
-                // This code is NOT OPTIMIZED, update need for better performance
+                // This code is NOT OPTIMIZED, might update need for better performance
                 foreach (var item in model)
                 {
                     if (item.MaintenanceInfo.Datetime.Value.Month == month &&
@@ -51,13 +53,6 @@ namespace TCMS_Web.Controllers
                         item.MaintenanceInfo.Status == true)
                         list.Add(item);
                 }
-                //list = (from info in _context.MaintenanceInfos
-                //       from detail in _context.MaintenanceDetails
-                //       where info.Status == true && detail.Status == true && info.Datetime.Value.Month == month
-                //            && info.Datetime.Value.Year == year
-                //        select detail, info).ToList();
-                //list = _context.MaintenanceInfos.Where(m => m.Status == true && m.Datetime.Value.Month == month
-                //    && m.Datetime.Value.Year == year).Include(m => m.MaintenanceDetails).ToList();
             }
             ViewData["Title"] = "Monthly Maintenance Report for " + type + strMonth + " " + year;
             ViewBag.Individual = IsIncoming_Individual;

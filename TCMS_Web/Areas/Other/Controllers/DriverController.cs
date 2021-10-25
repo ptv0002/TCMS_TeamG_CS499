@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace TCMS_Web.Areas.Other.Controllers
 {
     [Area("Other")]
     [Route("Other/[Controller]/[Action]")]
+    [Authorize(Roles = "Driver")]
     public class DriverController : Controller
     {
         private readonly TCMS_Context _context;

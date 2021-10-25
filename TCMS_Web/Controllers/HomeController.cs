@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,6 +17,7 @@ using TCMS_Web.Models;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access,Shipping,Maintenance")]
     public class HomeController : Controller
     {
         private readonly TCMS_Context _context;
@@ -77,12 +79,14 @@ namespace TCMS_Web.Controllers
             });
         }
         [HttpGet]
+        [Authorize(Roles = "Full Access")]
         public IActionResult AdditionalDetails(string controllerName, bool isIncoming_Individual)
         {
             return AdditionalDetailsGenerator(DateTime.Today.Month.ToString(), DateTime.Today.Year.ToString(),
                 controllerName, isIncoming_Individual,_context.Vehicles.FirstOrDefault().Id);
         }
         [HttpPost]
+        [Authorize(Roles = "Full Access")]
         public IActionResult AdditionalDetails(ReportViewModel model)
         {
             if (ModelState.IsValid)
@@ -107,6 +111,7 @@ namespace TCMS_Web.Controllers
             return AdditionalDetailsGenerator(model.Months.SelectedValue, model.Years.SelectedValue,
                 model.ControllerName, model.IsIncoming_Individual, model.Id);
         }
+        [Authorize(Roles = "Full Access")]
         public IActionResult AdditionalDetailsGenerator(string selectedMonth, string selectedYear,
             string controllerName, bool isIncoming_Individual, string selectedId)
         {
@@ -152,6 +157,7 @@ namespace TCMS_Web.Controllers
             return View();
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Profile(string controller)
         {
             // Generate View Bag info
@@ -161,6 +167,7 @@ namespace TCMS_Web.Controllers
             return View(user);
         }
         [HttpPost, ActionName("Profile")]
+        [AllowAnonymous]
         public async Task<IActionResult> Profile(Employee model, string controller)
         {
             // Generate View Bag info
@@ -192,6 +199,7 @@ namespace TCMS_Web.Controllers
             return View(model);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateEmail(string id, string controller)
         {
             // Generate View Bag info
@@ -216,6 +224,7 @@ namespace TCMS_Web.Controllers
             return View(model);
         }
         [HttpPost, ActionName("UpdateEmail")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateEmail(UpdateEmailViewModel model, string controller)
         {
             // Generate View Bag info
@@ -248,6 +257,7 @@ namespace TCMS_Web.Controllers
             }
             return View(model);
         }
+        [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string newEmail, string token)
         {
             // If email confirmation token or userId is null, most likely the user tried to tamper the email confirmation link
@@ -283,6 +293,7 @@ namespace TCMS_Web.Controllers
             ViewBag.Message = "Email cannot be confirmed";
             return View("Error");
         }
+        [AllowAnonymous]
         public void GetViewBags (string controller)
         {
             // Get ViewBag info depending on the pass in controller

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace TCMS_Web.Areas.Other.Controllers
 {
     [Area("Other")]
     [Route("Other/[Controller]/[Action]")]
+    [AllowAnonymous]
     public class NoRoleController : Controller
     {
         // GET: NoRoleController

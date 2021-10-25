@@ -54,8 +54,8 @@
             </li>
 
 
-            @*@if (signInManager.IsSignedIn(User) && User.IsInRole("Full Access"))
-        {*@
+            @if (signInManager.IsSignedIn(User) && User.IsInRole("Full Access"))
+        {
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
@@ -71,10 +71,10 @@
                 </a>
 
             </li>
-            @*}
+            }
         @if (signInManager.IsSignedIn(User) &&
             (!User.IsInRole("Driver")))
-        {*@
+        {
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
@@ -101,10 +101,10 @@
                 </a>
 
             </li>
-            @*}
+            }
         @if (signInManager.IsSignedIn(User) &&
             (User.IsInRole("Shipping") || User.IsInRole("Full Access")))
-        {*@
+        {
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
@@ -137,7 +137,7 @@
                     <span>Company</span>
                 </a>
             </li>
-            @* } *@
+            } 
             <!-- Sidebar Toggler (Sidebar) -->
             <li class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
