@@ -22,18 +22,30 @@ namespace TCMS_Web.Controllers
         {
             _context = context;
         }
-        public IActionResult MonthlyReport(ReportViewModel model)
+        public IActionResult MonthlyReport(int month, int year, bool IsIncoming_Individual)
         {
-            var month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(model.Months.SelectedValue));
-            var year = model.Years.SelectedValue;
+            var strMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
             string type;
-            if (model.IsIncoming_Individual) type = "Incoming Shipment";
-            else type = "Outgoing Shipment";
-            ViewData["Title"] = "Monthly Report for " + type + " " + month + " " + year;
-
-            //var list = _context.AssignmentDetails.Where(m => m.Status == true ).Include(m => m.ShippingAssignment).Where(m=>m.ShippingAssignmentId == ShippingAssignment.Id).ToList();
-
-            return View();
+            List<AssignmentDetail> list;
+            if (IsIncoming_Individual)
+            {
+                type = "Incoming Shipment";
+                // Incoming: InShipping == true and false 
+                list = _context.AssignmentDetails.Where(m => m.Status == true && m.ArrivalTime.Value.Month == month
+                    && m.ArrivalTime.Value.Year == year)
+                    .Include(m => m.ShippingAssignment).Include(m => m.OrderInfo).ToList();
+            }
+            else
+            {
+                type = "Outgoing Shipment";
+                // Outgoing: InShipping == false ONLY 
+                list = _context.AssignmentDetails.Where(m => m.Status == true && m.ArrivalTime.Value.Month == month
+                    && m.ArrivalTime.Value.Year == year && m.InShipping == false)
+                    .Include(m => m.ShippingAssignment).Include(m => m.OrderInfo).ToList();
+            }
+            ViewData["Title"] = "Monthly Report for " + type + " " + strMonth + " " + year;
+            ViewBag.Type = type;
+            return View(list);
         }
         public IActionResult Index()
         {

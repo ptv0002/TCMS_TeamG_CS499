@@ -1,5 +1,78 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+@model IEnumerable<Models.AssignmentDetail>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingAssignment.VehicleId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingAssignment.EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingAssignment.DepartureTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArrivalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderInfo.PayStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderInfo.ShippingFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderInfo.SourcePay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderInfo.TotalOrder)
+            </th>
+            <th>
+                @if (ViewBag.Type == "Incoming Shipment")
+                    Html.DisplayNameFor(model => model.OrderInfo.SourceAddress);
+                else
+                    Html.DisplayNameFor(model => model.OrderInfo.DestinationAddresss);
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingAssignment.VehicleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingAssignment.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingAssignment.DepartureTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArrivalTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderInfo.PayStatus)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.OrderInfo.ShippingFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderInfo.SourcePay)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.OrderInfo.TotalOrder)
+                </td>
+                <td>
+                    @if (ViewBag.Type == "Incoming Shipment")
+                        Html.DisplayFor(modelItem => item.OrderInfo.SourceAddress);
+                    else
+                        Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss);
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

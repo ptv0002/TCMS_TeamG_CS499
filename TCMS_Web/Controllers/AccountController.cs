@@ -152,14 +152,21 @@ namespace TCMS_Web.Controllers
         [HttpPost, ActionName("Login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (_signInManager.IsSignedIn(User) && (User.IsInRole("Full Access") || 
-                User.IsInRole("Shipping") || User.IsInRole("Maintenance"))) 
-                return RedirectToAction("Index", "Home"); // Return to Home Index if user role is Full, Shipping or Maintenance
-            else if (_signInManager.IsSignedIn(User) && User.IsInRole("Driver")) 
-                return RedirectToAction("Index", "Driver", new { area = "Other" }); // Return to Driver Index if user role is Driver
-            else if (_signInManager.IsSignedIn(User) && !(User.IsInRole("Driver") || User.IsInRole("Full Access") || 
-                User.IsInRole("Shipping") || User.IsInRole("Maintenance")))
-                return RedirectToAction("Index", "NoRole", new { area = "Other" }); // Return to NoRole Index if user role is null
+            bool a1, a2;
+            if (_signInManager.IsSignedIn(User))
+            {
+                a1 = (User.IsInRole("Full Access") || User.IsInRole("Shipping") || User.IsInRole("Maintenance"));
+                a2 = (User.IsInRole("Driver"));
+                switch (a1, a2)
+                {
+                    case (true, true or false):
+                        return RedirectToAction("Index", "Home");
+                    case (false, true):
+                        return RedirectToAction("Index", "Driver", new { area = "Other" });
+                    default:
+                        return RedirectToAction("Index", "NoRole", new { area = "Other" });
+                }
+            }
             if (ModelState.IsValid)
             {
                 // Check if input email is in the database
@@ -176,16 +183,20 @@ namespace TCMS_Web.Controllers
                 // Email MUST be confirmed, or else result = false
                 var result = await _signInManager.PasswordSignInAsync(user.UserName,
                                     model.Password, model.RememberMe, false); // false value applies for NO Logout feature
-                if (result.Succeeded && (await _userManager.IsInRoleAsync(user,"Full Access") || 
-                    await _userManager.IsInRoleAsync(user, "Shipping") || 
-                    await _userManager.IsInRoleAsync(user, "Maintenance")))
-                    return RedirectToAction("Index", "Home"); // Return to Home Index if user role is Full, Shipping or Maintenance
-                else if (result.Succeeded && await _userManager.IsInRoleAsync(user, "Driver")) 
-                    return RedirectToAction("Index", "Driver", new { area = "Other" }); // Return to Driver Index if user role is Driver
-                else if (result.Succeeded && !(await _userManager.IsInRoleAsync(user, "Driver") ||
-                    await _userManager.IsInRoleAsync(user, "Full Access") || await _userManager.IsInRoleAsync(user, "Shipping") ||
-                    await _userManager.IsInRoleAsync(user, "Maintenance")))
-                    return RedirectToAction("Index", "NoRole", new { area = "Other" }); // Return to NoRole Index if user role is null
+                if (result.Succeeded)
+                {
+                    a1 = (await _userManager.IsInRoleAsync(user, "Full Access") || await _userManager.IsInRoleAsync(user, "Shipping") || await _userManager.IsInRoleAsync(user, "Maintenance"));
+                    a2 = await _userManager.IsInRoleAsync(user, "Driver");
+                    switch (a1, a2)
+                    {
+                        case (true, true or false):
+                            return RedirectToAction("Index", "Home"); // Return to Home Index if user role is Full, Shipping or Maintenance
+                        case (false, true):
+                            return RedirectToAction("Index", "Driver", new { area = "Other" }); // Return to Driver Index if user role is Driver
+                        default:
+                            return RedirectToAction("Index", "NoRole", new { area = "Other" }); // Return to NoRole Index if user role is null
+                    }
+                }
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);

@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@model IEnumerable<Models.MaintenanceDetail>
+<table class="table">
+    <thead>
+        <tr>
+            @if (!ViewBag.Individual)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.MaintenanceInfo.VehicleId)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.MaintenanceInfo.EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintenanceInfo.Datetime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimateCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (!ViewBag.Individual)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaintenanceInfo.VehicleId)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintenanceInfo.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintenanceInfo.Datetime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Service)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.EstimateCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

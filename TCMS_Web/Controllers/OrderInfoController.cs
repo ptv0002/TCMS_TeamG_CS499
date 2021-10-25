@@ -49,10 +49,8 @@ namespace TCMS_Web.Controllers
         // GET: OrderInfo/Create
         public IActionResult Add()
         {
-            ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id");
-            ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id");
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address");
-            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address");
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name");
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name");
             return View(new OrderInfo ());
         }
 
@@ -69,10 +67,8 @@ namespace TCMS_Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
-            ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);
         }
 
@@ -89,10 +85,8 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
-            ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);
         }
 
@@ -128,10 +122,8 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DestinationId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.DestinationId);
-            ViewData["SourceId"] = new SelectList(_context.Companies, "Id", "Id", orderInfo.SourceId);
-            ViewData["DestinationAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.DestinationAddress);
-            ViewData["SourceAddress"] = new SelectList(_context.Companies, "Address", "Address", orderInfo.SourceAddress);
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);
         }
         private bool OrderInfoExists(int id)

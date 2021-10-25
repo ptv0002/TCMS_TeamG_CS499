@@ -80,7 +80,7 @@ namespace TCMS_Web.Controllers
         public IActionResult AdditionalDetails(string controllerName, bool isIncoming_Individual)
         {
             return AdditionalDetailsGenerator(DateTime.Today.Month.ToString(), DateTime.Today.Year.ToString(),
-                controllerName, isIncoming_Individual);
+                controllerName, isIncoming_Individual,_context.Vehicles.FirstOrDefault().Id);
         }
         [HttpPost]
         public IActionResult AdditionalDetails(ReportViewModel model)
@@ -90,23 +90,25 @@ namespace TCMS_Web.Controllers
                 // Get additional details such as Vehicle Id, Month and Year
                 // Redirect to respective Controller with these parameters
                 string methodName = "MonthlyReport";
-                if (Convert.ToInt32(model.Months.SelectedValue) > DateTime.Today.Month
-                    && Convert.ToInt32(model.Years.SelectedValue) == DateTime.Today.Year)
+                int month = Convert.ToInt32(model.Months.SelectedValue);
+                int year = Convert.ToInt32(model.Years.SelectedValue);
+                if (month > DateTime.Today.Month && year == DateTime.Today.Year)
                 {
                     // Return error if user pick a time in the future
                     ModelState.AddModelError(string.Empty, "Unable to obtain future records");
                 }
                 else if (model.ControllerName == "Maintenance" || model.ControllerName == "Shipping")
                 {
-                    return RedirectToAction(methodName, model.ControllerName, model);
+                    return RedirectToAction(methodName, model.ControllerName, 
+                        new { month, year, model.IsIncoming_Individual, id = model.Id });
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Input");
             }
             return AdditionalDetailsGenerator(model.Months.SelectedValue, model.Years.SelectedValue,
-                model.ControllerName, model.IsIncoming_Individual);
+                model.ControllerName, model.IsIncoming_Individual, model.Id);
         }
         public IActionResult AdditionalDetailsGenerator(string selectedMonth, string selectedYear,
-            string controllerName, bool isIncoming_Individual)
+            string controllerName, bool isIncoming_Individual, string selectedId)
         {
             // Generate Month status model
             var months = new StatusViewModel
@@ -135,14 +137,13 @@ namespace TCMS_Web.Controllers
                 years.KeyValues.Add(y, y);
             }
             // Save to ViewBag to get the select list in View
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id", selectedId);
             ViewData["YearModel"] = new SelectList(years.KeyValues, "Key", "Value", years.SelectedValue);
             ViewData["MonthModel"] = new SelectList(months.KeyValues, "Key", "Value", months.SelectedValue);
             ReportViewModel model = new()
             {
                 ControllerName = controllerName,
-                IsIncoming_Individual = isIncoming_Individual,
-                Months = months,
-                Years = years
+                IsIncoming_Individual = isIncoming_Individual
             };
             return View(model);
         }

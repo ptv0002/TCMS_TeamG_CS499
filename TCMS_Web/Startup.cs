@@ -111,33 +111,11 @@ namespace TCMS_Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
-                endpoints.MapControllerRoute(
                       name: "areas",
                       pattern: "{area:exists}/{controller=NoRole}/{action=Index}/{id?}");
-
-
-                // Test Email directory
-                //endpoints.MapGet("/", async context => {
-                //    await context.Response.WriteAsync("Hello World!");
-                //});
-
-                endpoints.MapGet("/testmail", async context => {
-
-                    // Get service sendmailservice
-                    var sendmailservice = context.RequestServices.GetService<ISendMailService>();
-
-                    MailContent content = new MailContent
-                    {
-                        To = "ptv0002@uah.edu",
-                        Subject = "TCMS email test",
-                        Body = "<p><strong>Test test test...............</strong></p>"
-                    };
-
-                    await sendmailservice.SendMail(content);
-                    await context.Response.WriteAsync("Send mail");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

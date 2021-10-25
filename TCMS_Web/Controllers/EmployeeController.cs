@@ -75,7 +75,7 @@ namespace TCMS_Web.Controllers
         {
             var month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Today.Month);
             var year = DateTime.Today.Year;    
-            ViewData["Title"] = "Monthly Payroll for " + month + " " + year;
+            ViewData["Title"] = "Monthly Payroll Report for " + month + " " + year;
 
             List<MonthlyPayroll> list = _context.Employees.Where(m => m.Status == true).Select(m => new MonthlyPayroll()
             {
