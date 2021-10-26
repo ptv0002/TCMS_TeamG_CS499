@@ -81,8 +81,8 @@
             <!-- Sidebar - Brand -->
             <li>
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Home" asp-action="Index">
-                    <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                    <div class="sidebar-brand-icon">
+                        <i class="fas fa-truck fa-flip-horizontal"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">TCMS</div>
                 </a>
@@ -102,8 +102,8 @@
             </li>
 
 
-            @*@if (signInManager.IsSignedIn(User) && User.IsInRole("Full Access"))
-        {*@
+            @if (signInManager.IsSignedIn(User) && User.IsInRole("Full Access"))
+        {
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
@@ -119,10 +119,10 @@
                 </a>
 
             </li>
-            @*}
+            }
         @if (signInManager.IsSignedIn(User) &&
             (!User.IsInRole("Driver")))
-        {*@
+        {
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
@@ -149,10 +149,10 @@
                 </a>
 
             </li>
-            @*}
+            }
         @if (signInManager.IsSignedIn(User) &&
             (User.IsInRole("Shipping") || User.IsInRole("Full Access")))
-        {*@
+        {
             <!-- Divider -->
             <li>
                 <hr class="sidebar-divider">
@@ -186,7 +186,7 @@
                     <span>Company</span>
                 </a>
             </li>
-            @* } *@
+            } 
             <!-- Sidebar Toggler (Sidebar) -->
             <li class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -195,7 +195,7 @@
         </ul>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column min-vh-100">
 
             <!-- Main Content -->
             <div id="content">
@@ -252,11 +252,11 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" asp-action="Profile" asp-controller="Home">
+                                <a class="dropdown-item" asp-action="Profile" asp-controller="Home" asp-route-controller="Home">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" asp-action="UpdateEmail" asp-controller="Home">
+                                <a class="dropdown-item" asp-action="UpdateEmail" asp-controller="Home" asp-route-controller="Home">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Update Email
                                 </a>

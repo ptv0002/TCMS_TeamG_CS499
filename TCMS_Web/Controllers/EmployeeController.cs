@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,14 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access")]
     public class EmployeeController : Controller
     {
         private readonly TCMS_Context _context;
@@ -29,32 +32,22 @@ namespace TCMS_Web.Controllers
         // GET: EmployeeController
         public IActionResult Index()
         {
-            // Populate status dropdown
-            var statusModel = new StatusViewModel
-            {
-                SelectedValue = "true", // Default choice: Only ACTIVE employees
-                KeyValues = new Dictionary<string, string> // Populate status options
-                {
-                    { "1", "Active" },
-                    { "0", "Inactive" },
-                    { "2", "Full" }
-                }
-            };
-            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
-            return View( new GroupViewModel<Employee>() { StatusViewModel = statusModel,
-                ClassModel = _context.Employees.Where(m => m.Status == true).ToList()
-            });
+            return IndexGenerator("1");
         }
         [HttpPost]
-        public IActionResult Index(GroupViewModel<Employee> model)
+        public IActionResult Index(GroupStatusViewModel<Employee> model)
+        {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selected)
         {
             // Get user's input from dropdown
-            int status = Convert.ToInt32(model.StatusViewModel.SelectedValue);
+            int status = Convert.ToInt32(selected);
 
             // Populate status dropdown
             var statusModel = new StatusViewModel
             {
-                SelectedValue = model.StatusViewModel.SelectedValue,
+                SelectedValue = selected,
                 KeyValues = new Dictionary<string, string> // Populate status options
                 {
                     { "1", "Active" },
@@ -63,18 +56,18 @@ namespace TCMS_Web.Controllers
                 }
             };
             ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
-            
+
             // Display all employees
             if (status == 2)
             {
-                return View(new GroupViewModel<Employee>()
+                return View(new GroupStatusViewModel<Employee>()
                 {
                     StatusViewModel = statusModel,
                     ClassModel = _context.Employees.ToList()
                 });
             }
             // Display employees depending on their status
-            return View(new GroupViewModel<Employee>()
+            return View(new GroupStatusViewModel<Employee>()
             {
                 StatusViewModel = statusModel,
                 ClassModel = _context.Employees.Where(m => m.Status == Convert.ToBoolean(status)).ToList()
@@ -82,14 +75,19 @@ namespace TCMS_Web.Controllers
         }
         public IActionResult MonthlyReport()
         {
+            var month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Today.Month);
+            var year = DateTime.Today.Year;    
+            ViewData["Title"] = "Monthly Payroll Report for " + month + " " + year;
+
             List<MonthlyPayroll> list = _context.Employees.Where(m => m.Status == true).Select(m => new MonthlyPayroll()
             {
                 FirstName = m.FirstName,
-                MiddleName = m.MiddleName,
                 LastName = m.LastName,
                 Id = m.Id,
-                Compensation = m.PayRate / 12
+                Compensation = Math.Round((decimal)(m.PayRate / 12), 2),
+                Position = m.Position
             }).ToList();
+            
             return View(list);
         }
         // GET: EmployeeController/Details/5
@@ -154,22 +152,28 @@ namespace TCMS_Web.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var user = await _context.Employees.FindAsync(id);
+                user.FirstName = model.FirstName;
+                user.MiddleName = model.MiddleName;
+                user.LastName = model.LastName;
+                user.Position = model.Position;
+                user.Status = model.Status;
+                user.Address = model.Address;
+                user.City = model.City;
+                user.State = model.State;
+                user.Zip = model.Zip;
+                user.PhoneNumber = model.PhoneNumber;
+                user.HomePhoneNum = model.HomePhoneNum;
+                user.PayRate = model.PayRate;
+                user.StartDate = model.StartDate;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
                 {
-                    await _userManager.UpdateAsync(model);
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (_userManager.FindByIdAsync(model.Id) == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Invalid update attempt");
             }
             return View(model);
         }
@@ -240,12 +244,11 @@ namespace TCMS_Web.Controllers
         }
         [Display (Name="First Name")]
         public string FirstName { get; set; }
-        [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Display(Name = "Employee ID")]
         public string Id { get; set; }
-        public double? Compensation { get; set; }
+        public decimal? Compensation { get; set; }
+        public string Position { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace Models
         public bool? SourcePay { get; set; }
         [Display(Name = "Pay Status")]
         public bool? PayStatus { get; set; }
+        [Display(Name = "Order's Value")]
         public double? TotalOrder { get; set; }
         [Display(Name = "Shipping Fee")]
         public double? ShippingFee { get; set; }

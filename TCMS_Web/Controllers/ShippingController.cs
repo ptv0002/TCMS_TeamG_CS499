@@ -9,9 +9,13 @@ using DataAccess;
 using System.Data.Entity.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
+using System.Globalization;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access,Shipping")]
     public class ShippingController : Controller
     {
 
@@ -19,6 +23,32 @@ namespace TCMS_Web.Controllers
         public ShippingController(TCMS_Context context)
         {
             _context = context;
+        }
+        [Authorize(Roles = "Full Access")]
+        public IActionResult MonthlyReport(int month, int year, bool IsIncoming_Individual)
+        {
+            var strMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+            string type;
+            List<AssignmentDetail> list;
+            if (IsIncoming_Individual)
+            {
+                type = "Incoming Shipment";
+                // Incoming: InShipping == true and false 
+                list = _context.AssignmentDetails.Where(m => m.Status == true && m.ArrivalTime.Value.Month == month
+                    && m.ArrivalTime.Value.Year == year)
+                    .Include(m => m.ShippingAssignment).Include(m => m.OrderInfo).ToList();
+            }
+            else
+            {
+                type = "Outgoing Shipment";
+                // Outgoing: InShipping == false ONLY 
+                list = _context.AssignmentDetails.Where(m => m.Status == true && m.ArrivalTime.Value.Month == month
+                    && m.ArrivalTime.Value.Year == year && m.InShipping == false)
+                    .Include(m => m.ShippingAssignment).Include(m => m.OrderInfo).ToList();
+            }
+            ViewData["Title"] = "Monthly Report for " + type + " " + strMonth + " " + year;
+            ViewBag.Type = type;
+            return View(list);
         }
         public IActionResult Index()
         {
@@ -105,5 +135,18 @@ namespace TCMS_Web.Controllers
         {
             return _context.ShippingAssignments.Any(e => e.Id == Id);
         }
+    }
+    public class MonthlyShippingReport
+    {
+        public MonthlyShippingReport()
+        {
+        }
+        [Display(Name = "Employee ID")]
+        public string EmployeeId { get; set; }
+        [Display(Name = "Vehicle ID")]
+        public string VehicleId { get; set; }
+        [Display(Name = "Departure Time")]
+        public string DepartureTime { get; set; }
+
     }
 }

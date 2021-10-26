@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Profile";
+    Layout = ViewBag.Layout;
 }
 @model Models.Employee
 <hr />
@@ -59,7 +60,7 @@
         </div>
 
         <div>
-            <a asp-action="UpdateEmail" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="UpdateEmail" asp-route-id="@Model.Id" asp-route-controller="@ViewBag.Controller" class="btn btn-primary">Edit</a>
         </div>
     </div>
     <div class="form-group">
@@ -117,9 +118,9 @@
         </div>
     </div>
     <div class="form-group">
-            <input type="submit" formmethod="post" value="Update Profile" class="btn btn-primary" />
+        <input type="submit" formmethod="post" value="Update Profile" class="btn btn-primary" asp-route-controller="@ViewBag.Controller"/>
     </div>
 </form>
 <div>
-    <a asp-action="Index" asp-controller="Home">Back to Dashboard</a>
+    <a asp-action="Index" asp-controller="@ViewBag.Controller" asp-area="@ViewBag.Area">Back to Dashboard</a>
 </div>
