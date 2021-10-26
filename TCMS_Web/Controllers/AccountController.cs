@@ -155,20 +155,6 @@ namespace TCMS_Web.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             bool a1, a2;
-            if (_signInManager.IsSignedIn(User))
-            {
-                a1 = (User.IsInRole("Full Access") || User.IsInRole("Shipping") || User.IsInRole("Maintenance"));
-                a2 = (User.IsInRole("Driver"));
-                switch (a1, a2)
-                {
-                    case (true, true or false):
-                        return RedirectToAction("Index", "Home");
-                    case (false, true):
-                        return RedirectToAction("Index", "Driver", new { area = "Other" });
-                    default:
-                        return RedirectToAction("Index", "NoRole", new { area = "Other" });
-                }
-            }
             if (ModelState.IsValid)
             {
                 // Check if input email is in the database
