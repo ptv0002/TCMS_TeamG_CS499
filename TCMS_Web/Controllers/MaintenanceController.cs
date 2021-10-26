@@ -42,6 +42,7 @@ namespace TCMS_Web.Controllers
                 foreach (var item in model)
         // GET: Maintenance
         public async Task<IActionResult> Index()
+
                 {
                     if (item.MaintenanceInfo.Datetime.Value.Month == month &&
                         item.MaintenanceInfo.Datetime.Value.Year == year &&
