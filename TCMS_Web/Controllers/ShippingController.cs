@@ -61,7 +61,7 @@ namespace TCMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add([Bind("VehicleID,EmployeeID,DepartureTime,Status")] ShippingAssignment shippingassignment)
+        public async Task<ActionResult> Add([Bind("Id,VehicleID,EmployeeID,DepartureTime,Status")] ShippingAssignment shippingassignment)
         {
             _context.Add(shippingassignment);
             await _context.SaveChangesAsync();
@@ -121,32 +121,75 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-
+            /*
             var shippingassignment = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
             if (shippingassignment == null)
             {
                 return NotFound();
-            }
+            }*/
+            //ShippingAssignmentViewModel shippingassignment = new ShippingAssignmentViewModel();
+            //shippingassignment.Employees = _context.Employees.ToList();
+            //shippingassignment.Vehicles = _context.Vehicles.ToList();
+            //shippingassignment.ShippingAssignments = _context.ShippingAssignments.ToList();
+            //var list = _context.ShippingAssignments.Where(m => m.Id == Id && m.Status == true).Include(m => m.Employee).Include(m => m.Vehicle).ToList();
+            var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            item.Employee = employee;
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            item.Vehicle = vehicle;
 
-            return View(shippingassignment);
+            ViewData["InfoModel"] = new ViewModel
+            {
+                EmployeeID = item.EmployeeId,
+                FirstName = item.Employee.FirstName,
+                LastName = item.Employee.LastName,
+                PhoneNumber = item.Employee.PhoneNumber,
+                VehicleID = item.VehicleId,
+                Brand = item.Vehicle.Brand,
+                Model = item.Vehicle.Model,
+                Type = item.Vehicle.Type,
+                DepartureTime = item.DepartureTime
+            };
+            return View(item);
         }
+        public class ViewModel
+        {
+            public ViewModel()
+            {
 
+            }
+            public string EmployeeID { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string PhoneNumber { get; set; }
+            public string VehicleID { get; set; }
+            public string Brand { get; set; }
+            public string Model { get; set; }
+            public string Type { get; set; }
+            public DateTime DepartureTime { get; set; }
+        }
+        /* 
+                public IActionResult SwitchTabs(string tabname)
+                {
+                    var vm = new ShippingAssignmentTabModel();
+                    switch (tabname)
+                    {
+                        case "Basic":
+                            vm.ActiveTab = Tab.Basic;
+                            break;
+                        case "Detailed":
+                            vm.ActiveTab = Tab.Detailed;
+                            break;
+                        default:
+                            vm.ActiveTab = Tab.Basic;
+                            break;
+                    }
+                    return RedirectToAction(nameof(Index), vm);
+                }
+        */
         private bool ShippingAssignmentExists(int Id)
         {
             return _context.ShippingAssignments.Any(e => e.Id == Id);
         }
-    }
-    public class MonthlyShippingReport
-    {
-        public MonthlyShippingReport()
-        {
-        }
-        [Display(Name = "Employee ID")]
-        public string EmployeeId { get; set; }
-        [Display(Name = "Vehicle ID")]
-        public string VehicleId { get; set; }
-        [Display(Name = "Departure Time")]
-        public string DepartureTime { get; set; }
-
     }
 }

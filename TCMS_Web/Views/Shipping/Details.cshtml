@@ -1,42 +1,143 @@
-﻿@model Models.ShippingAssignment
+﻿    @model Models.ShippingAssignment
+    
+    @*<div>
+        <asp:Button Text="Tab1" BorderStyle="None" ID="Tab1" CssClass="Initial" runat="server"
+                    OnClick="Tab1_Click" />
+        <asp:Button Text="Tab2" BorderStyle="None" ID="Tab1" CssClass="Initial" runat="server"
+                    OnClick="Tab1_Click" />
+    </div>*@
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li  class="nav-item">
+                <a class ="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+            </li>
+        </ul>
+    </div>
 
-@{
-    ViewData["Title"] = "Details";
-}
+        <div class="tab-content">
 
-<h1>Detail</h1>
+            <div role="tabpanel" class="tab-pane" id="first">
+                <dl class="row">
+                        <dt> class = "col-sm-2"
+                            Employee ID
+                        </dt>
+                        <dd class = "col-sm-10">
+                            @ViewBag.InfoModel.EmployeeID
+                        </dd>
 
-<div>
-    <h4>ShippingAssignment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartureTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartureTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Employee.FirstName)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.FirstName
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Employee.LastName)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.LastName 
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            Phone Number
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.PhoneNumber
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            Vehicle ID
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.VehicleID
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Vehicle.Brand)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.Brand
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Vehicle.Model)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.Model
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.Vehicle.Type)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.Type
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            @Html.DisplayNameFor(model => model.DepartureTime)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @ViewBag.InfoModel.DepartureTime
+                        </dd>
+
+                        <dt class = "col-sm-2">
+                            Total Orders
+                        </dt>
+                        <dd class="col-sm-10">
+                            
+                        </dd>
+                 </dl>             
+            </div>
+        </div>
+                    <div role = "tabpanel" class="tab-pane active" id="second">
+                    @await Component.InvokeAsync("AssignmentDetail")
+                    </div>
+
+                        @*
+    @model Models.ShippingAssignment
+
+    @{
+        ViewData["Title"] = "Shipping Assignment Details";
+    }
+
+    <h1>Detail</h1>
+
+    <div>
+        <h4>ShippingAssignment</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DepartureTime)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DepartureTime)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Employee)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Employee.Id)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Vehicle)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Vehicle.Id)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+                        *@
