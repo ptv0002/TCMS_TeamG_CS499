@@ -52,8 +52,8 @@ namespace TCMS_Web.Areas.Other.Controllers
             {
                 StatusViewModel = statusModel,
                 ClassModel = _context.ShippingAssignments.Where(m => m.Status == true && m.EmployeeId == id &&
-                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays < Convert.ToInt32(statusModel.SelectedValue) &&
-                m.DepartureTime.Value.Subtract(DateTime.Today).TotalDays > 0).ToList()
+                m.DepartureTime.Subtract(DateTime.Today).TotalDays < Convert.ToInt32(statusModel.SelectedValue) &&
+                m.DepartureTime.Subtract(DateTime.Today).TotalDays > 0).ToList()
             });
         }
         // GET: HomeController/Details/5

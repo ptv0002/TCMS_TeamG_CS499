@@ -24,15 +24,15 @@ namespace TCMS_Web.Controllers
         public IActionResult Index()
         {
             return View(_context.ShippingAssignments.ToList());
-        /*    if(vm == null)
-            {
-                vm = new ShippingAssignmentTabModel
+            /*    if(vm == null)
                 {
-                    ActiveTab = Tab.Basic
-                };
-            }
-            return View(vm); //_context.ShippingAssignments.ToList()
-        */
+                    vm = new ShippingAssignmentTabModel
+                    {
+                        ActiveTab = Tab.Basic
+                    };
+                }
+                return View(vm); //_context.ShippingAssignments.ToList()
+            */
         }
 
         public IActionResult Add()
@@ -108,13 +108,47 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }*/
-            ShippingAssignmentViewModel shippingassignment = new ShippingAssignmentViewModel();
-            shippingassignment.Employees = _context.Employees.ToList();
-            shippingassignment.Vehicles = _context.Vehicles.ToList();
-            shippingassignment.Companies = _context.Companies.ToList();
-            return View(shippingassignment);
+            //ShippingAssignmentViewModel shippingassignment = new ShippingAssignmentViewModel();
+            //shippingassignment.Employees = _context.Employees.ToList();
+            //shippingassignment.Vehicles = _context.Vehicles.ToList();
+            //shippingassignment.ShippingAssignments = _context.ShippingAssignments.ToList();
+            //var list = _context.ShippingAssignments.Where(m => m.Id == Id && m.Status == true).Include(m => m.Employee).Include(m => m.Vehicle).ToList();
+            var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            item.Employee = employee;
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            item.Vehicle = vehicle;
+
+            ViewData["InfoModel"] = new ViewModel
+            {
+                EmployeeID = item.EmployeeId,
+                FirstName = item.Employee.FirstName,
+                LastName = item.Employee.LastName,
+                PhoneNumber = item.Employee.PhoneNumber,
+                VehicleID = item.VehicleId,
+                Brand = item.Vehicle.Brand,
+                Model = item.Vehicle.Model,
+                Type = item.Vehicle.Type,
+                DepartureTime = item.DepartureTime
+            };
+            return View(item);
         }
-/*
+        public class ViewModel{
+            public ViewModel()
+            {
+
+            }
+            public string EmployeeID { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set;}
+            public string PhoneNumber { get; set; }
+            public string VehicleID { get; set; }
+            public string Brand { get; set; }
+            public string Model { get; set; }
+            public string Type { get; set; }
+            public DateTime DepartureTime { get; set; }
+            }
+/* 
         public IActionResult SwitchTabs(string tabname)
         {
             var vm = new ShippingAssignmentTabModel();

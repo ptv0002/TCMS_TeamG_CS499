@@ -21,7 +21,7 @@ namespace Models
         public string EmployeeId { get; set; }
         [Display(Name = "Departure Time")]
         [Column(TypeName= "DateTime")]
-        public DateTime? DepartureTime { get; set; }
+        public DateTime DepartureTime { get; set; }
         [Column(TypeName= "bit")]
         public bool? Status { get; set; }
 
