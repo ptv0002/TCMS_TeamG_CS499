@@ -20,7 +20,7 @@ namespace Models
         [Display(Name = "Source Address")]
         public string SourceAddress { get; set; }
         [Display(Name = "Destination Address")]
-        public string DestinationAddress { get; set; }
+        public string DestinationAddresss { get; set; }
         public bool? Status { get; set; }
         public string DocName { get; set; }
         public string DocType { get; set; }
@@ -29,6 +29,7 @@ namespace Models
         public bool? SourcePay { get; set; }
         [Display(Name = "Pay Status")]
         public bool? PayStatus { get; set; }
+        [Display(Name = "Order's Value")]
         public double? TotalOrder { get; set; }
         [Display(Name = "Shipping Fee")]
         public double? ShippingFee { get; set; }

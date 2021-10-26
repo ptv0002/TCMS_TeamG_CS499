@@ -20,9 +20,8 @@ namespace Models
         public DateTime? ArrivalTime { get; set; }
         public bool? Status { get; set; }
         public int? ShippingAssignmentId { get; set; }
-        [Display(Name = "Order Info")]
+        
         public virtual OrderInfo OrderInfo { get; set; }
-        [Display(Name = "Shipping Assignment")]
         public virtual ShippingAssignment ShippingAssignment { get; set; }
     }
 }

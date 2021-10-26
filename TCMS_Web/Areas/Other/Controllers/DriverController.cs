@@ -1,7 +1,10 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -11,26 +14,29 @@ using TCMS_Web.Models;
 
 namespace TCMS_Web.Areas.Other.Controllers
 {
+    [Area("Other")]
+    [Route("Other/[Controller]/[Action]")]
+    [Authorize(Roles = "Driver")]
     public class DriverController : Controller
     {
         private readonly TCMS_Context _context;
-        private readonly UserManager<ShippingAssignment> _userManager;
-        public DriverController(TCMS_Context context, UserManager<ShippingAssignment> userManager)
+        private readonly UserManager<Employee> _userManager;
+        public DriverController(TCMS_Context context, UserManager<Employee> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
-        // GET: HomeController
-        public IActionResult Index()
+        // GET: DriverController
+        public async Task<IActionResult> Index()
         {
-            return IndexGenerator("1");
+            return await IndexGenerator("1");
         }
         [HttpPost]
-        public IActionResult Index(GroupStatusViewModel<ShippingAssignment> model)
+        public async Task<IActionResult> Index(GroupStatusViewModel<ShippingAssignment> model)
         {
-            return IndexGenerator(model.StatusViewModel.SelectedValue);
+            return await IndexGenerator(model.StatusViewModel.SelectedValue);
         }
-        public ActionResult IndexGenerator(string selected)
+        public async Task<IActionResult> IndexGenerator(string selected)
         {
             // Get current user's Id
             var id = _userManager.GetUserId(HttpContext.User);
@@ -47,31 +53,38 @@ namespace TCMS_Web.Areas.Other.Controllers
             };
             ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
 
+            DateTime now = DateTime.Today;
+            var nowPlusSelected = now.AddDays(Convert.ToDouble(statusModel.SelectedValue));
+
+            // Get shipping assignment list that's in the range [now, selected days from now]
+            var shippingList = await _context.ShippingAssignments.Where(m => m.Status == true
+            && m.EmployeeId == id
+            && m.DepartureTime <= nowPlusSelected && m.DepartureTime >= now).ToListAsync();
+
             // Display shipping assignment depending on days selected
             return View(new GroupStatusViewModel<ShippingAssignment>()
             {
                 StatusViewModel = statusModel,
-                ClassModel = _context.ShippingAssignments.Where(m => m.Status == true && m.EmployeeId == id &&
-                m.DepartureTime.Subtract(DateTime.Today).TotalDays < Convert.ToInt32(statusModel.SelectedValue) &&
-                m.DepartureTime.Subtract(DateTime.Today).TotalDays > 0).ToList()
+                ClassModel = shippingList
             });
         }
-        // GET: HomeController/Details/5
+
+        // GET: DriverController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: HomeController/Edit/5
+        // GET: DriverController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: HomeController/Edit/5
+        // POST: DriverController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, ShippingAssignment model)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -82,5 +95,6 @@ namespace TCMS_Web.Areas.Other.Controllers
                 return View();
             }
         }
+
     }
 }

@@ -30,12 +30,12 @@
        
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column min-vh-100">
 
             <!-- Main Content -->
             <div id="content">
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <a class="h3 d-flex align-items-center justify-content-center" href="index.html">
+                    <a class="h3 d-flex align-items-center justify-content-center" asp-action="Index" asp-controller="@ViewBag.Controller" asp-area="Other" >
                         <div>
                             <i class="fas fa-truck fa-flip-horizontal"></i>
                         </div>
@@ -52,11 +52,11 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" asp-action="Profile" asp-controller="Home" asp-area="" asp-route-type="@ViewBag.Type">
+                                <a class="dropdown-item" asp-action="Profile" asp-controller="Home" asp-area="" asp-route-controller="@ViewBag.Controller">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" asp-action="UpdateEmail" asp-controller="Home" asp-area="" asp-route-type="@ViewBag.Type">
+                                <a class="dropdown-item" asp-action="UpdateEmail" asp-controller="Home" asp-area="" asp-route-controller="@ViewBag.Controller">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Update Email
                                 </a>

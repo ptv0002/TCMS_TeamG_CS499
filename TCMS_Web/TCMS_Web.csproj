@@ -28,6 +28,8 @@
   <ItemGroup>
     <Folder Include="Areas\Other\Data\" />
     <Folder Include="Areas\Other\Models\" />
+	<Folder Include="Areas\Other\Controllers\" />
+	<Folder Include="Areas\Other\Views\" />
   </ItemGroup>
 
   <ItemGroup>

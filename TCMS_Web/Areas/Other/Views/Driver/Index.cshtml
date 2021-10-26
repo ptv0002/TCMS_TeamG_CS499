@@ -2,7 +2,7 @@
 @{
     Layout = "~/Areas/_Layout.cshtml";
     ViewData["Title"] = "Dashboard";
-    ViewBag.Type = "Driver";
+    ViewBag.Controller = "Driver";
 
 }
 <form asp-action="Index">
@@ -32,21 +32,21 @@
     <tbody>
         @foreach (var item in Model.ClassModel)
         {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartureTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle.Id)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vehicle.Id)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
