@@ -1,7 +1,7 @@
 ﻿@model Models.MaintenanceInfo
 
 @{
-    ViewData["Title"] = "Edit Maintenance Info";
+    ViewData["Title"] = "Edit Maintenance Page";
 }
 
 
@@ -18,7 +18,7 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="first">
-           @await Component.InvokeAsync("Company") 
+           @await Component.InvokeAsync("MaintenanceInfoEdit") 
         </div>
         <div role="tabpanel" class="tab-pane" id="second">
             Displays Maintenance Detail edit form
