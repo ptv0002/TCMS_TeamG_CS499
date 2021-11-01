@@ -1,0 +1,189 @@
+﻿    @model TCMS_Web.Models.ShippingViewModel
+    
+    @*<div>
+        <asp:Button Text="Tab1" BorderStyle="None" ID="Tab1" CssClass="Initial" runat="server"
+                    OnClick="Tab1_Click" />
+        <asp:Button Text="Tab2" BorderStyle="None" ID="Tab1" CssClass="Initial" runat="server"
+                    OnClick="Tab1_Click" />
+    </div>*@
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li  class="nav-item">
+                <a class ="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="first">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Employee ID
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.EmployeeID)
+                </dd>
+
+                <dt class="col-sm-2">
+                    First Name
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+
+                <dt class="col-sm-2">
+                    Phone Number
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </dd>
+
+                <dt class="col-sm-2">
+                    Vehicle ID
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.VehicleID)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Brand)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Brand)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayFor(model => model.Model)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Model)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Type)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Type)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DepartureTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DepartureTime)
+                </dd>
+            </dl>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="second">
+            <p>
+
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            OrderInfo
+                        </th>
+                        <th>
+                            InShipping
+                        </th>
+                        <th>
+                            ArrivalConfirm
+                        </th>
+                        <th>
+                            ArrivalTime
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AssignmentDetails)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderInfoId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InShipping)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArrivalTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @*
+        @await Component.InvokeAsync("AssignmentDetail")
+            *@
+        </div>
+    </div>
+                    
+
+                        @*
+    @model Models.ShippingAssignment
+
+    @{
+        ViewData["Title"] = "Shipping Assignment Details";
+    }
+
+    <h1>Detail</h1>
+
+    <div>
+        <h4>ShippingAssignment</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DepartureTime)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DepartureTime)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Employee)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Employee.Id)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Vehicle)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Vehicle.Id)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+                        *@
