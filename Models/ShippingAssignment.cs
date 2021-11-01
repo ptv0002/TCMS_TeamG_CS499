@@ -19,9 +19,9 @@ namespace Models
         [Display(Name = "Departure Time")]
         public DateTime? DepartureTime { get; set; }
         public bool? Status { get; set; }
-
         public virtual Employee Employee { get; set; }
         public virtual Vehicle Vehicle { get; set; }
         public virtual ICollection<AssignmentDetail> AssignmentDetails { get; set; }
+        
     }
 }

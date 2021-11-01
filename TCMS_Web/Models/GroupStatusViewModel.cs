@@ -22,4 +22,18 @@ namespace TCMS_Web.Models
         public StatusViewModel ShippingStatus { get; set; }
         public IEnumerable<ShippingAssignment> ShippingList { get; set; }
     }
+    public class ShippingViewModel
+    {
+        public string EmployeeID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string VehicleID { get; set; }
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public string Type { get; set; }
+        public DateTime DepartureTime { get; set; }
+
+        public IEnumerable<AssignmentDetail> AssignmentDetails { get; set; }
+    }
 }

@@ -1,15 +1,13 @@
 ﻿using DataAccess;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
-using Models;
-using DataAccess;
-using System.Data.Entity.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
 using System.Globalization;
 using System.ComponentModel.DataAnnotations;
@@ -52,12 +50,15 @@ namespace TCMS_Web.Controllers
             ViewBag.Type = type;
             return View(list);
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_context.ShippingAssignments.ToList());
+            //var model = await _context.ShippingAssignments.Include(m => m.Employee).Include(m => m.Vehicle).ToListAsync;
+            return View();
         }
         public IActionResult Add()
         {
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
             return View(new ShippingAssignment());
         }
 
@@ -67,11 +68,13 @@ namespace TCMS_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var item = new ShippingAssignment();
-                item.VehicleId = shippingassignment.VehicleId;
-                item.EmployeeId = shippingassignment.EmployeeId;
-                item.DepartureTime = shippingassignment.DepartureTime;
-                item.Status = shippingassignment.Status;
+                var item = new ShippingAssignment
+                {
+                    VehicleId = shippingassignment.VehicleId,
+                    EmployeeId = shippingassignment.EmployeeId,
+                    DepartureTime = shippingassignment.DepartureTime,
+                    Status = shippingassignment.Status
+                };
 
                 _context.Add(shippingassignment);
                 await _context.SaveChangesAsync();
@@ -135,7 +138,7 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(shippingassignment);
         }
@@ -178,7 +181,7 @@ namespace TCMS_Web.Controllers
                 Brand = item.Vehicle.Brand,
                 Model = item.Vehicle.Model,
                 Type = item.Vehicle.Type,
-                DepartureTime = item.DepartureTime,
+                DepartureTime = (DateTime)item.DepartureTime,
                 AssignmentDetails = Assignmentdetails
             };
             return View(model);
