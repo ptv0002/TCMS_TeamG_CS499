@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccess;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +63,23 @@ namespace TCMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add([Bind("Id,VehicleID,EmployeeID,DepartureTime,Status")] ShippingAssignment shippingassignment)
+        public async Task<ActionResult> Add (ShippingAssignment shippingassignment)
         {
-            _context.Add(shippingassignment);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                var item = new ShippingAssignment();
+                item.VehicleId = shippingassignment.VehicleId;
+                item.EmployeeId = shippingassignment.EmployeeId;
+                item.DepartureTime = shippingassignment.DepartureTime;
+                item.Status = shippingassignment.Status;
+
+                _context.Add(shippingassignment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
+            return View(shippingassignment);
         }
 
         public async Task<IActionResult> Edit(int? Id)
@@ -80,12 +94,14 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(shippingassignment);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Id,VehicleID,EmployeeID,DepartureTime,Status")] ShippingAssignment shippingassignment)
+        public async Task<IActionResult> Edit(int Id,  ShippingAssignment shippingassignment)
         {
             if (Id != shippingassignment.Id)
             {
@@ -96,8 +112,15 @@ namespace TCMS_Web.Controllers
             {
                 try
                 {
-                    _context.Update(shippingassignment);
-                    await _context.SaveChangesAsync();
+                    var item = await _context.ShippingAssignments.FindAsync(Id);
+                    item.VehicleId = shippingassignment.VehicleId;
+                    item.EmployeeId = shippingassignment.EmployeeId;
+                    item.DepartureTime = shippingassignment.DepartureTime;
+                    item.Status = shippingassignment.Status;
+
+
+                    _context.Update(item);
+                    var result = await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -112,6 +135,8 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(shippingassignment);
         }
 
@@ -137,8 +162,13 @@ namespace TCMS_Web.Controllers
             item.Employee = employee;
             var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
             item.Vehicle = vehicle;
+            List<AssignmentDetail> Assignmentdetails = new List<AssignmentDetail>();
+            foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id))
+            {
+                Assignmentdetails.Add(Detail);
+            }
 
-            ViewData["InfoModel"] = new ViewModel
+            var model = new ShippingViewModel
             {
                 EmployeeID = item.EmployeeId,
                 FirstName = item.Employee.FirstName,
@@ -148,45 +178,31 @@ namespace TCMS_Web.Controllers
                 Brand = item.Vehicle.Brand,
                 Model = item.Vehicle.Model,
                 Type = item.Vehicle.Type,
-                DepartureTime = item.DepartureTime
+                DepartureTime = item.DepartureTime,
+                AssignmentDetails = Assignmentdetails
             };
-            return View(item);
+            return View(model);
         }
-        public class ViewModel
+        
+/* 
+        public IActionResult SwitchTabs(string tabname)
         {
-            public ViewModel()
+            var vm = new ShippingAssignmentTabModel();
+            switch (tabname)
             {
-
+                case "Basic":
+                    vm.ActiveTab = Tab.Basic;
+                    break;
+                case "Detailed":
+                    vm.ActiveTab = Tab.Detailed;
+                    break;
+                default:
+                    vm.ActiveTab = Tab.Basic;
+                    break;
             }
-            public string EmployeeID { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string PhoneNumber { get; set; }
-            public string VehicleID { get; set; }
-            public string Brand { get; set; }
-            public string Model { get; set; }
-            public string Type { get; set; }
-            public DateTime? DepartureTime { get; set; }
+            return RedirectToAction(nameof(Index), vm);
         }
-        /* 
-                public IActionResult SwitchTabs(string tabname)
-                {
-                    var vm = new ShippingAssignmentTabModel();
-                    switch (tabname)
-                    {
-                        case "Basic":
-                            vm.ActiveTab = Tab.Basic;
-                            break;
-                        case "Detailed":
-                            vm.ActiveTab = Tab.Detailed;
-                            break;
-                        default:
-                            vm.ActiveTab = Tab.Basic;
-                            break;
-                    }
-                    return RedirectToAction(nameof(Index), vm);
-                }
-        */
+*/
         private bool ShippingAssignmentExists(int Id)
         {
             return _context.ShippingAssignments.Any(e => e.Id == Id);
