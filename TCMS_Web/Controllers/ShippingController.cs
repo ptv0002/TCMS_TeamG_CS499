@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -44,10 +45,16 @@ namespace TCMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add([Bind("Id,VehicleID,EmployeeID,DepartureTime,Status")] ShippingAssignment shippingassignment)
+        public async Task<ActionResult> Add (ShippingAssignment shippingassignment)
         {
             if (ModelState.IsValid)
             {
+                var item = new ShippingAssignment();
+                item.VehicleId = shippingassignment.VehicleId;
+                item.EmployeeId = shippingassignment.EmployeeId;
+                item.DepartureTime = shippingassignment.DepartureTime;
+                item.Status = shippingassignment.Status;
+
                 _context.Add(shippingassignment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,8 +95,15 @@ namespace TCMS_Web.Controllers
             {
                 try
                 {
-                    _context.Update(shippingassignment);
-                    await _context.SaveChangesAsync();
+                    var item = await _context.ShippingAssignments.FindAsync(Id);
+                    item.VehicleId = shippingassignment.VehicleId;
+                    item.EmployeeId = shippingassignment.EmployeeId;
+                    item.DepartureTime = shippingassignment.DepartureTime;
+                    item.Status = shippingassignment.Status;
+
+
+                    _context.Update(item);
+                    var result = await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -104,7 +118,7 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(shippingassignment);
         }

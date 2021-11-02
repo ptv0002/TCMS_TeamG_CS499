@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -30,24 +31,31 @@ namespace TCMS_Web.Controllers
         }
 
         // GET: AssignmentDetailController/Create
-        public ActionResult Create()
+        public ActionResult Add()
         {
-            return View();
+            ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
+            return View(new AssignmentDetail());
         }
 
         // POST: AssignmentDetailController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Add(AssignmentDetail assignmentdetail)
         {
-            try
+            if (ModelState.IsValid)
             {
+                var item = new AssignmentDetail();
+                item.OrderInfoId = assignmentdetail.OrderInfoId;
+                item.ArrivalConfirm = assignmentdetail.ArrivalConfirm;
+                item.ArrivalTime = assignmentdetail.ArrivalTime;
+                item.Status = assignmentdetail.Status;
+
+                _context.Add(assignmentdetail);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
+            return View(assignmentdetail);
         }
 
         // GET: AssignmentDetailController/Edit/5
@@ -63,14 +71,13 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            //ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
-            //ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
+            ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Id,OrderInfoID,InShipping,ArrivalConfirm,ArrivalTime, Status, ShippingAssignmentId")] AssignmentDetail assignmentdetail)
+        public async Task<IActionResult> Edit(int Id, AssignmentDetail assignmentdetail)
         {
             if (Id != assignmentdetail.Id)
             {
@@ -81,7 +88,13 @@ namespace TCMS_Web.Controllers
             {
                 try
                 {
-                    _context.Update(assignmentdetail);
+                    var item = await _context.AssignmentDetails.FindAsync(Id);
+                    item.OrderInfoId = assignmentdetail.OrderInfoId;
+                    item.InShipping = assignmentdetail.InShipping;
+                    item.ArrivalTime = assignmentdetail.ArrivalTime;
+                    item.Status = assignmentdetail.Status;
+
+                    _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -95,10 +108,9 @@ namespace TCMS_Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Shipping", new { id = Id });
             }
-            //ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
-            //ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
+            ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);
         }
         private bool AssignmentDetailExists(int Id)
