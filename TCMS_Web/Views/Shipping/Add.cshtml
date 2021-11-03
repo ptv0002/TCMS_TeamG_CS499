@@ -1,45 +1,27 @@
-﻿@model Models.MaintenanceInfo
+﻿@model Models.ShippingAssignment
 
 @{
-<<<<<<< HEAD:TCMS_Web/Views/Shared/Components/MaintenanceInfoEdit/Default.cshtml
-    ViewData["Title"] = "Edit Maintenance Info";
+    ViewData["Title"] = "Add Shipping Assignment";
 }
-
- <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-=======
-    ViewData["Title"] = "Add to Shipping Assignment";
-}
-
-<h1>Create</h1>
-
-<h4>ShippingAssignment</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Add">
->>>>>>> b42eeb8 (Current progress):TCMS_Web/Views/Shipping/Add.cshtml
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                <span asp-validation-for="EmployeeId" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="VehicleId" class="control-label"></label>
                 <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId"></select>
                 <span asp-validation-for="VehicleId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Datetime" class="control-label"></label>
-                <input asp-for="Datetime" class="form-control" />
-                <span asp-validation-for="Datetime" class="text-danger"></span>
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
+                <label asp-for="DepartureTime" class="control-label"></label>
+                <input asp-for="DepartureTime" class="form-control" />
+                <span asp-validation-for="DepartureTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
@@ -54,12 +36,5 @@
 </div>
 
 <div>
-<<<<<<< HEAD:TCMS_Web/Views/Shared/Components/MaintenanceInfoEdit/Default.cshtml
-    <a asp-action="Index">Back to Maintenance Home Page</a>
-</div>
-=======
     <a asp-action="Index">Back to List</a>
 </div>
-
-
->>>>>>> b42eeb8 (Current progress):TCMS_Web/Views/Shipping/Add.cshtml

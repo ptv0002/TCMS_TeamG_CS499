@@ -1,133 +1,159 @@
-﻿    @model TCMS_Web.Models.ShippingViewModel
-    <div>
-        <ul class="nav nav-tabs" role="tablist">
-            <li  class="nav-item">
-                <a class ="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
-            </li>
-        </ul>
-    </div>
+﻿@model TCMS_Web.Models.ShippingViewModel
+@{
+    ViewData["Title"] = "Shipping Assignment Details";
+}
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+        </li>
+    </ul>
+</div>
 
-    <div class="tab-content">
+<div class="tab-content mt-3">
 
-        <div role="tabpanel" class="tab-pane" id="first">
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.EmployeeID)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.EmployeeID)
-                </dd>
+    <div role="tabpanel" class="tab-pane active" id="first">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EmployeeID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EmployeeID)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.FirstName)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.LastName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.LastName)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PhoneNumber)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.VehicleID)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.VehicleID)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.VehicleID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.VehicleID)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Brand)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Brand)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Brand)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Brand)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Model)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Model)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Model)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Model)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Type)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Type)
-                </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Type)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Type)
+            </dd>
 
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DepartureTime)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DepartureTime)
-                </dd>
-            </dl>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DepartureTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DepartureTime)
+            </dd>
+        </dl>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
         </div>
-        <div role="tabpanel" class="tab-pane" id="second">
-            <p>
-                <a asp-action="Add" asp-controller="AssignmentDetail">Add</a>
-            </p>
-            <table class="table">
-                <thead>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="second">
+        <p>
+            <a asp-action="Add" asp-controller="AssignmentDetail">Add</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        Source Address
+                    </th>
+                    <th>
+                        Destination Address
+                    </th>
+                    <th>
+                        Pay Status
+                    </th>
+                    <th>
+                        Shipping Fee
+                    </th>
+                    <th>
+                        InShipping
+                    </th>
+                    <th>
+                        ArrivalConfirm
+                    </th>
+                    <th>
+                        ArrivalTime
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AssignmentDetails)
+                {
                     <tr>
-                        <th>
-                            OrderInfo
-                        </th>
-                        <th>
-                            InShipping
-                        </th>
-                        <th>
-                            ArrivalConfirm
-                        </th>
-                        <th>
-                            ArrivalTime
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th></th>
+
+                        <td>
+                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id">Edit</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderInfo.SourceAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderInfo.PayStatus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderInfo.ShippingFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InShipping)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArrivalTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.AssignmentDetails)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.OrderInfoId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.InShipping)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ArrivalConfirm)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ArrivalTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id">Edit</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
     </div>
-    </div>
+</div>
