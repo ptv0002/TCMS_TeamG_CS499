@@ -1,117 +1,83 @@
-﻿@model IEnumerable<Models.OrderInfo>
-
-@{
+﻿@{
     ViewData["Title"] = "Order Info Page";
 }
-
-
 <p>
     <a asp-action="Add"> Add </a>
 </p>
+@model GroupStatusViewModel<Models.OrderInfo>
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col">
+        <label class="mr-1 text-gray-800">Show</label>
+        <select asp-for="StatusViewModel.SelectedValue" class="mr-1" asp-items="ViewBag.statusModel"></select>
+        <label class="mr-3 text-gray-800">records</label>
+        <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SourceAddress)
+                Source Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DestinationAddresss)
+                Destination Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            @*
-            <th>
-                @Html.DisplayNameFor(model => model.DocName)
+                Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DocType)
+                Source Pay
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DocData)
-            </th>
-            *@
-            <th>
-                @Html.DisplayNameFor(model => model.SourcePay)
+                Pay Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PayStatus)
+                Total Order's Value
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalOrder)
+                Shipping Fee
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ShippingFee)
+                Estimate Arrival Time
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimateArrivalTime)
-            </th>
-            @*
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Source)
-            </th>
-            *@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SourceAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DestinationAddresss)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            @*
-            <td>
-                @Html.DisplayFor(modelItem => item.DocName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DocType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DocData)
-            </td>
-            *@
-            <td>
-                @Html.DisplayFor(modelItem => item.SourcePay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PayStatus)
-            </td>
-            <td>
-                @Html.DisplayName("$")
-                @Html.DisplayFor(modelItem => item.TotalOrder)
-            </td>
-            <td>
-                @Html.DisplayName("$")
-                @Html.DisplayFor(modelItem => item.ShippingFee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstimateArrivalTime)
-            </td>
-            @*
-            <td>
-                @Html.DisplayFor(modelItem => item.Destination.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Source.Id)
-            </td>
-            *@
-        </tr>
-}
+        @foreach (var item in Model.ClassModel)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SourceAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationAddresss)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SourcePay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayStatus)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.TotalOrder)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.ShippingFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstimateArrivalTime)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

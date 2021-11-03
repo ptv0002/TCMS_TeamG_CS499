@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Models;
 using Microsoft.AspNetCore.Authorization;
+using TCMS_Web.Models;
 
 namespace TCMS_Web.Controllers
 {
@@ -22,11 +23,49 @@ namespace TCMS_Web.Controllers
         }
 
         // GET: Vehicles
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Vehicles.ToListAsync());
+            return IndexGenerator("1");
         }
+        [HttpPost]
+        public IActionResult Index(GroupStatusViewModel<Vehicle> model)
+        {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selected)
+        {
+            // Get user's input from dropdown
+            int status = Convert.ToInt32(selected);
 
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = selected,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+
+            // Display all employees
+            if (status == 2)
+            {
+                return View(new GroupStatusViewModel<Vehicle>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.Vehicles.ToList()
+                });
+            }
+            // Display employees depending on their status
+            return View(new GroupStatusViewModel<Vehicle>()
+            {
+                StatusViewModel = statusModel,
+                ClassModel = _context.Vehicles.Where(m => m.Status == Convert.ToBoolean(status)).ToList()
+            });
+        }
         // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(string id)
         {

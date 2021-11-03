@@ -166,7 +166,7 @@ namespace TCMS_Web.Controllers
             public string Brand { get; set; }
             public string Model { get; set; }
             public string Type { get; set; }
-            public DateTime DepartureTime { get; set; }
+            public DateTime? DepartureTime { get; set; }
         }
         /* 
                 public IActionResult SwitchTabs(string tabname)
