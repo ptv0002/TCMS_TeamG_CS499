@@ -12,6 +12,7 @@ using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcu
 using System.Globalization;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TCMS_Web.Controllers
 {
@@ -56,6 +57,8 @@ namespace TCMS_Web.Controllers
         }
         public IActionResult Add()
         {
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
             return View(new ShippingAssignment());
         }
 
@@ -63,9 +66,15 @@ namespace TCMS_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add([Bind("VehicleID,EmployeeID,DepartureTime,Status")] ShippingAssignment shippingassignment)
         {
-            _context.Add(shippingassignment);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                _context.Add(shippingassignment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
+            return View(shippingassignment);
         }
 
         public async Task<IActionResult> Edit(int? Id)
@@ -80,6 +89,8 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(shippingassignment);
         }
 
@@ -112,6 +123,8 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(shippingassignment);
         }
 

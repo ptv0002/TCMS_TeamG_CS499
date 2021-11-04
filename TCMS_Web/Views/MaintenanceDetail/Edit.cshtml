@@ -1,28 +1,25 @@
-﻿@model Models.MaintenanceInfo
+﻿@model Models.MaintenanceDetail
 
 @{
-    ViewData["Title"] = "Edit Maintenance Info";
+    ViewData["Title"] = "Edit Maintenance Detail";
 }
 
- <div class="row">
+<hr />
+<div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="MaintenanceInfoId" />
             <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                <label asp-for="Service" class="control-label"></label>
+                <input asp-for="Service" class="form-control" />
+                <span asp-validation-for="Service" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VehicleId" class="control-label"></label>
-                <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId"></select>
-                <span asp-validation-for="VehicleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Datetime" class="control-label"></label>
-                <input asp-for="Datetime" class="form-control" />
-                <span asp-validation-for="Datetime" class="text-danger"></span>
+                <label asp-for="EstimateCost" class="control-label"></label>
+                <input asp-for="EstimateCost" class="form-control" />
+                <span asp-validation-for="EstimateCost" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
@@ -42,5 +39,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to Maintenance Home Page</a>
+    <a asp-controller="Maintenance" asp-action="Details" asp-route-id=@Model.MaintenanceInfoId> Back to List</a>
 </div>
+

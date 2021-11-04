@@ -10,6 +10,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TCMS_Web.Models;
+using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
 
 namespace TCMS_Web.Controllers
 {
@@ -72,22 +74,38 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var maintenanceInfo = await _context.MaintenanceInfos
-                .Include(m => m.Employee)
-                .Include(m => m.Vehicle)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (maintenanceInfo == null)
+            var item = await _context.MaintenanceInfos.FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            List<MaintenanceDetail> Maintenancedetails = new List<MaintenanceDetail>();
+            foreach (MaintenanceDetail Detail in _context.MaintenanceDetails.Where(m => m.MaintenanceInfoId == id))
             {
-                return NotFound();
+                Maintenancedetails.Add(Detail);
             }
 
-            return View(maintenanceInfo);
+            var model = new MaintenanceViewModel
+            {
+                Id = (int)id,
+                EmployeeID = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                PhoneNumber = employee.PhoneNumber,
+                VehicleID = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                DateTime = item.Datetime,
+                Notes = item.Notes,
+                MaintenanceDetails = Maintenancedetails
+            };
+
+            return View(model);
         }
         // GET: Maintenance/Create
         public IActionResult Add()
         {
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Id");
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Id");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id");
             return View(new MaintenanceInfo());
         }
 
@@ -96,16 +114,24 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("Id,EmployeeId,VehicleId,Datetime,Notes,Status")] MaintenanceInfo maintenanceInfo)
+        public async Task<IActionResult> Add(MaintenanceInfo maintenanceInfo)
         {
             if (ModelState.IsValid)
             {
+                var item = new MaintenanceInfo
+                {
+                    VehicleId = maintenanceInfo.VehicleId,
+                    EmployeeId = maintenanceInfo.EmployeeId,
+                    Datetime = maintenanceInfo.Datetime,
+                    Notes = maintenanceInfo.Notes,
+                    Status = maintenanceInfo.Status,
+                };
                 _context.Add(maintenanceInfo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Id", maintenanceInfo.EmployeeId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Id", maintenanceInfo.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
             return View(maintenanceInfo);
         }
 
@@ -122,8 +148,8 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Id", maintenanceInfo.EmployeeId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Id", maintenanceInfo.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
             return View(maintenanceInfo);
         }
 
@@ -132,7 +158,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmployeeId,VehicleId,Datetime,Notes,Status")] MaintenanceInfo maintenanceInfo)
+        public async Task<IActionResult> Edit(int id, MaintenanceInfo maintenanceInfo)
         {
             if (id != maintenanceInfo.Id)
             {
@@ -143,7 +169,14 @@ namespace TCMS_Web.Controllers
             {
                 try
                 {
-                    _context.Update(maintenanceInfo);
+                    var item = await _context.MaintenanceInfos.FindAsync(id);
+                    item.VehicleId = maintenanceInfo.VehicleId;
+                    item.EmployeeId = maintenanceInfo.EmployeeId;
+                    item.Datetime = maintenanceInfo.Datetime;
+                    item.Notes = maintenanceInfo.Notes;
+                    item.Status = maintenanceInfo.Status;
+
+                    _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -159,8 +192,8 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "Id", maintenanceInfo.EmployeeId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Id", maintenanceInfo.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
             return View(maintenanceInfo);
         }
         private bool MaintenanceInfoExists(int id)
