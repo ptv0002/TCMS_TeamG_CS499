@@ -3,12 +3,7 @@
 @{
     ViewData["Title"] = "Edit Shipping Assignment";
 }
-
-<h1>Edit</h1>
-
-<h4>Shipping Assignment</h4>
 <hr />
-
 <div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -28,15 +23,15 @@
             <input asp-for="Id" type="hidden" />
             <dl class="row">
                 <dt class="col-sm-2">
-                    Employee ID
+                    @Html.DisplayNameFor(model => model.EmployeeID)
                 </dt>
                 <dd class="col-sm-10">
-                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
+                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId"></select>
                     <span asp-validation-for="EmployeeID" class="text-danger"></span>
                 </dd>
 
                 <dt class="col-sm-2">
-                    First Name
+                    @Html.DisplayNameFor(model => model.FirstName)
                 </dt>
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.FirstName)
@@ -50,17 +45,17 @@
                 </dd>
 
                 <dt class="col-sm-2">
-                    Phone Number
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
                 </dt>
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.PhoneNumber)
                 </dd>
 
                 <dt class="col-sm-2">
-                    Vehicle ID
+                    @Html.DisplayNameFor(model => model.VehicleID)
                 </dt>
                 <dd class="col-sm-10">
-                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId">required</select>
+                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId"></select>
                     <span asp-validation-for="VehicleID" class="text-danger"></span>
                 </dd>
 
@@ -111,7 +106,7 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="second">
         <p>
-            <a asp-action="Add" asp-controller="AssignmentDetail">Add</a>
+            <a asp-action="Add" asp-controller="AssignmentDetail" asp-route-Id="@Model.Id">Add</a>
         </p>
         <table class="table">
             <thead>
@@ -154,55 +149,11 @@
                             @Html.DisplayFor(modelItem => item.Status)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" data-EditShippingAssignment="True">Edit</a>
+                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" asp-route-EditShippingAssignment="True">Edit</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        @*
-            @await Component.InvokeAsync("AssignmentDetail")
-        *@
     </div>
 </div>
-@*
-    @{
-        ViewData["Title"] = "Edit Shipping Assignment";
-    }
-
-    <h1>Edit</h1>
-
-    <h4>ShippingAssignment</h4>
-    <hr />
-    <form asp-action="Edit">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="VehicleId" class="control-label"></label>
-            <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId">required</select>
-            <span asp-validation-for="VehicleId" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="EmployeeId" class="control-label"></label>
-            <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
-            <span asp-validation-for="EmployeeId" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="DepartureTime" class="control-label"></label>
-            <input asp-for="DepartureTime" class="form-control" />
-            <span asp-validation-for="DepartureTime" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Status" class="control-label"></label>
-            <input asp-for="Status" class="form-control" required />
-            <span asp-validation-for="Status" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    </form>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-*@

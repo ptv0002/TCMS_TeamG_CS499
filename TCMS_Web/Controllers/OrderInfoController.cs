@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Models;
 using Microsoft.AspNetCore.Authorization;
+using TCMS_Web.Models;
 
 namespace TCMS_Web.Controllers
 {
@@ -22,12 +23,49 @@ namespace TCMS_Web.Controllers
         }
 
         // GET: OrderInfo
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var tCMS_Context = _context.OrderInfos.Include(o => o.Destination).Include(o => o.Source);
-            return View(await tCMS_Context.ToListAsync());
+            return IndexGenerator("1");
         }
+        [HttpPost]
+        public IActionResult Index(GroupStatusViewModel<OrderInfo> model)
+        {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selected)
+        {
+            // Get user's input from dropdown
+            int status = Convert.ToInt32(selected);
 
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = selected,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+
+            // Display all employees
+            if (status == 2)
+            {
+                return View(new GroupStatusViewModel<OrderInfo>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.OrderInfos.Include(o => o.Destination).Include(o => o.Source).ToList()
+                });
+            }
+            // Display employees depending on their status
+            return View(new GroupStatusViewModel<OrderInfo>()
+            {
+                StatusViewModel = statusModel,
+                ClassModel = _context.OrderInfos.Where(m => m.Status == Convert.ToBoolean(status)).Include(o => o.Destination).Include(o => o.Source).ToList()
+            });
+        }
         // GET: OrderInfo/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -51,8 +89,8 @@ namespace TCMS_Web.Controllers
         // GET: OrderInfo/Create
         public IActionResult Add()
         {
-            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name");
-            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name");
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id");
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id");
             return View(new OrderInfo ());
         }
 
@@ -69,8 +107,8 @@ namespace TCMS_Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
-            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id", orderInfo.DestinationId);
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id", orderInfo.SourceId);
             return View(orderInfo);
         }
 
@@ -87,8 +125,8 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
-            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id", orderInfo.DestinationId);
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id", orderInfo.SourceId);
             return View(orderInfo);
         }
 
@@ -124,8 +162,8 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
-            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
+            ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id", orderInfo.DestinationId);
+            ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Id", orderInfo.SourceId);
             return View(orderInfo);
         }
         private bool OrderInfoExists(int id)

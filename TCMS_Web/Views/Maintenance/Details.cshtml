@@ -1,0 +1,133 @@
+﻿@model TCMS_Web.Models.MaintenanceViewModel
+
+@{
+    ViewData["Title"] = "Maintenance Details";
+}
+
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Maintenance Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Maintenance Record For Vehicle</a>
+        </li>
+    </ul>
+</div>
+
+<div class="tab-content mt-3">
+
+    <div role="tabpanel" class="tab-pane active" id="first">
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayName("ID of Maintenance worker:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EmployeeID)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayName("First Name of Maintenance Worker:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayName("Last Name of Maintenance Worker:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayName("Phone Number of Maintenance Worker:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayName("ID of Vehicle worked on:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.VehicleID)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayName("Brand of Vehicle Worked on:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Brand)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayName("Model of Vehicle Worked on:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Model)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayName("Type of Vehicle Worked on:")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Type)
+            </dd>
+        </dl>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="second">
+        <p>
+            <a asp-action="Add" asp-controller="MaintenanceDetail" asp-route-id="@Model.Id">Add</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Service 
+                    </th>
+                    <th>
+                        Estimated Cost 
+                    </th>
+                    <th>
+                        Notes
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MaintenanceDetails)
+                {
+                <tr>
+
+                    <td>
+                        <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id">Edit</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Service)
+                    </td>
+                    <td>
+                        @Html.DisplayName("$")
+                        @Html.DisplayFor(modelItem => item.EstimateCost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

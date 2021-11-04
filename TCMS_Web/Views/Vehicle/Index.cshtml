@@ -1,88 +1,91 @@
-﻿@model IEnumerable<Models.Vehicle>
-
-@{
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Vehicle Page";
 }
 <p>
     <a asp-action="Add"> Add </a>
 </p>
+@model GroupStatusViewModel<Models.Vehicle>
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col">
+        <label class="mr-1 text-gray-800">Show</label>
+        <select asp-for="StatusViewModel.SelectedValue" class="mr-1" asp-items="ViewBag.statusModel"></select>
+        <label class="mr-3 text-gray-800">records</label>
+        <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Brand)
+                Brand
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Year)
+                Year
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                Model
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                Type
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReadyStatus)
+                Ready Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Parts)
+                LastMaintenance Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastMaintenanceDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaintenanceCycle)
+                MaintenanceCycle
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadyStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Parts)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastMaintenanceDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaintenanceCycle)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.ClassModel)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReadyStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastMaintenanceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintenanceCycle)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

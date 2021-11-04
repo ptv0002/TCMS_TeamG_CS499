@@ -1,9 +1,9 @@
 ﻿@model AccountViewModel
-@{ 
+@{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_ShareLogin.cshtml";
 }
-<div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+<div class="col-lg-5 d-none d-lg-block register-image"></div>
 <div class="col-lg-7">
     <div class="p-5">
         <div class="text-center">
@@ -58,3 +58,10 @@
         </div>
     </div>
 </div>
+<style>
+    .register-image {
+        background-image: url('../sbadmin/img-login/catRG.jpg');
+        background-position: center;
+        background-size: cover;
+    }
+</style>

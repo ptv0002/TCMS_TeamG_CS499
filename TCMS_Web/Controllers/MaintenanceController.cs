@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using TCMS_Web.Models;
+using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
 
 namespace TCMS_Web.Controllers
 {
@@ -16,6 +19,7 @@ namespace TCMS_Web.Controllers
     public class MaintenanceController : Controller
     {
         private readonly TCMS_Context _context;
+
         public MaintenanceController(TCMS_Context context)
         {
             _context = context;
@@ -30,7 +34,7 @@ namespace TCMS_Web.Controllers
             List<MaintenanceDetail> list = new();
             if (IsIncoming_Individual)
             {
-                type = "Vehicle ID (" + id +") ";
+                type = "Vehicle ID (" + id + ") ";
 
                 // This code is NOT OPTIMIZED, update need for better performance
                 foreach (var item in model)
@@ -39,7 +43,6 @@ namespace TCMS_Web.Controllers
                         item.MaintenanceInfo.Datetime.Value.Year == year &&
                         item.MaintenanceInfo.Status == true && item.MaintenanceInfo.VehicleId == id)
                         list.Add(item);
-                        
                 }
             }
             else
@@ -58,79 +61,142 @@ namespace TCMS_Web.Controllers
             ViewBag.Individual = IsIncoming_Individual;
             return View(list);
         }
-        // GET: MaintenanceController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var tCMS_Context = _context.MaintenanceInfos.Include(m => m.Employee).Include(m => m.Vehicle);
+            return View(await tCMS_Context.ToListAsync());
+        }
+        // GET: Maintenance/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.MaintenanceInfos.FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            List<MaintenanceDetail> Maintenancedetails = new List<MaintenanceDetail>();
+            foreach (MaintenanceDetail Detail in _context.MaintenanceDetails.Where(m => m.MaintenanceInfoId == id))
+            {
+                Maintenancedetails.Add(Detail);
+            }
+
+            var model = new MaintenanceViewModel
+            {
+                Id = (int)id,
+                EmployeeID = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                PhoneNumber = employee.PhoneNumber,
+                VehicleID = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                DateTime = item.Datetime,
+                Notes = item.Notes,
+                MaintenanceDetails = Maintenancedetails
+            };
+
+            return View(model);
+        }
+        public IActionResult Add()
+        {
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id");
+            return View(new MaintenanceInfo());
         }
 
-        // GET: MaintenanceController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: MaintenanceController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: MaintenanceController/Create
+        // POST: Maintenance/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Add(MaintenanceInfo maintenanceInfo)
         {
-            try
+            if (ModelState.IsValid)
             {
+                var item = new MaintenanceInfo
+                {
+                    VehicleId = maintenanceInfo.VehicleId,
+                    EmployeeId = maintenanceInfo.EmployeeId,
+                    Datetime = maintenanceInfo.Datetime,
+                    Notes = maintenanceInfo.Notes,
+                    Status = maintenanceInfo.Status,
+                };
+                _context.Add(maintenanceInfo);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
+            return View(maintenanceInfo);
         }
-
-        // GET: MaintenanceController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: Maintenance/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
-        }
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        // POST: MaintenanceController/Edit/5
+            var maintenanceInfo = await _context.MaintenanceInfos.FindAsync(id);
+            if (maintenanceInfo == null)
+            {
+                return NotFound();
+            }
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
+            return View(maintenanceInfo);
+        }
+        // POST: Maintenance/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, MaintenanceInfo maintenanceInfo)
         {
-            try
+            if (id != maintenanceInfo.Id)
             {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var item = await _context.MaintenanceInfos.FindAsync(id);
+                    item.VehicleId = maintenanceInfo.VehicleId;
+                    item.EmployeeId = maintenanceInfo.EmployeeId;
+                    item.Datetime = maintenanceInfo.Datetime;
+                    item.Notes = maintenanceInfo.Notes;
+                    item.Status = maintenanceInfo.Status;
+
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MaintenanceInfoExists(maintenanceInfo.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
+            return View(maintenanceInfo);
+        }
+        private bool MaintenanceInfoExists(int id)
+        {
+            return _context.MaintenanceInfos.Any(e => e.Id == id);
         }
 
-        // GET: MaintenanceController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MaintenanceController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

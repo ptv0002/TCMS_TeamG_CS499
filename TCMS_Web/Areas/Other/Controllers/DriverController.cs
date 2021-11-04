@@ -47,8 +47,8 @@ namespace TCMS_Web.Areas.Other.Controllers
                 KeyValues = new Dictionary<string, string> // Populate status options
                 {
                     { "1", "Today" },
-                    { "3", "Next 3 days" },
-                    { "7", "Next 7 days" }
+                    { "7", "Next 7 days" },
+                    { "15", "Next 15 days" }
                 }
             };
             ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
@@ -70,31 +70,105 @@ namespace TCMS_Web.Areas.Other.Controllers
         }
 
         // GET: DriverController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            List<AssignmentDetail> Assignmentdetails = new();
+            foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == id).Include(m => m.OrderInfo))
+            {
+                Assignmentdetails.Add(Detail);
+            }
+
+            var model = new ShippingViewModel
+            {
+                Id = (int)id,
+                EmployeeID = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                PhoneNumber = employee.PhoneNumber,
+                VehicleID = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                DepartureTime = (DateTime)item.DepartureTime,
+                AssignmentDetails = Assignmentdetails
+            };
+            return View(model);
         }
 
         // GET: DriverController/Edit/5
-        public ActionResult Edit(int id)
+        // Edit Assignment Detail
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var assignmentdetail = await _context.AssignmentDetails.FindAsync(id);
+            if (assignmentdetail == null)
+            {
+                return NotFound();
+            }
+
+            var orderInfo = await _context.OrderInfos.FindAsync(assignmentdetail.OrderInfoId);
+            assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
+            assignmentdetail.OrderInfo.SourceAddress = orderInfo.SourceAddress;
+            assignmentdetail.OrderInfo.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
+            return View(assignmentdetail);
         }
 
         // POST: DriverController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, AssignmentDetail assignmentdetail)
         {
-            try
+            if (id != assignmentdetail.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var item = await _context.AssignmentDetails.FindAsync(id);
+                    item.OrderInfoId = assignmentdetail.OrderInfoId;
+                    item.InShipping = assignmentdetail.InShipping;
+                    item.ArrivalConfirm = true;
+                    item.ArrivalTime = DateTime.Now;
+                    item.Status = assignmentdetail.Status;
+                    item.ShippingAssignmentId = assignmentdetail.ShippingAssignmentId;
+
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AssignmentDetailExists(assignmentdetail.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Details", new { id = assignmentdetail.ShippingAssignmentId });
+            }
+            return View(assignmentdetail);
+        }
+        private bool AssignmentDetailExists(int Id)
+        {
+            return _context.AssignmentDetails.Any(e => e.Id == Id);
+        }
     }
 }

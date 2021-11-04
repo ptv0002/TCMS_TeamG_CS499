@@ -44,11 +44,14 @@ namespace TCMS_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var item = new AssignmentDetail();
-                item.OrderInfoId = assignmentdetail.OrderInfoId;
-                item.ArrivalConfirm = assignmentdetail.ArrivalConfirm;
-                item.ArrivalTime = assignmentdetail.ArrivalTime;
-                item.Status = assignmentdetail.Status;
+                var item = new AssignmentDetail
+                {
+                    ShippingAssignmentId = Id,
+                    OrderInfoId = assignmentdetail.OrderInfoId,
+                    ArrivalConfirm = assignmentdetail.ArrivalConfirm,
+                    ArrivalTime = assignmentdetail.ArrivalTime,
+                    Status = assignmentdetail.Status
+                };
 
                 _context.Add(assignmentdetail);
                 await _context.SaveChangesAsync();
@@ -93,6 +96,7 @@ namespace TCMS_Web.Controllers
                     item.InShipping = assignmentdetail.InShipping;
                     item.ArrivalTime = assignmentdetail.ArrivalTime;
                     item.Status = assignmentdetail.Status;
+                    item.ShippingAssignmentId = assignmentdetail.ShippingAssignmentId;
 
                     _context.Update(item);
                     await _context.SaveChangesAsync();

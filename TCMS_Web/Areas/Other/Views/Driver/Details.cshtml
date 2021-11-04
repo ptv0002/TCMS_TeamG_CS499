@@ -1,6 +1,7 @@
 ﻿@model TCMS_Web.Models.ShippingViewModel
 @{
     ViewData["Title"] = "Shipping Assignment Details";
+    Layout = "~/Areas/_Layout.cshtml";
 }
 <div>
     <ul class="nav nav-tabs" role="tablist">
@@ -14,7 +15,6 @@
 </div>
 
 <div class="tab-content mt-3">
-
     <div role="tabpanel" class="tab-pane active" id="first">
         <dl class="row">
             <dt class="col-sm-2">
@@ -81,32 +81,19 @@
             </dd>
         </dl>
         <div>
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
             <a asp-action="Index">Back to List</a>
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="second">
-        <p>
-            <a asp-action="Add" asp-controller="AssignmentDetail">Add</a>
-        </p>
         <table class="table">
             <thead>
                 <tr>
                     <th></th>
                     <th>
-                        Source Address
+                        Order ID
                     </th>
                     <th>
-                        Destination Address
-                    </th>
-                    <th>
-                        Pay Status
-                    </th>
-                    <th>
-                        Shipping Fee
-                    </th>
-                    <th>
-                        InShipping
+                        Address
                     </th>
                     <th>
                         ArrivalConfirm
@@ -115,45 +102,50 @@
                         ArrivalTime
                     </th>
                     <th>
-                        Status
+                        Estimated Arrival Time
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.AssignmentDetails)
                 {
-                    <tr>
-
+                <tr>
+                    @if (item.ArrivalConfirm == false)
+                    {
                         <td>
-                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id">Edit</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                         </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInfo.Id)
+                    </td>
+                    @if (item.InShipping == true)
+                    {
                         <td>
                             @Html.DisplayFor(modelItem => item.OrderInfo.SourceAddress)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.PayStatus)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.ShippingFee)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.InShipping)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ArrivalConfirm)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ArrivalTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                    </tr>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArrivalTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInfo.EstimateArrivalTime)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+

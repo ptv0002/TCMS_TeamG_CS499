@@ -158,20 +158,20 @@ namespace TCMS_Web.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Profile(string controller)
+        public async Task<IActionResult> Profile(string type)
         {
             // Generate View Bag info
-            GetViewBags(controller);
+            GetViewBags(type);
             // Get user from HttpContext
             var user = await _userManager.GetUserAsync(HttpContext.User);
             return View(user);
         }
         [HttpPost, ActionName("Profile")]
         [AllowAnonymous]
-        public async Task<IActionResult> Profile(Employee model, string controller)
+        public async Task<IActionResult> Profile(Employee model, string type)
         {
             // Generate View Bag info
-            GetViewBags(controller);
+            GetViewBags(type);
             if (ModelState.IsValid)
             {
                 // Bind all info from model to found user from DB
@@ -200,10 +200,10 @@ namespace TCMS_Web.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> UpdateEmail(string id, string controller)
+        public async Task<IActionResult> UpdateEmail(string id, string type)
         {
             // Generate View Bag info
-            GetViewBags(controller);
+            GetViewBags(type);
 
             // Get user from either HttpContext or pass in id
             Employee user;
@@ -225,10 +225,10 @@ namespace TCMS_Web.Controllers
         }
         [HttpPost, ActionName("UpdateEmail")]
         [AllowAnonymous]
-        public async Task<IActionResult> UpdateEmail(UpdateEmailViewModel model, string controller)
+        public async Task<IActionResult> UpdateEmail(UpdateEmailViewModel model, string type)
         {
             // Generate View Bag info
-            GetViewBags(controller);
+            GetViewBags(type);
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(model.Id);
@@ -294,16 +294,16 @@ namespace TCMS_Web.Controllers
             return View("Error");
         }
         [AllowAnonymous]
-        public void GetViewBags (string controller)
+        public void GetViewBags (string type)
         {
             // Get ViewBag info depending on the pass in controller
-            if (controller == "Home")
+            if (type == "Home")
             {
                 ViewBag.Layout = "~/Views/Shared/_Layout.cshtml";
                 ViewBag.Controller = "Home";
                 ViewBag.Area = "";
             }
-            else if (controller == "Driver")
+            else if (type == "Driver")
             {
                 ViewBag.Layout = "~/Areas/_Layout.cshtml";
                 ViewBag.Controller = "Driver";

@@ -1,5 +1,4 @@
 ﻿using DataAccess;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +9,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
+using System.Globalization;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TCMS_Web.Controllers
 {
+    [Authorize(Roles = "Full Access,Shipping")]
     public class ShippingController : Controller
     {
 
@@ -21,21 +25,75 @@ namespace TCMS_Web.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "Full Access")]
+        public IActionResult MonthlyReport(int month, int year, bool IsIncoming_Individual)
         {
-            var shippingassignment = _context.ShippingAssignments.Include(m => m.Employee).Include(m => m.Vehicle);
-            return View(await shippingassignment.ToListAsync());
-            /*    if(vm == null)
-                {
-                    vm = new ShippingAssignmentTabModel
-                    {
-                        ActiveTab = Tab.Basic
-                    };
-                }
-                return View(vm); //_context.ShippingAssignments.ToList()
-            */
+            var strMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+            string type;
+            List<AssignmentDetail> list;
+            if (IsIncoming_Individual)
+            {
+                type = "Incoming Shipment";
+                // Incoming: InShipping == true and false 
+                list = _context.AssignmentDetails.Where(m => m.Status == true && m.ArrivalTime.Value.Month == month
+                    && m.ArrivalTime.Value.Year == year)
+                    .Include(m => m.ShippingAssignment).Include(m => m.OrderInfo).ToList();
+            }
+            else
+            {
+                type = "Outgoing Shipment";
+                // Outgoing: InShipping == false ONLY 
+                list = _context.AssignmentDetails.Where(m => m.Status == true && m.ArrivalTime.Value.Month == month
+                    && m.ArrivalTime.Value.Year == year && m.InShipping == false)
+                    .Include(m => m.ShippingAssignment).Include(m => m.OrderInfo).ToList();
+            }
+            ViewData["Title"] = "Monthly Report for " + type + " " + strMonth + " " + year;
+            ViewBag.Type = type;
+            return View(list);
         }
+        public IActionResult Index()
+        {
+            return IndexGenerator("1");
+        }
+        [HttpPost]
+        public IActionResult Index(GroupStatusViewModel<ShippingAssignment> model)
+        {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selected)
+        {
+            // Get user's input from dropdown
+            int status = Convert.ToInt32(selected);
 
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = selected,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+
+            // Display all employees
+            if (status == 2)
+            {
+                return View(new GroupStatusViewModel<ShippingAssignment>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.ShippingAssignments.Include(o => o.Employee).Include(o => o.Vehicle).ToList()
+                });
+            }
+            // Display employees depending on their status
+            return View(new GroupStatusViewModel<ShippingAssignment>()
+            {
+                StatusViewModel = statusModel,
+                ClassModel = _context.ShippingAssignments.Where(m => m.Status == Convert.ToBoolean(status)).Include(o => o.Employee).Include(o => o.Vehicle).ToList()
+            });
+        }
         public IActionResult Add()
         { 
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id");
@@ -49,11 +107,13 @@ namespace TCMS_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var item = new ShippingAssignment();
-                item.VehicleId = shippingassignment.VehicleID;
-                item.EmployeeId = shippingassignment.EmployeeID;
-                item.DepartureTime = shippingassignment.DepartureTime;
-                item.Status = shippingassignment.Status;
+                var item = new ShippingAssignment
+                {
+                    VehicleId = shippingassignment.VehicleId,
+                    EmployeeId = shippingassignment.EmployeeId,
+                    DepartureTime = shippingassignment.DepartureTime,
+                    Status = shippingassignment.Status
+                };
 
                 _context.Add(item);
                 await _context.SaveChangesAsync();
@@ -106,7 +166,6 @@ namespace TCMS_Web.Controllers
             return View(model);
         }
 
-        //[Bind("Id,VehicleID,EmployeeID,DepartureTime,Status")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id,  ShippingViewModel shippingassignment)
@@ -174,21 +233,9 @@ namespace TCMS_Web.Controllers
             if (Id == null)
             {
                 return NotFound();
-            }
-            /*
-            var shippingassignment = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
-            if (shippingassignment == null)
-            {
-                return NotFound();
-            }*/
-            //ShippingAssignmentViewModel shippingassignment = new ShippingAssignmentViewModel();
-            //shippingassignment.Employees = _context.Employees.ToList();
-            //shippingassignment.Vehicles = _context.Vehicles.ToList();
-            //shippingassignment.ShippingAssignments = _context.ShippingAssignments.ToList();
-            //var list = _context.ShippingAssignments.Where(m => m.Id == Id && m.Status == true).Include(m => m.Employee).Include(m => m.Vehicle).ToList();
+            }            
             var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
             var employee = await _context.Employees.FindAsync(item.EmployeeId);
-            item.Employee = employee;
             var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
             item.Vehicle = vehicle;
             List<AssignmentDetail> Assignmentdetails = new List<AssignmentDetail>();
@@ -199,40 +246,21 @@ namespace TCMS_Web.Controllers
 
             var model = new ShippingViewModel
             {
-                Id = Id ?? default(int),
-                EmployeeID = item.EmployeeId,
-                FirstName = item.Employee.FirstName,
-                LastName = item.Employee.LastName,
-                PhoneNumber = item.Employee.PhoneNumber,
-                VehicleID = item.VehicleId,
-                Brand = item.Vehicle.Brand,
-                Model = item.Vehicle.Model,
-                Type = item.Vehicle.Type,
-                DepartureTime = item.DepartureTime,
+                Id = (int)Id,
+                EmployeeID = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                PhoneNumber = employee.PhoneNumber,
+                VehicleID = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                DepartureTime = (DateTime)item.DepartureTime,
                 AssignmentDetails = Assignmentdetails
             };
             return View(model);
         }
-        
-/* 
-        public IActionResult SwitchTabs(string tabname)
-        {
-            var vm = new ShippingAssignmentTabModel();
-            switch (tabname)
-            {
-                case "Basic":
-                    vm.ActiveTab = Tab.Basic;
-                    break;
-                case "Detailed":
-                    vm.ActiveTab = Tab.Detailed;
-                    break;
-                default:
-                    vm.ActiveTab = Tab.Basic;
-                    break;
-            }
-            return RedirectToAction(nameof(Index), vm);
-        }
-*/
+ 
         private bool ShippingAssignmentExists(int Id)
         {
             return _context.ShippingAssignments.Any(e => e.Id == Id);

@@ -3,7 +3,8 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_ShareLogin.cshtml";
 }
-<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+<div class="col-lg-6 d-none d-lg-block login-image">
+</div>
 <div class="col-lg-6">
     <div class="p-5">
         <div class="text-center">
@@ -38,4 +39,10 @@
         </div>
     </div>
 </div>
-
+<style>
+    .login-image {
+        background-image: url('../sbadmin/img-login/catLG.jpg');
+        background-position: center;
+        background-size: cover;
+    }
+</style>

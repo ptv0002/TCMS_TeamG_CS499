@@ -17,7 +17,7 @@ namespace Models
             OrderInfoSources = new HashSet<OrderInfo>();
         }
         public int Id { get; set; }
-        [DisplayName("Full Name")]
+        [DisplayName("Full Company Name")]
         public string Name { get; set; }
         public bool? Status { get; set; }
         public string Address { get; set; }
