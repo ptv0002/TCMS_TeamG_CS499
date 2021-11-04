@@ -10859,27 +10859,22 @@ a:focus {
     height: calc(20rem - 43px) !important;
   }
 }
-
 .bg-login-image {
-    background: url("../img-login/catLG.jpg");
+    background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
     background-position: center;
     background-size: cover;
 }
-.bg-confirmation-image {
-    background: url("../img-login/catCF.jpg");
-    background-position: center;
-    background-size: cover;
-}
+
 .bg-register-image {
-  background: url(../img-login/catRG.jpg);
-  background-position: center;
-  background-size: cover;
+    background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
+    background-position: center;
+    background-size: cover;
 }
 
 .bg-password-image {
-  background: url(../img-login/catPW.jpg);
-  background-position: center;
-  background-size: cover;
+    background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+    background-position: center;
+    background-size: cover;
 }
 
 form.user .custom-checkbox.small label {

@@ -1,0 +1,42 @@
+﻿@model Models.AssignmentDetail
+
+@{
+    ViewData["Title"] = "Edit Assignment Detail";
+    Layout = "~/Areas/_Layout.cshtml";
+}
+<hr />
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ShippingAssignmentId" />
+    <input type="hidden" asp-for="OrderInfoId" />
+    <input type="hidden" asp-for="InShipping" />
+    <input type="hidden" asp-for="Status" />
+    <div class="form-group">
+        <label asp-for="OrderInfoId" class="col-sm-3 font-weight-bold"></label>
+        <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfoId)</span>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 font-weight-bold">Address</label>
+        @if (Model.InShipping == true)
+        {
+            <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfo.SourceAddress)</span>
+        }
+        else
+        {
+            <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfo.DestinationAddresss)</span>
+        }
+    </div>
+    <div class="form-group">
+        <label asp-for="ArrivalConfirm" class="col-sm-3 font-weight-bold"></label>
+        <input type="submit" value="Delivered" class="btn btn-primary" />
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 font-weight-bold">Estimated Arrival Time</label>
+        <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfo.EstimateArrivalTime)</span>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Details" asp-route-id=@Model.ShippingAssignmentId> Back to List</a>
+</div>

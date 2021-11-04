@@ -95,6 +95,7 @@ namespace TCMS_Web.Controllers
                     item.InShipping = assignmentdetail.InShipping;
                     item.ArrivalTime = assignmentdetail.ArrivalTime;
                     item.Status = assignmentdetail.Status;
+                    item.ShippingAssignmentId = assignmentdetail.ShippingAssignmentId;
 
                     _context.Update(item);
                     await _context.SaveChangesAsync();

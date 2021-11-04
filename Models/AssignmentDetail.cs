@@ -12,6 +12,7 @@ namespace Models
     public class AssignmentDetail
     {
         public int Id { get; set; }
+        [Display(Name = "Order ID")]
         public int? OrderInfoId { get; set; }
         public bool? InShipping { get; set; }
         [Display(Name = "Arrival Confirmation")]

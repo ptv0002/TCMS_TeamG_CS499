@@ -41,6 +41,7 @@ namespace TCMS_Web.Models
         public string Type { get; set; }
         [Display(Name = "Departure Time")]
         public DateTime DepartureTime { get; set; }
+        public bool Status { get; set; }
 
         public IEnumerable<AssignmentDetail> AssignmentDetails { get; set; }
     }

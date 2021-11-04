@@ -142,7 +142,7 @@ namespace TCMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id,  ShippingAssignment shippingassignment)
+        public async Task<IActionResult> Edit(int Id,  ShippingViewModel shippingassignment)
         {
             if (Id != shippingassignment.Id)
             {
@@ -154,8 +154,8 @@ namespace TCMS_Web.Controllers
                 try
                 {
                     var item = await _context.ShippingAssignments.FindAsync(Id);
-                    item.VehicleId = shippingassignment.VehicleId;
-                    item.EmployeeId = shippingassignment.EmployeeId;
+                    item.VehicleId = shippingassignment.VehicleID;
+                    item.EmployeeId = shippingassignment.EmployeeID;
                     item.DepartureTime = shippingassignment.DepartureTime;
                     item.Status = shippingassignment.Status;
 
@@ -176,8 +176,8 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleID);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeID);
             return View(shippingassignment);
         }
 
