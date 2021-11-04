@@ -237,9 +237,8 @@ namespace TCMS_Web.Controllers
             var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
             var employee = await _context.Employees.FindAsync(item.EmployeeId);
             var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
-            item.Vehicle = vehicle;
-            List<AssignmentDetail> Assignmentdetails = new List<AssignmentDetail>();
-            foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id))
+            List<AssignmentDetail> Assignmentdetails = new();
+            foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id).Include(m => m.OrderInfo))
             {
                 Assignmentdetails.Add(Detail);
             }
