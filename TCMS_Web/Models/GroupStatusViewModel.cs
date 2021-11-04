@@ -24,6 +24,7 @@ namespace TCMS_Web.Models
     }
     public class ShippingViewModel
     {
+        public int Id { get; set; }
         public string EmployeeID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -33,6 +34,7 @@ namespace TCMS_Web.Models
         public string Model { get; set; }
         public string Type { get; set; }
         public DateTime DepartureTime { get; set; }
+        public bool? Status { get; set; }
 
         public IEnumerable<AssignmentDetail> AssignmentDetails { get; set; }
     }

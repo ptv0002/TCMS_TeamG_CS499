@@ -1,4 +1,4 @@
-﻿@model Models.ShippingAssignment
+﻿@model TCMS_Web.Models.ShippingViewModel
 
 @{
     ViewData["Title"] = "Edit Shipping Assignment";
@@ -6,36 +6,203 @@
 
 <h1>Edit</h1>
 
-<h4>ShippingAssignment</h4>
+<h4>Shipping Assignment</h4>
 <hr />
-<form asp-action="Edit">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="VehicleId" class="control-label"></label>
-        <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId">required</select>
-        <span asp-validation-for="VehicleId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="EmployeeId" class="control-label"></label>
-        <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
-        <span asp-validation-for="EmployeeId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="DepartureTime" class="control-label"></label>
-        <input asp-for="DepartureTime" class="form-control" />
-        <span asp-validation-for="DepartureTime" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Status" class="control-label"></label>
-        <input asp-for="Status" class="form-control" required />
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-    </div>
-</form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+        </li>
+    </ul>
 </div>
+
+<div class="tab-content">
+
+    <div role="tabpanel" class="tab-pane active" id="first">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" type="hidden" />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Employee ID
+                </dt>
+                <dd class="col-sm-10">
+                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
+                    <span asp-validation-for="EmployeeID" class="text-danger"></span>
+                </dd>
+
+                <dt class="col-sm-2">
+                    First Name
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+
+                <dt class="col-sm-2">
+                    Phone Number
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </dd>
+
+                <dt class="col-sm-2">
+                    Vehicle ID
+                </dt>
+                <dd class="col-sm-10">
+                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId">required</select>
+                    <span asp-validation-for="VehicleID" class="text-danger"></span>
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Brand)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Brand)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Model)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Model)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Type)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Type)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DepartureTime)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="DepartureTime" class="form-control" />
+                    <span asp-validation-for="DepartureTime" class="text-danger"></span>
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    <input type="text" asp-for="Status" class="form-control" required />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </dd>
+            </dl>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="second">
+        <p>
+            <a asp-action="Add" asp-controller="AssignmentDetail">Add</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        OrderInfo
+                    </th>
+                    <th>
+                        InShipping
+                    </th>
+                    <th>
+                        ArrivalConfirm
+                    </th>
+                    <th>
+                        ArrivalTime
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AssignmentDetails)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderInfoId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InShipping)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArrivalTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" data-EditShippingAssignment="True">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @*
+            @await Component.InvokeAsync("AssignmentDetail")
+        *@
+    </div>
+</div>
+@*
+    @{
+        ViewData["Title"] = "Edit Shipping Assignment";
+    }
+
+    <h1>Edit</h1>
+
+    <h4>ShippingAssignment</h4>
+    <hr />
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="VehicleId" class="control-label"></label>
+            <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId">required</select>
+            <span asp-validation-for="VehicleId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EmployeeId" class="control-label"></label>
+            <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
+            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DepartureTime" class="control-label"></label>
+            <input asp-for="DepartureTime" class="form-control" />
+            <span asp-validation-for="DepartureTime" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <input asp-for="Status" class="form-control" required />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+*@
