@@ -95,7 +95,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add ([Bind("Id, Brand,Year,Model,Type,ReadyStatus,Status,Parts,LastMaintenanceDate,MaintenanceCycle")] Vehicle vehicle)
+        public async Task<IActionResult> Add ([Bind("Id,Brand,Year,Model,Type,ReadyStatus,Status,Parts,LastMaintenanceDate,MaintenanceCycle")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
