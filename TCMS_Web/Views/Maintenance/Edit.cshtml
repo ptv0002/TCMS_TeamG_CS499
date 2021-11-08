@@ -1,49 +1,165 @@
-﻿@model Models.MaintenanceInfo
+﻿@model TCMS_Web.Models.MaintenanceViewModel
 
 @{
     ViewData["Title"] = "Edit Maintenance Info";
 }
 
 
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Maintenance Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Maintenance Record For Vehicle</a>
+        </li>
+    </ul>
+</div>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="first">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                <span asp-validation-for="EmployeeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VehicleId" class="control-label"></label>
-                <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId"></select>
-                <span asp-validation-for="VehicleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Datetime" class="control-label"></label>
-                <input asp-for="Datetime" class="form-control" required />
-                <span asp-validation-for="Datetime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" required />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" required />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+            <input asp-for="Id" type="hidden" />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Employee ID
+                </dt>
+                <dd class="col-sm-10">
+                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
+                    <span asp-validation-for="EmployeeID" class="text-danger"></span>
+                </dd>
+
+                <dt class="col-sm-2">
+                    First Name
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+
+                <dt class="col-sm-2">
+                    Phone Number
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </dd>
+
+                <dt class="col-sm-2">
+                    Vehicle ID
+                </dt>
+                <dd class="col-sm-10">
+                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId">required</select>
+                    <span asp-validation-for="VehicleID" class="text-danger"></span>
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Brand)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Brand)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Model)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Model)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Type)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Type)
+                </dd>
+                <dt class="col-sm-2">
+                    Last Maintenance Performed
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="DateTime" class="form-control" required />
+                    <span asp-validation-for="DateTime" class="text-danger"></span>
+                </dd>
+                <dt class="col-sm-2">
+                    Maintenance Notes
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Notes" class="form-control" required />
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </dd>
+                <dt class="col-sm-2">
+                    Status
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Status" class="form-control" required />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </dd>
+            </dl>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
         </form>
-        </div>
-    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="second">
+        <p>
+            <a asp-action="Add" asp-controller="MaintenanceDetail" asp-route-id="@Model.Id">Add</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Service
+                    </th>
+                    <th>
+                        Estimated Cost
+                    </th>
+                    <th>
+                        Notes
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MaintenanceDetails)
+                {
+                    <tr>
+
+                        <td>
+                            <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id" data-EditMaintenance="True">Edit</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Service)
+                        </td>
+                        <td>
+                            @Html.DisplayName("$")
+                            @Html.DisplayFor(modelItem => item.EstimateCost)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
    

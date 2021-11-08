@@ -85,7 +85,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MaintenanceDetail maintenanceDetail)
+        public async Task<IActionResult> Edit(int id, bool? EditMaintenance ,MaintenanceDetail maintenanceDetail)
         {
             if (id != maintenanceDetail.Id)
             {
@@ -115,6 +115,10 @@ namespace TCMS_Web.Controllers
                     {
                         throw;
                     }
+                }
+                if (EditMaintenance == true)
+                {
+                    return RedirectToAction("Edit", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId});
                 }
                 return RedirectToAction("Details", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId });
             }
