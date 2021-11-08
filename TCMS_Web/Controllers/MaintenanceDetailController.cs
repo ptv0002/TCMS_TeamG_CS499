@@ -55,7 +55,7 @@ namespace TCMS_Web.Controllers
                     Status = maintenanceDetail.Status,
                 };
 
-                _context.Add(maintenanceDetail);
+                _context.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Maintenance", new {id = maintenanceDetail.MaintenanceInfoId});
             }
@@ -115,10 +115,6 @@ namespace TCMS_Web.Controllers
                     {
                         throw;
                     }
-                }
-                if (EditMaintenance == true)
-                {
-                    return RedirectToAction("Edit", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId});
                 }
                 return RedirectToAction("Details", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId });
             }

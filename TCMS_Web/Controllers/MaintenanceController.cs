@@ -129,7 +129,7 @@ namespace TCMS_Web.Controllers
                 };
                 _context.Add(maintenanceInfo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Maintenance", new { id = maintenanceInfo.Id });
+                return RedirectToAction("Edit", "Maintenance", new { id = maintenanceInfo.Id });
             }
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
