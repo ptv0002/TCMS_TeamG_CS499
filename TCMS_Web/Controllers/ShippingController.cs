@@ -109,8 +109,8 @@ namespace TCMS_Web.Controllers
             {
                 var item = new ShippingAssignment
                 {
-                    VehicleId = shippingassignment.VehicleId,
-                    EmployeeId = shippingassignment.EmployeeId,
+                    VehicleId = shippingassignment.VehicleID,
+                    EmployeeId = shippingassignment.EmployeeID,
                     DepartureTime = shippingassignment.DepartureTime,
                     Status = shippingassignment.Status
                 };
@@ -118,7 +118,7 @@ namespace TCMS_Web.Controllers
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 var newassignment = await _context.ShippingAssignments.OrderBy(m => m.Id).LastAsync();
-                return RedirectToAction("Details", "Shipping", new { id = newassignment.Id });
+                return RedirectToAction("Edit", "Shipping", new { id = newassignment.Id });
             }
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleID);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeID);
@@ -150,6 +150,8 @@ namespace TCMS_Web.Controllers
 
                  var model = new ShippingViewModel
                 {
+                  Id = (int)Id,
+                  Status = item.Status,
                   EmployeeID = item.EmployeeId,
                   FirstName = item.Employee.FirstName,
                   LastName = item.Employee.LastName,
