@@ -49,6 +49,7 @@ namespace TCMS_Web.Models
         public string Type { get; set; }
         public DateTime ? DateTime { get; set; }
         public string Notes { get; set; }
+        public bool? Status { get; set; }
         public IEnumerable<MaintenanceDetail> MaintenanceDetails { get; set; }
     }
 }

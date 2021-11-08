@@ -96,6 +96,7 @@ namespace TCMS_Web.Controllers
                 Type = vehicle.Type,
                 DateTime = item.Datetime,
                 Notes = item.Notes,
+                Status = item.Status,
                 MaintenanceDetails = Maintenancedetails
             };
 
@@ -128,7 +129,7 @@ namespace TCMS_Web.Controllers
                 };
                 _context.Add(maintenanceInfo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Maintenance", new { id = maintenanceInfo.Id });
             }
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
@@ -148,9 +149,34 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
+            var item = await _context.MaintenanceInfos.FirstOrDefaultAsync(m => m.Id == id);
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            List<MaintenanceDetail> Maintenancedetails = new List<MaintenanceDetail>();
+            foreach (MaintenanceDetail Detail in _context.MaintenanceDetails.Where(m => m.MaintenanceInfoId == id))
+            {
+                Maintenancedetails.Add(Detail);
+            }
+
+            var model = new MaintenanceViewModel
+            {
+                Id = (int)id,
+                EmployeeID = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                PhoneNumber = employee.PhoneNumber,
+                VehicleID = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                DateTime = item.Datetime,
+                Notes = item.Notes,
+                Status = item.Status,
+                MaintenanceDetails = Maintenancedetails
+            };
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
-            return View(maintenanceInfo);
+            return View(model);
         }
 
         // POST: Maintenance/Edit/5
