@@ -34,28 +34,28 @@ namespace TCMS_Web.Controllers
         public ActionResult Add(int ?Id)
         {
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
-            return View(new AssignmentDetail());
+            return View(new AssignmentDetail() { ShippingAssignmentId = Id });
         }
 
         // POST: AssignmentDetailController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(int Id, AssignmentDetail assignmentdetail)
+        public async Task<ActionResult> Add( AssignmentDetail assignmentdetail)
         {
             if (ModelState.IsValid)
             {
-                var item = new AssignmentDetail
+                var item = new AssignmentDetail()
                 {
-                    ShippingAssignmentId = Id,
                     OrderInfoId = assignmentdetail.OrderInfoId,
                     ArrivalConfirm = assignmentdetail.ArrivalConfirm,
                     ArrivalTime = assignmentdetail.ArrivalTime,
-                    Status = assignmentdetail.Status
+                    Status = assignmentdetail.Status,
+                    ShippingAssignmentId = assignmentdetail.ShippingAssignmentId
                 };
 
-                _context.Add(assignmentdetail);
+                _context.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Shipping", new { id = Id });
+                return RedirectToAction("Details", "Shipping", new { id = assignmentdetail.ShippingAssignmentId});
             }
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);

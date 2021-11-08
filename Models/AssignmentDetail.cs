@@ -11,6 +11,7 @@ namespace Models
     [Table("AssignmentDetail")]
     public class AssignmentDetail
     {
+
         public int Id { get; set; }
         [Display(Name = "Order ID")]
         public int? OrderInfoId { get; set; }

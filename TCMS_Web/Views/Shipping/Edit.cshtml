@@ -112,6 +112,9 @@
             <thead>
                 <tr>
                     <th>
+
+                    </th>
+                    <th>
                         OrderInfo
                     </th>
                     <th>
@@ -132,26 +135,26 @@
             <tbody>
                 @foreach (var item in Model.AssignmentDetails)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfoId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.InShipping)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ArrivalConfirm)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ArrivalTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" asp-route-EditShippingAssignment="True">Edit</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" asp-route-EditShippingAssignment="True">Edit</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInfoId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InShipping)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArrivalTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -109,8 +109,8 @@ namespace TCMS_Web.Controllers
             {
                 var item = new ShippingAssignment
                 {
-                    VehicleId = shippingassignment.VehicleId,
-                    EmployeeId = shippingassignment.EmployeeId,
+                    VehicleId = shippingassignment.VehicleID,
+                    EmployeeId = shippingassignment.EmployeeID,
                     DepartureTime = shippingassignment.DepartureTime,
                     Status = shippingassignment.Status
                 };
@@ -147,15 +147,17 @@ namespace TCMS_Web.Controllers
 
                  var model = new ShippingViewModel
                 {
-                  EmployeeID = employee.Id,
-                  FirstName = employee.FirstName,
-                  LastName = employee.LastName,
-                  PhoneNumber = employee.PhoneNumber,
-                  VehicleID = vehicle.Id,
-                  Brand = vehicle.Brand,
-                  Model = vehicle.Model,
-                  Type = vehicle.Type,
-                  DepartureTime = (DateTime)item.DepartureTime,
+                  Id = (int)Id,
+                  Status = item.Status,
+                  EmployeeID = item.EmployeeId,
+                  FirstName = item.Employee.FirstName,
+                  LastName = item.Employee.LastName,
+                  PhoneNumber = item.Employee.PhoneNumber,
+                  VehicleID = item.VehicleId,
+                  Brand = item.Vehicle.Brand,
+                  Model = item.Vehicle.Model,
+                  Type = item.Vehicle.Type,
+                  DepartureTime = item.DepartureTime,
                   AssignmentDetails = Assignmentdetails
                 };
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);

@@ -45,18 +45,26 @@ namespace TCMS_Web.Models
 
         public IEnumerable<AssignmentDetail> AssignmentDetails { get; set; }
     }
+
     public class MaintenanceViewModel
     {
         public int Id { get; set; }
+        [Display(Name = "Employee ID")]
         public string EmployeeID { get; set; }
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+        [Display(Name = "Vehicle ID")]
         public string VehicleID { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
         public string Type { get; set; }
+        [Display(Name = "Departure Time")]
         public DateTime? DateTime { get; set; }
+        public bool? Status { get; set; }
         public string Notes { get; set; }
         public IEnumerable<MaintenanceDetail> MaintenanceDetails { get; set; }
     }
