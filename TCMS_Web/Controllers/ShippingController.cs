@@ -98,12 +98,12 @@ namespace TCMS_Web.Controllers
         { 
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id");
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
-            return View(new ShippingViewModel());
+            return View(new ShippingAssignment());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add (ShippingViewModel shippingassignment)
+        public async Task<ActionResult> Add (ShippingAssignment shippingassignment)
         {
             if (ModelState.IsValid)
             {
@@ -118,13 +118,12 @@ namespace TCMS_Web.Controllers
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 var newassignment = await _context.ShippingAssignments.OrderBy(m => m.Id).LastAsync();
-                return RedirectToAction("Details", "Shipping", new { id = newassignment.Id });
+                return RedirectToAction("Edit", "Shipping", new { id = newassignment.Id });
             }
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleID);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeID);
             return View(shippingassignment);
         }
-
         public async Task<IActionResult> Edit(int? Id)
         {
             if (Id == null)
@@ -139,9 +138,7 @@ namespace TCMS_Web.Controllers
             }
                 var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
                 var employee = await _context.Employees.FindAsync(item.EmployeeId);
-                item.Employee = employee;
                 var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
-                item.Vehicle = vehicle;
                 List<AssignmentDetail> Assignmentdetails = new List<AssignmentDetail>();
                 foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id))
                 {
@@ -150,15 +147,15 @@ namespace TCMS_Web.Controllers
 
                  var model = new ShippingViewModel
                 {
-                  EmployeeID = item.EmployeeId,
-                  FirstName = item.Employee.FirstName,
-                  LastName = item.Employee.LastName,
-                  PhoneNumber = item.Employee.PhoneNumber,
-                  VehicleID = item.VehicleId,
-                  Brand = item.Vehicle.Brand,
-                  Model = item.Vehicle.Model,
-                  Type = item.Vehicle.Type,
-                  DepartureTime = item.DepartureTime,
+                  EmployeeID = employee.Id,
+                  FirstName = employee.FirstName,
+                  LastName = employee.LastName,
+                  PhoneNumber = employee.PhoneNumber,
+                  VehicleID = vehicle.Id,
+                  Brand = vehicle.Brand,
+                  Model = vehicle.Model,
+                  Type = vehicle.Type,
+                  DepartureTime = (DateTime)item.DepartureTime,
                   AssignmentDetails = Assignmentdetails
                 };
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);

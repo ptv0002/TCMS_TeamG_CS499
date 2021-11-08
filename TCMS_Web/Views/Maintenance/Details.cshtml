@@ -20,59 +20,71 @@
 
     <div role="tabpanel" class="tab-pane active" id="first">
         <dl class="row">
-            <dt class="col-sm-4">
-                @Html.DisplayName("ID of Maintenance worker:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Employee ID")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.EmployeeID)
             </dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayName("First Name of Maintenance Worker:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("First Name")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.FirstName)
             </dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayName("Last Name of Maintenance Worker:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Last Name")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.LastName)
             </dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayName("Phone Number of Maintenance Worker:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Phone Number")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.PhoneNumber)
             </dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayName("ID of Vehicle worked on:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Vehicle ID")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.VehicleID)
             </dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayName("Brand of Vehicle Worked on:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Brand")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Brand)
             </dd>
 
-            <dt class="col-sm-4">
-                @Html.DisplayName("Model of Vehicle Worked on:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Model")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Model)
             </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayName("Type of Vehicle Worked on:")
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Type")
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Type)
+            </dd>
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Notes")
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayName("Status")
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Status)
             </dd>
         </dl>
         <div>
