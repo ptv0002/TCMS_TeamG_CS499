@@ -82,14 +82,15 @@ namespace TCMS_Web.Controllers
                 return View(new GroupStatusViewModel<ShippingAssignment>()
                 {
                     StatusViewModel = statusModel,
-                    ClassModel = _context.ShippingAssignments.Include(o => o.Employee).Include(o => o.Vehicle).ToList()
+                    ClassModel = _context.ShippingAssignments.Include(o => o.Employee).Include(o => o.Vehicle).OrderByDescending(m => m.DepartureTime).ToList()
                 });
             }
             // Display employees depending on their status
             return View(new GroupStatusViewModel<ShippingAssignment>()
             {
                 StatusViewModel = statusModel,
-                ClassModel = _context.ShippingAssignments.Where(m => m.Status == Convert.ToBoolean(status)).Include(o => o.Employee).Include(o => o.Vehicle).ToList()
+                ClassModel = _context.ShippingAssignments.Where(m => m.Status == Convert.ToBoolean(status))
+                .Include(o => o.Employee).Include(o => o.Vehicle).OrderByDescending(m => m.DepartureTime).ToList()
             });
         }
         public IActionResult Add()

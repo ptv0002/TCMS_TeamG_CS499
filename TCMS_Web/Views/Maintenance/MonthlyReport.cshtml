@@ -2,62 +2,116 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-@model IEnumerable<Models.MaintenanceDetail>
-<table class="table">
-    <thead>
-        <tr>
-            @if (!ViewBag.Individual)
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.MaintenanceInfo.VehicleId)
-                </th>
-            }
-            <th>
-                @Html.DisplayNameFor(model => model.MaintenanceInfo.EmployeeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaintenanceInfo.Datetime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Service)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimateCost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@model TCMS_Web.Models.MaintenanceMonthlyReportViewModel
+@if (Model.DetailList.Count() > 0)
+{
+    <hr />
+    <h3 class="text-gray-800">Maintenance Services</h3>
+    <table class="table">
+        <thead>
             <tr>
                 @if (!ViewBag.Individual)
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaintenanceInfo.VehicleId)
-                    </td>
+                    <th>
+                        Vehicle ID
+                    </th>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaintenanceInfo.EmployeeId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaintenanceInfo.Datetime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Service)
-                </td>
-                <td>
-                    $@Html.DisplayFor(modelItem => item.EstimateCost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
+                <th>
+                    Employee ID
+                </th>
+                <th>
+                    Date Time
+                </th>
+                <th>
+                    Service
+                </th>
+                <th>
+                    Estimated Cost
+                </th>
+                <th>
+                    Notes
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DetailList)
+            {
+                <tr>
+                    @if (!ViewBag.Individual)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaintenanceInfo.VehicleId)
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaintenanceInfo.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaintenanceInfo.Datetime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Service)
+                    </td>
+                    <td>
+                        $@Html.DisplayFor(modelItem => item.EstimateCost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@if (Model.InfoList.Count() > 0)
+{
+    <hr />
+    <h3 class="text-gray-800">No Service Maintenance</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                @if (!ViewBag.Individual)
+                {
+                    <th>
+                        Vehicle ID
+                    </th>
+                }
+                <th>
+                    Employee ID
+                </th>
+                <th>
+                    Date Time
+                </th>
+                <th>
+                    Notes
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.InfoList)
+            {
+                <tr>
+                    @if (!ViewBag.Individual)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VehicleId)
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Datetime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <div>
     <a asp-action="Index" asp-controller="Home">Back to Dashboard</a>
 </div>

@@ -23,6 +23,11 @@ namespace TCMS_Web.Models
         public StatusViewModel ShippingStatus { get; set; }
         public IEnumerable<ShippingAssignment> ShippingList { get; set; }
     }
+    public class MaintenanceMonthlyReportViewModel
+    {
+        public IEnumerable<MaintenanceInfo> InfoList { get; set; }
+        public IEnumerable<MaintenanceDetail> DetailList { get; set; }
+    }
     public class ShippingViewModel
     {
         public int Id { get; set; }

@@ -143,8 +143,7 @@
             else color = "transparent";
             <tr class="@color">
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Vehicle">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Vehicle">Details</a>
+                    <a asp-action="Add" asp-route-vehicleId="@item.Id" asp-controller="Maintenance">Add Maintenance</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
