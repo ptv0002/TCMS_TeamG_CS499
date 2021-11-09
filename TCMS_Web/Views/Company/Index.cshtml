@@ -1,70 +1,77 @@
-﻿@model IEnumerable<Models.Company>
-
-@{
+﻿@{
     ViewData["Title"] = "Company Page";
 }
 <p>
     <a asp-action="Add"> Add </a>
 </p>
+@model GroupStatusViewModel<Models.Company>
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group col">
+        <label class="mr-1 text-gray-800">Show</label>
+        <select asp-for="StatusViewModel.SelectedValue" class="mr-1" asp-items="ViewBag.statusModel"></select>
+        <label class="mr-3 text-gray-800">records</label>
+        <input type="submit" formmethod="post" class="btn btn-primary" value="Update" />
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
-                @Html.DisplayName("")
+                Full Company Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                City
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                State
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.State)
+                Zip
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Zip)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactPerson)
+                Contact Person
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.State)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Zip)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactPerson)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.ClassModel)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Zip)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPerson)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Additional Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model ReportViewModel
 <hr />
@@ -24,7 +24,6 @@
         <label class="control-label">Year</label>
         <select asp-for="Years.SelectedValue" class="mr-1" asp-items="ViewBag.YearModel"></select>
     </div>
-    
 </div>
     <div class="form-group">
         <input type="submit" formmethod="post" value="Generate Report" class="btn btn-primary" />

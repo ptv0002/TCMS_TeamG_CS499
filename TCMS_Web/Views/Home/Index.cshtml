@@ -99,6 +99,11 @@
 }
 <hr />
 <h2 class="text-gray-800">Routine Maintenance (Next 15 Days)</h2>
+<div class="form-group">
+    <label class="col">• Red Highlight - Need immediate maintenance</label>
+    <label class="col">• Yellow Hightlight - Overdue routine maintenance</label>
+    <label class="col">• Default - Comming up routine maintenance</label>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -129,7 +134,14 @@
     <tbody>
         @foreach (var item in Model.RoutineList)
         {
-            <tr class="@(item.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(item.MaintenanceCycle)) <= DateTime.Today || item.ReadyStatus == false ? "light-red":"default")">
+            string color;
+            @if (item.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(item.MaintenanceCycle)) <= DateTime.Today)
+            {
+                color = "light-yellow";
+            }
+            else if (item.ReadyStatus == false) color = "light-red";
+            else color = "transparent";
+            <tr class="@color">
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Vehicle">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Vehicle">Details</a>
@@ -164,7 +176,9 @@
     .light-red {
         background-color: #ffb5b7;
     }
-
+    .light-yellow {
+        background-color: #fffd8d;
+    }
     .default {
         background-color: transparent;
     }

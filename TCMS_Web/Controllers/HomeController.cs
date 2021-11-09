@@ -73,7 +73,6 @@ namespace TCMS_Web.Controllers
             return View(new HomeIndexViewModel()
             {
                 RoutineList = routineList,
-
                 ShippingStatus = shippingStatusModel,
                 ShippingList = shippingList
             });
@@ -106,6 +105,7 @@ namespace TCMS_Web.Controllers
                     return RedirectToAction(methodName, model.ControllerName, 
                         new { month, year, model.IsIncoming_Individual, id = model.Id });
                 }
+
                 ModelState.AddModelError(string.Empty, "Invalid Input");
             }
             return AdditionalDetailsGenerator(model.Months.SelectedValue, model.Years.SelectedValue,
@@ -115,6 +115,19 @@ namespace TCMS_Web.Controllers
         public IActionResult AdditionalDetailsGenerator(string selectedMonth, string selectedYear,
             string controllerName, bool isIncoming_Individual, string selectedId)
         {
+            // Generate Page Title
+            string name;
+            if (controllerName == "Shipping")
+            {
+                if (isIncoming_Individual == true) name = "Incoming Shipment";
+                else name = "Outgoing Shipment";
+            }
+            else
+            {
+                if (isIncoming_Individual == true) name = "Individual Vehicle Maintenance";
+                else name = "All Maintenance";
+            }
+            ViewData["Title"] = "Additional Details for " + name;
             // Generate Month status model
             var months = new StatusViewModel
             {
@@ -151,10 +164,6 @@ namespace TCMS_Web.Controllers
                 IsIncoming_Individual = isIncoming_Individual
             };
             return View(model);
-        }
-        public IActionResult Privacy()
-        {
-            return View();
         }
         [HttpGet]
         [AllowAnonymous]

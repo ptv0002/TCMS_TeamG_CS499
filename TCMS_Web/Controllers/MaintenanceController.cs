@@ -61,10 +61,48 @@ namespace TCMS_Web.Controllers
             ViewBag.Individual = IsIncoming_Individual;
             return View(list);
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var tCMS_Context = _context.MaintenanceInfos.Include(m => m.Employee).Include(m => m.Vehicle);
-            return View(await tCMS_Context.ToListAsync());
+            return IndexGenerator("1");
+        }
+        [HttpPost]
+        public IActionResult Index(GroupStatusViewModel<MaintenanceInfo> model)
+        {
+            return IndexGenerator(model.StatusViewModel.SelectedValue);
+        }
+        public IActionResult IndexGenerator(string selected)
+        {
+            // Get user's input from dropdown
+            int status = Convert.ToInt32(selected);
+
+            // Populate status dropdown
+            var statusModel = new StatusViewModel
+            {
+                SelectedValue = selected,
+                KeyValues = new Dictionary<string, string> // Populate status options
+                {
+                    { "1", "Active" },
+                    { "0", "Inactive" },
+                    { "2", "Full" }
+                }
+            };
+            ViewData["statusModel"] = new SelectList(statusModel.KeyValues, "Key", "Value", statusModel.SelectedValue);
+
+            // Display all employees
+            if (status == 2)
+            {
+                return View(new GroupStatusViewModel<MaintenanceInfo>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.MaintenanceInfos.Include(o => o.Vehicle).Include(o => o.Employee).ToList()
+                });
+            }
+            // Display employees depending on their status
+            return View(new GroupStatusViewModel<MaintenanceInfo>()
+            {
+                StatusViewModel = statusModel,
+                ClassModel = _context.MaintenanceInfos.Where(m => m.Status == Convert.ToBoolean(status)).Include(o => o.Vehicle).Include(o => o.Employee).ToList()
+            });
         }
         // GET: Maintenance/Details/5
         public async Task<IActionResult> Details(int? id)
