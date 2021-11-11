@@ -9,27 +9,30 @@
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
+                <label asp-for="EmployeeId" class="control-label font-weight-bold"></label>
                 <select asp-for="EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="VehicleId" class="control-label"></label>
+                <label asp-for="VehicleId" class="control-label font-weight-bold"></label>
                 <select asp-for="VehicleId" class ="form-control" asp-items="ViewBag.VehicleId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Datetime" class="control-label"></label>
+                <label asp-for="Datetime" class="control-label font-weight-bold"></label>
                 <input asp-for="Datetime" class="form-control" required />
                 <span asp-validation-for="Datetime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
+                <label asp-for="Notes" class="control-label font-weight-bold"></label>
+                <textarea asp-for="Notes" class="form-control"></textarea>
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" required />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Status" class="control-label font-weight-bold"></label>
+                <div>
+                    @Html.DropDownList("Status", new List<SelectListItem>{
+                       new SelectListItem{ Text="Active", Value = "true" },
+                       new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />

@@ -1,14 +1,18 @@
 ﻿@model TCMS_Web.Models.ShippingViewModel
 @{
     ViewData["Title"] = "Shipping Assignment Details";
+    string status;
+    if (Model.Status == true) status = "Active";
+    else if (Model.Status == false) status = "Inactive";
+    else status = "Null";
 }
 <div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic Info</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed Info</a>
         </li>
     </ul>
 </div>
@@ -72,12 +76,17 @@
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Type)
             </dd>
-
             <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.DepartureTime)
             </dt>
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.DepartureTime)
+            </dd>
+            <dt class="col-sm-3 font-weight-bold">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-9">
+                @status
             </dd>
         </dl>
         <div>
@@ -122,34 +131,37 @@
             <tbody>
                 @foreach (var item in Model.AssignmentDetails)
                 {
+                    string dStatus;
+                    if (item.Status == true) dStatus = "Active";
+                    else if (item.Status == false) dStatus = "Inactive";
+                    else dStatus = "Null";
                     <tr>
-
                         <td>
                             <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id">Edit</a>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.SourceAddress)
+                            @item.OrderInfo.SourceAddress
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
+                            @item.OrderInfo.DestinationAddresss
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.PayStatus)
+                            @item.OrderInfo.PayStatus
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrderInfo.ShippingFee)
+                            $@item.OrderInfo.ShippingFee
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.InShipping)
+                            @item.InShipping
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                            @item.ArrivalConfirm
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ArrivalTime)
+                            @item.ArrivalTime
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Status)
+                            @dStatus
                         </td>
                     </tr>
                 }

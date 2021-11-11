@@ -114,10 +114,10 @@ namespace TCMS_Web.Controllers
                 }
                 if (EditShippingAssignment == true)
                 {
-                    return RedirectToAction("Edit", "Shipping", new { id = Id });
+                    return RedirectToAction("Edit", "Shipping", new { id = assignmentdetail.ShippingAssignmentId });
                 }
                 else
-                return RedirectToAction("Details", "Shipping", new { id = Id });
+                return RedirectToAction("Details", "Shipping", new { id = assignmentdetail.ShippingAssignmentId });
             }
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);

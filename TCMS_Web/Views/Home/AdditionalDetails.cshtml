@@ -5,24 +5,24 @@
 <hr />
 <form asp-action="AdditionalDetails">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <input asp-for="ControllerName" class="form-control" type="hidden" />
-    <input asp-for="IsIncoming_Individual" class="form-control" type="hidden" />
+    <input asp-for="ControllerName" type="hidden" />
+    <input asp-for="IsIncoming_Individual" type="hidden" />
     @if (Model.ControllerName == "Maintenance" && Model.IsIncoming_Individual == true)
     {
         <div class="form-group">
-            <label class="control-label">Vehicle ID</label>
+            <label class="control-label font-weight-bold">Vehicle ID</label>
             <select asp-for="Id" class="form-control" asp-items="ViewBag.VehicleId" ></select>
             <span asp-validation-for="Id" class="text-danger"></span>
         </div>
     }
 <div class="form-group row">
     <div class="col-sm-6 mb-3 mb-sm-0">
-        <label class="control-label">Month</label>
-        <select asp-for="Months.SelectedValue" class="mr-1" asp-items="ViewBag.MonthModel"></select>
+        <label class="control-label font-weight-bold">Month</label>
+        <select asp-for="Months.SelectedValue" class="mr-1 form-control" asp-items="ViewBag.MonthModel"></select>
     </div>
     <div class="col-sm-6">
-        <label class="control-label">Year</label>
-        <select asp-for="Years.SelectedValue" class="mr-1" asp-items="ViewBag.YearModel"></select>
+        <label class="control-label font-weight-bold">Year</label>
+        <select asp-for="Years.SelectedValue" class="mr-1 form-control" asp-items="ViewBag.YearModel"></select>
     </div>
 </div>
     <div class="form-group">

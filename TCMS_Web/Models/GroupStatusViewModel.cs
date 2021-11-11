@@ -73,4 +73,15 @@ namespace TCMS_Web.Models
         public string Notes { get; set; }
         public IEnumerable<MaintenanceDetail> MaintenanceDetails { get; set; }
     }
+    public class MonthlyPayroll
+    {
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Display(Name = "Employee ID")]
+        public string Id { get; set; }
+        public decimal? Compensation { get; set; }
+        public string Position { get; set; }
+    }
 }

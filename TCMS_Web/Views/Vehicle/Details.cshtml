@@ -2,61 +2,65 @@
 
 @{
     ViewData["Title"] = "Vehicle Details";
+    string status;
+    if (Model.Status == true) status = "Active";
+    else if (Model.Status == false) status = "Inactive";
+    else status = "Null";
 }
 <hr />
     <dl class="row">
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.Brand)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.Brand)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.Year)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.Year)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.Model)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.Model)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.Type)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.Type)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.ReadyStatus)
         </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.ReadyStatus)
+        <dd class = "col-sm-9">
+            @Model.ReadyStatus
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Status)
+        <dd class = "col-sm-9">
+            @status
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.Parts)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.Parts)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.LastMaintenanceDate)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.LastMaintenanceDate)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.MaintenanceCycle)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.MaintenanceCycle)
         </dd>
     </dl>

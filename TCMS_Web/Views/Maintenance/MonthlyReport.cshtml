@@ -3,7 +3,7 @@
 
 }
 @model TCMS_Web.Models.MaintenanceMonthlyReportViewModel
-@if (Model.DetailList.Count() > 0)
+@if (Model.DetailList.Any())
 {
     <hr />
     <h3 class="text-gray-800">Maintenance Services</h3>
@@ -63,7 +63,7 @@
         </tbody>
     </table>
 }
-@if (Model.InfoList.Count() > 0)
+@if (Model.InfoList.Any())
 {
     <hr />
     <h3 class="text-gray-800">No Service Maintenance</h3>

@@ -1,0 +1,140 @@
+﻿@model Models.Employee
+
+@{
+    ViewData["Title"] = "Delete Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr />
+<div class="form-group row">
+    <div class="col-sm-4 mb-3 mb-sm-0 col">
+        <div class="control-label font-weight-bold">
+            First Name
+        </div>
+        <div>
+            @Model.FirstName
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="control-label font-weight-bold">
+            Middle Name
+        </div>
+        <div>
+            @Model.MiddleName
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="control-label font-weight-bold">
+            Last Name
+        </div>
+        <div>
+            @Model.LastName
+        </div>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-4 mb-3 mb-sm-0 col">
+        <div class="control-label font-weight-bold">
+            Employee ID
+        </div>
+        <div>
+            @Model.Id
+        </div>
+    </div>
+    <div class="col-sm-8 col">
+        <div class="control-label font-weight-bold">
+            Email
+        </div>
+        <div>
+            @Model.Email
+        </div>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-4 mb-3 mb-sm-0">
+        <div class="control-label font-weight-bold">
+            Status
+        </div>
+        <div>
+            @Model.Status
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="control-label font-weight-bold">
+            Address
+        </div>
+        <div>
+            @Model.Address
+        </div>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-4 mb-3 mb-sm-0">
+        <div class="control-label font-weight-bold">
+            City
+        </div>
+        <div>
+            @Model.City
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="control-label font-weight-bold">
+            State
+        </div>
+        <div>
+            @Model.State
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="control-label font-weight-bold">
+            Zip
+        </div>
+        <div>
+            @Model.Zip
+        </div>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="control-label font-weight-bold">
+            Cell Phone
+        </div>
+        <div>
+            @Model.PhoneNumber
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="control-label font-weight-bold">
+            Home Phone Number
+        </div>
+        <div>
+            @Model.HomePhoneNum
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <a data-toggle="modal" data-target="#deleteModal" class="btn btn-danger">Delete</a>
+</div>
+<div class="mb-3">
+    <a asp-action="Index">Back to List</a>
+</div>
+<div class="modal fade show" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteLabel">Are you sure?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to
+                <label class="text-danger">permanently delete </label>
+                this employee? This process cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a asp-action="DeleteEmployee" class="btn btn-danger" asp-route-id="@Model.Id">Yes, delete it</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -39,37 +39,40 @@
             <th>
                 Contact Person
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.ClassModel)
         {
+            string status;
+            @if (item.Status == true) status = "Active";
+            else if (item.Status == false) status = "Inactive";
+            else status = "Null";
             <tr>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @item.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @status
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Address)
+                    @item.Address
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.City)
+                    @item.City
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.State)
+                    @item.State
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Zip)
+                    @item.Zip
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ContactPerson)
+                    @item.ContactPerson
                 </td>
             </tr>
         }

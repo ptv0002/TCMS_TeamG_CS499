@@ -99,9 +99,16 @@ namespace TCMS_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_context.Vehicles.Where(m => m.Id == vehicle.Id).Any())
+                {
+                    ModelState.AddModelError(string.Empty, "Vehicle ID is already taken.");
+                }
+                else
+                {
+                    _context.Add(vehicle);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(vehicle);
         }

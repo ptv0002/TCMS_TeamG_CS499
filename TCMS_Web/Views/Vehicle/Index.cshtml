@@ -18,8 +18,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-            </th>
+            <th></th>
             <th>
                 Id
             </th>
@@ -47,43 +46,46 @@
             <th>
                 MaintenanceCycle
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.ClassModel)
         {
+            string status;
+            @if (item.Status == true) status = "Active";
+            else if (item.Status == false) status = "Inactive";
+            else status = "Null";
             <tr>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @item.Id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Brand)
+                    @item.Brand
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Year)
+                    @item.Year
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Model)
+                    @item.Model
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Type)
+                    @item.Type
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReadyStatus)
+                    @item.ReadyStatus
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @status
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastMaintenanceDate)
+                    @item.LastMaintenanceDate
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MaintenanceCycle)
+                    @item.MaintenanceCycle
                 </td>
             </tr>
         }

@@ -2,14 +2,16 @@
 @{
     ViewData["Title"] = "Shipping Assignment Details";
     Layout = "~/Areas/_Layout.cshtml";
+    ViewBag.Controller = "Driver";
+
 }
 <div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic Info</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed Info</a>
         </li>
     </ul>
 </div>
@@ -17,66 +19,66 @@
 <div class="tab-content mt-3">
     <div role="tabpanel" class="tab-pane active" id="first">
         <dl class="row">
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.EmployeeID)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.EmployeeID)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.FirstName)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.FirstName)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.LastName)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.LastName)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.PhoneNumber)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.VehicleID)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.VehicleID)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.Brand)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Brand)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.Model)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Model)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.Type)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Type)
             </dd>
 
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 font-weight-bold">
                 @Html.DisplayNameFor(model => model.DepartureTime)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.DepartureTime)
             </dd>
         </dl>
@@ -96,13 +98,13 @@
                         Address
                     </th>
                     <th>
+                        Estimated Arrival Time
+                    </th>
+                    <th>
                         ArrivalConfirm
                     </th>
                     <th>
                         ArrivalTime
-                    </th>
-                    <th>
-                        Estimated Arrival Time
                     </th>
                 </tr>
             </thead>
@@ -131,16 +133,18 @@
                     }
                     else
                     {
-                        @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
+                        </td>
                     }
                     <td>
-                        @Html.DisplayFor(modelItem => item.ArrivalConfirm)
+                        @Html.DisplayFor(modelItem => item.OrderInfo.EstimateArrivalTime)
+                    </td>
+                    <td>
+                        @item.ArrivalConfirm
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ArrivalTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderInfo.EstimateArrivalTime)
                     </td>
                 </tr>
                 }

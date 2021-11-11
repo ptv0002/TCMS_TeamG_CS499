@@ -36,17 +36,23 @@
     </div>
     <div class="form-group">
         <label asp-for="ReadyStatus" class="control-label font-weight-bold"></label>
-        <input asp-for="ReadyStatus" class="form-control" required />
-        <span asp-validation-for="ReadyStatus" class="text-danger"></span>
+        <div>
+            @Html.DropDownList("ReadyStatus", new List<SelectListItem>{
+               new SelectListItem{ Text="True", Value = "true" },
+               new SelectListItem{ Text="False", Value = "false" }}, new { @class = "form-control" })
+        </div>
     </div>
     <div class="form-group">
         <label asp-for="Status" class="control-label font-weight-bold"></label>
-        <input asp-for="Status" class="form-control" required />
-        <span asp-validation-for="Status" class="text-danger"></span>
+        <div>
+            @Html.DropDownList("Status", new List<SelectListItem>{
+               new SelectListItem{ Text="Active", Value = "true" },
+               new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
+        </div>
     </div>
     <div class="form-group">
         <label asp-for="Parts" class="control-label font-weight-bold"></label>
-        <input asp-for="Parts" class="form-control" required />
+        <textarea asp-for="Parts" class="form-control" required></textarea>
         <span asp-validation-for="Parts" class="text-danger"></span>
     </div>
     <div class="form-group">

@@ -3,21 +3,18 @@
 @{
     ViewData["Title"] = "Edit Maintenance Info";
 }
-
-
 <div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Maintenance Info</a>
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic Info</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Maintenance Record For Vehicle</a>
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed Info</a>
         </li>
     </ul>
 </div>
 
-<hr />
-<div class="tab-content">
+<div class="tab-content mt-3">
     <div role="tabpanel" class="tab-pane active" id="first">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -27,10 +24,8 @@
                     Employee ID
                 </dt>
                 <dd class="col-sm-9">
-                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId">required</select>
-                    <span asp-validation-for="EmployeeID" class="text-danger"></span>
+                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId"></select>
                 </dd>
-
                 <dt class="col-sm-3 font-weight-bold">
                     First Name
                 </dt>
@@ -56,8 +51,7 @@
                     Vehicle ID
                 </dt>
                 <dd class="col-sm-9">
-                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId">required</select>
-                    <span asp-validation-for="VehicleID" class="text-danger"></span>
+                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId"></select>
                 </dd>
 
                 <dt class="col-sm-3 font-weight-bold">
@@ -81,7 +75,7 @@
                     @Html.DisplayFor(model => model.Type)
                 </dd>
                 <dt class="col-sm-3 font-weight-bold">
-                    Last Maintenance Performed
+                    @Html.DisplayNameFor(model => model.DateTime)
                 </dt>
                 <dd class="col-sm-9">
                     <input asp-for="DateTime" class="form-control" required />
@@ -91,15 +85,18 @@
                     Maintenance Notes
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="Notes" class="form-control" />
+                    <textarea asp-for="Notes" class="form-control"></textarea>
                     <span asp-validation-for="Notes" class="text-danger"></span>
                 </dd>
                 <dt class="col-sm-3 font-weight-bold">
                     Status
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="Status" class="form-control" required />
-                    <span asp-validation-for="Status" class="text-danger"></span>
+                    <div>
+                        @Html.DropDownList("Status", new List<SelectListItem>{
+                           new SelectListItem{ Text="Active", Value = "true" },
+                           new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
+                    </div>
                 </dd>
             </dl>
             <div class="form-group">
@@ -118,9 +115,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>
-
-                    </th>
+                    <th></th>
                     <th>
                         Service
                     </th>
@@ -138,23 +133,25 @@
             <tbody>
                 @foreach (var item in Model.MaintenanceDetails)
                 {
+                    string status;
+                    @if (item.Status == true) status = "Active";
+                    else if (item.Status == false) status = "Inactive";
+                    else status = "Null";
                     <tr>
-
                         <td>
-                            <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id" data-EditMaintenance="True">Edit</a>
+                            <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id">Edit</a>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Service)
+                            @item.Service
                         </td>
                         <td>
-                            @Html.DisplayName("$")
-                            @Html.DisplayFor(modelItem => item.EstimateCost)
+                            $@item.EstimateCost
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Notes)
+                            @item.Notes
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Status)
+                            @status
                         </td>
                     </tr>
                 }

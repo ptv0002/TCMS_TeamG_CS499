@@ -52,6 +52,7 @@ namespace TCMS_Web.Controllers
                 {
                     { "1", "Active" },
                     { "0", "Inactive" },
+                    { "3", "New" },
                     { "2", "Full" }
                 }
             };
@@ -64,6 +65,15 @@ namespace TCMS_Web.Controllers
                 {
                     StatusViewModel = statusModel,
                     ClassModel = _context.Employees.ToList()
+                });
+            }
+            // Display new employee accounts
+            if (status == 3)
+            {
+                return View(new GroupStatusViewModel<Employee>()
+                {
+                    StatusViewModel = statusModel,
+                    ClassModel = _context.Employees.Where(m => m.Status == null).ToList()
                 });
             }
             // Display employees depending on their status
@@ -177,6 +187,47 @@ namespace TCMS_Web.Controllers
             }
             return View(model);
         }
+        // GET: EmployeeController/Delete/5
+        public async Task<ActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var model = await _context.Employees.FindAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        // POST: EmployeeController/Delete/5
+        public async Task<ActionResult> DeleteEmployee(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var model = await _context.Employees.FindAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(model);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View(model);
+        }            
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
@@ -235,20 +286,5 @@ namespace TCMS_Web.Controllers
             }
             return RedirectToAction("Edit", new { Id = userId });
         }
-    }
-
-    public class MonthlyPayroll
-    {
-        public MonthlyPayroll()
-        {
-        }
-        [Display (Name="First Name")]
-        public string FirstName { get; set; }
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-        [Display(Name = "Employee ID")]
-        public string Id { get; set; }
-        public decimal? Compensation { get; set; }
-        public string Position { get; set; }
     }
 }

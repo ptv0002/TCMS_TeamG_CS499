@@ -1,8 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Edit Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model Models.Employee
 <hr />
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-2">User Roles</h4>
+    </div>
+    <div class="card-body">
+        @ViewBag.UserRoles
+    </div>
+    <div class="card-footer">
+        <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">
+            Manage Roles
+        </a>
+    </div>
+</div>
 <form asp-action="Edit">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group row">
@@ -50,8 +64,11 @@
         </div>
         <div class="col-sm-6">
             <label asp-for="Status" class="control-label font-weight-bold"></label>
-            <input asp-for="Status" class="form-control" required />
-            <span asp-validation-for="Status" class="text-danger"></span>
+            <div>
+                @Html.DropDownList("Status", new List<SelectListItem>{
+                   new SelectListItem{ Text="Active", Value = "true" },
+                   new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -106,17 +123,4 @@
 </form>
 <div class="mb-3">
     <a asp-action="Index">Back to List</a>
-</div>
-<div class="card">
-    <div class="card-header">
-        <h3>User Roles</h3>
-    </div>
-    <div class="card-body">
-        @ViewBag.UserRoles
-    </div>
-    <div class="card-footer">
-        <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn btn-primary">
-            Manage Roles
-        </a>
-    </div>
 </div>

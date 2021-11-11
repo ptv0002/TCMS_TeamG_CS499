@@ -35,22 +35,26 @@
     <tbody>
         @foreach (var item in Model.ClassModel)
         {
+            string status;
+            @if (item.Status == true) status = "Active";
+            else if (item.Status == false) status = "Inactive";
+            else status = "Null";
             <tr>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Employee.Id)
+                    @item.Employee.Id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Vehicle.Id)
+                    @item.Vehicle.Id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                    @item.DepartureTime
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @status
                 </td>
             </tr>
         }

@@ -2,8 +2,12 @@
 
 @{
     ViewData["Title"] = " Employee Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string status;
+    if (Model.Status == true) status = "Active";
+    else if (Model.Status == false) status = "Inactive";
+    else status = "Null";
 }
-
 <hr />
 <dl class="row">
     <dt class="col-sm-3 font-weight-bold">
@@ -46,7 +50,7 @@
         @Html.DisplayNameFor(model => model.Status)
     </dt>
     <dd class="col-sm-9">
-        @Html.DisplayFor(model => model.Status)
+        @status
     </dd>
     <dt class="col-sm-3 font-weight-bold">
         @Html.DisplayNameFor(model => model.Address)
@@ -88,7 +92,7 @@
         @Html.DisplayNameFor(model => model.PayRate)
     </dt>
     <dd class="col-sm-9">
-        @Html.DisplayFor(model => model.PayRate)
+        $@Html.DisplayFor(model => model.PayRate)
     </dd>
     <dt class="col-sm-3 font-weight-bold">
         @Html.DisplayNameFor(model => model.StartDate)

@@ -8,31 +8,40 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="ShippingAssignmentId" />
     <div class="form-group">
-        <label asp-for="OrderInfoId" class="control-label"></label>
+        <label asp-for="OrderInfoId" class="control-label font-weight-bold"></label>
         <select asp-for="OrderInfoId" class="form-control" asp-items="ViewBag.OrderInfoId"></select>
     </div>
     <div class="form-group">
-        <label asp-for="InShipping" class="control-label"></label>
-        <input asp-for="InShipping" class="form-control" required />
-        <span asp-validation-for="InShipping" class="text-danger"></span>
+        <label asp-for="InShipping" class="control-label font-weight-bold"></label>
+        <div>
+            @Html.DropDownList("InShipping", new List<SelectListItem>{
+               new SelectListItem{ Text="True", Value = "true" },
+               new SelectListItem{ Text="False", Value = "false" }}, new { @class = "form-control" })
+        </div>
     </div>
     <div class="form-group">
-        <label asp-for="ArrivalConfirm" class="control-label"></label>
-        <input asp-for="ArrivalConfirm" class="form-control" required />
-        <span asp-validation-for="ArrivalConfirm" class="text-danger"></span>
+        <label asp-for="ArrivalConfirm" class="control-label font-weight-bold"></label>
+        <div>
+            @Html.DropDownList("ArrivalConfirm", new List<SelectListItem>{
+               new SelectListItem{ Text="False", Value = "false" },
+               new SelectListItem{ Text="True", Value = "true" }}, new { @class = "form-control" })
+        </div>
     </div>
     <div class="form-group">
-        <label asp-for="ArrivalTime" class="control-label"></label>
+        <label asp-for="ArrivalTime" class="control-label font-weight-bold"></label>
         <input asp-for="ArrivalTime" class="form-control" />
         <span asp-validation-for="ArrivalTime" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Status" class="control-label"></label>
-        <input asp-for="Status" class="form-control" required />
-        <span asp-validation-for="Status" class="text-danger"></span>
+        <label asp-for="Status" class="control-label font-weight-bold"></label>
+        <div>
+            @Html.DropDownList("Status", new List<SelectListItem>{
+                new SelectListItem{ Text="Active", Value = "true" },
+                new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
+        </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
+        <input type="submit" value="Add" class="btn btn-primary" />
     </div>
 </form>
 

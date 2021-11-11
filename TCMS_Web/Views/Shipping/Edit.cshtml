@@ -3,19 +3,18 @@
 @{
     ViewData["Title"] = "Edit Shipping Assignment";
 }
-<hr />
 <div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic</a>
+            <a class="nav-link active" href="#first" aria-controls="first" role="tab" data-toggle="tab">Basic Info</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed</a>
+            <a class="nav-link" href="#second" aria-controls="second" role="tab" data-toggle="tab">Detailed Info</a>
         </li>
     </ul>
 </div>
 
-<div class="tab-content">
+<div class="tab-content mt-3">
 
     <div role="tabpanel" class="tab-pane active" id="first">
         <form asp-action="Edit">
@@ -27,7 +26,6 @@
                 </dt>
                 <dd class="col-sm-9">
                     <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                    <span asp-validation-for="EmployeeID" class="text-danger"></span>
                 </dd>
 
                 <dt class="col-sm-3 font-weight-bold">
@@ -56,7 +54,6 @@
                 </dt>
                 <dd class="col-sm-9">
                     <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId"></select>
-                    <span asp-validation-for="VehicleID" class="text-danger"></span>
                 </dd>
 
                 <dt class="col-sm-3 font-weight-bold">
@@ -92,8 +89,11 @@
                     @Html.DisplayNameFor(model => model.Status)
                 </dt>
                 <dd class="col-sm-9">
-                    <input type="text" asp-for="Status" class="form-control" required />
-                    <span asp-validation-for="Status" class="text-danger"></span>
+                    <div>
+                        @Html.DropDownList("Status", new List<SelectListItem>{
+                           new SelectListItem{ Text="Active", Value = "true" },
+                           new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
+                    </div>
                 </dd>
             </dl>
             <div class="form-group">
@@ -135,26 +135,30 @@
             <tbody>
                 @foreach (var item in Model.AssignmentDetails)
                 {
-                <tr>
-                    <td>
-                        <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" asp-route-EditShippingAssignment="True">Edit</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderInfoId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InShipping)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ArrivalConfirm)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ArrivalTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                </tr>
+                    string status;
+                    @if (item.Status == true) status = "Active";
+                    else if (item.Status == false) status = "Inactive";
+                    else status = "Null";
+                    <tr>
+                        <td>
+                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" asp-route-EditShippingAssignment="True">Edit</a>
+                        </td>
+                        <td>
+                            @item.OrderInfoId
+                        </td>
+                        <td>
+                            @item.InShipping
+                        </td>
+                        <td>
+                            @item.ArrivalConfirm
+                        </td>
+                        <td>
+                            @item.ArrivalTime
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

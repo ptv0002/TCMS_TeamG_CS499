@@ -84,13 +84,13 @@
                     <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Shipping">Details</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.VehicleId)
+                    @item.VehicleId
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                    @item.EmployeeId
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                    @item.DepartureTime
                 </td>
             </tr>
         }
@@ -102,7 +102,7 @@
 <div class="form-group">
     <label class="col">• Red Highlight - Need immediate maintenance</label>
     <label class="col">• Yellow Hightlight - Overdue routine maintenance</label>
-    <label class="col">• Default - Comming up routine maintenance</label>
+    <label class="col">• Default - Coming up routine maintenance</label>
 </div>
 <table class="table">
     <thead>
@@ -135,7 +135,7 @@
         @foreach (var item in Model.RoutineList)
         {
             string color;
-            @if (item.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(item.MaintenanceCycle)) <= DateTime.Today)
+            @if (item.LastMaintenanceDate.Value.AddDays(Convert.ToDouble(item.MaintenanceCycle)) <= DateTime.Today && item.ReadyStatus == true)
             {
                 color = "light-yellow";
             }
@@ -146,25 +146,25 @@
                     <a asp-action="Add" asp-route-vehicleId="@item.Id" asp-controller="Maintenance">Add Maintenance</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @item.Id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastMaintenanceDate)
+                    @item.LastMaintenanceDate
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MaintenanceCycle)
+                    @item.MaintenanceCycle
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReadyStatus)
+                    @item.ReadyStatus
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Brand)
+                    @item.Brand
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Year)
+                    @item.Year
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Model)
+                    @item.Model
                 </td>
             </tr>
         }

@@ -195,14 +195,15 @@ namespace TCMS_Web.Controllers
                 };
                 _context.Add(item);
 
-                // Update LastMaintenanceDate if it's most recent
+                // Find the most recent maintenance date in MaintenanceInfo
+                var lastMaintenance = _context.MaintenanceInfos.Where(m => m.Status == true && m.VehicleId == item.VehicleId)
+                    .Max(m => m.Datetime);
+                // Update LastMaintenanceDate for Vehicle
                 var vehicle = _context.Vehicles.Find(item.VehicleId);
-                if (vehicle.LastMaintenanceDate < item.Datetime)
-                {
-                    vehicle.LastMaintenanceDate = item.Datetime;
-                    _context.Vehicles.Update(vehicle);
-                }
+                vehicle.LastMaintenanceDate = lastMaintenance;
+                _context.Vehicles.Update(vehicle);
                 await _context.SaveChangesAsync();
+
                 var newItem = await _context.MaintenanceInfos.OrderBy(m => m.Id).LastAsync();
                 return RedirectToAction("Edit", "Maintenance", new { id = newItem.Id });
             }
@@ -277,14 +278,14 @@ namespace TCMS_Web.Controllers
 
                     _context.Update(item);
 
-                    // Update LastMaintenanceDate if it's most recent
-                    var vehicle = _context.Vehicles.Find(item.VehicleId);
-                    if (vehicle.LastMaintenanceDate < item.Datetime)
-                    {
-                        vehicle.LastMaintenanceDate = item.Datetime;
-                        _context.Vehicles.Update(vehicle);
-                    }
+                    // Find the most recent maintenance date in MaintenanceInfo
+                    var lastMaintenance = _context.MaintenanceInfos.Where(m => m.Status == true && m.VehicleId == item.VehicleId)
+                        .Max(m => m.Datetime);
 
+                    // Update LastMaintenanceDate for Vehicle
+                    var vehicle = _context.Vehicles.Find(item.VehicleId);
+                    vehicle.LastMaintenanceDate = lastMaintenance;
+                    _context.Vehicles.Update(vehicle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
