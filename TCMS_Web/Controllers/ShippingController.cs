@@ -138,27 +138,27 @@ namespace TCMS_Web.Controllers
                 var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
                 var employee = await _context.Employees.FindAsync(item.EmployeeId);
                 var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
-                List<AssignmentDetail> Assignmentdetails = new List<AssignmentDetail>();
+                List<AssignmentDetail> Assignmentdetails = new();
                 foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id))
                 {
                     Assignmentdetails.Add(Detail);
                 }
 
-                 var model = new ShippingViewModel
-                {
-                  Id = (int)Id,
-                  Status = item.Status,
-                  EmployeeID = employee.Id,
-                  FirstName = employee.FirstName,
-                  LastName = employee.LastName,
-                  PhoneNumber = employee.PhoneNumber,
-                  VehicleID = vehicle.Id,
-                  Brand = vehicle.Brand,
-                  Model = vehicle.Model,
-                  Type = vehicle.Type,
-                  DepartureTime = item.DepartureTime,
-                  AssignmentDetails = Assignmentdetails
-                };
+            var model = new ShippingViewModel
+            {
+                Id = (int)Id,
+                Status = item.Status,
+                EmployeeID = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                PhoneNumber = employee.PhoneNumber,
+                VehicleID = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                DepartureTime = item.DepartureTime,
+                AssignmentDetails = Assignmentdetails
+            };
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
             return View(model);

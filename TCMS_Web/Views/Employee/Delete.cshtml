@@ -5,112 +5,80 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <hr />
-<div class="form-group row">
-    <div class="col-sm-4 mb-3 mb-sm-0 col">
-        <div class="control-label font-weight-bold">
-            First Name
-        </div>
-        <div>
-            @Model.FirstName
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="control-label font-weight-bold">
-            Middle Name
-        </div>
-        <div>
-            @Model.MiddleName
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="control-label font-weight-bold">
-            Last Name
-        </div>
-        <div>
-            @Model.LastName
-        </div>
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-4 mb-3 mb-sm-0 col">
-        <div class="control-label font-weight-bold">
-            Employee ID
-        </div>
-        <div>
-            @Model.Id
-        </div>
-    </div>
-    <div class="col-sm-8 col">
-        <div class="control-label font-weight-bold">
-            Email
-        </div>
-        <div>
-            @Model.Email
-        </div>
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-4 mb-3 mb-sm-0">
-        <div class="control-label font-weight-bold">
-            Status
-        </div>
-        <div>
-            @Model.Status
-        </div>
-    </div>
-    <div class="col-sm-8">
-        <div class="control-label font-weight-bold">
-            Address
-        </div>
-        <div>
-            @Model.Address
-        </div>
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-4 mb-3 mb-sm-0">
-        <div class="control-label font-weight-bold">
-            City
-        </div>
-        <div>
-            @Model.City
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="control-label font-weight-bold">
-            State
-        </div>
-        <div>
-            @Model.State
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="control-label font-weight-bold">
-            Zip
-        </div>
-        <div>
-            @Model.Zip
-        </div>
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-6 mb-3 mb-sm-0">
-        <div class="control-label font-weight-bold">
-            Cell Phone
-        </div>
-        <div>
-            @Model.PhoneNumber
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="control-label font-weight-bold">
-            Home Phone Number
-        </div>
-        <div>
-            @Model.HomePhoneNum
-        </div>
-    </div>
-</div>
+<dl class="row">
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.FirstName)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.FirstName
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.MiddleName)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.MiddleName
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.LastName)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.LastName
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        Employee ID
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Id
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Email
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.Status)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Status
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.Address)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Address
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.City)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.City
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.State)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.State
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.Zip)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Zip
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        Cell Phone
+    </dt>
+    <dd class="col-sm-9">
+        @Model.PhoneNumber
+    </dd>
+    <dt class="col-sm-3 font-weight-bold">
+        @Html.DisplayNameFor(model => model.HomePhoneNum)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.HomePhoneNum
+    </dd>
+</dl>
 <div class="form-group">
     <a data-toggle="modal" data-target="#deleteModal" class="btn btn-danger">Delete</a>
 </div>
