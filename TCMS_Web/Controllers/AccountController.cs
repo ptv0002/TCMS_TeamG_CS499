@@ -53,13 +53,14 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
                 // Check if Employee ID is already in the DB, if yes, insert a different ID
-                if (_userManager.FindByIdAsync(model.Id) != null)
+                if (await _context.Employees.FindAsync(model.Id) != null)
                 {
-                    ModelState.AddModelError(string.Empty,"Employee ID is already taken.");
-                }
-                if (_userManager.FindByEmailAsync(model.Email) != null)
-                {
-                    ModelState.AddModelError(string.Empty, "Email is already taken.");
+                    ModelState.AddModelError(string.Empty,"Employee ID '" + model.Id + "' is already taken.");
+                    if (_userManager.FindByEmailAsync(model.Email) != null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Email '" + model.Email + "' is already taken.");
+                    }
+                    return View(model);
                 }
                 // Copy data from ViewModel to IdentityUser
                 var user = new Employee
