@@ -56,14 +56,15 @@ namespace TCMS_Web.Controllers
                 return View(new GroupStatusViewModel<OrderInfo>()
                 {
                     StatusViewModel = statusModel,
-                    ClassModel = _context.OrderInfos.Include(o => o.Destination).Include(o => o.Source).ToList()
+                    ClassModel = _context.OrderInfos.Include(o => o.Destination).Include(o => o.Source).OrderByDescending(m => m.EstimateArrivalTime).ToList()
                 });
             }
             // Display employees depending on their status
             return View(new GroupStatusViewModel<OrderInfo>()
             {
                 StatusViewModel = statusModel,
-                ClassModel = _context.OrderInfos.Where(m => m.Status == Convert.ToBoolean(status)).Include(o => o.Destination).Include(o => o.Source).ToList()
+                ClassModel = _context.OrderInfos.Where(m => m.Status == Convert.ToBoolean(status)).OrderByDescending(m => m.EstimateArrivalTime)
+                .Include(o => o.Destination).Include(o => o.Source).ToList()
             });
         }
         // GET: OrderInfo/Details/5

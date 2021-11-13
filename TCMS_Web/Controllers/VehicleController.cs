@@ -95,7 +95,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add ([Bind("Id, Brand,Year,Model,Type,ReadyStatus,Status,Parts,LastMaintenanceDate,MaintenanceCycle")] Vehicle vehicle)
+        public async Task<IActionResult> Add ([Bind("Id,Brand,Year,Model,Type,ReadyStatus,Status,Parts,LastMaintenanceDate,MaintenanceCycle")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -138,7 +138,17 @@ namespace TCMS_Web.Controllers
             {
                 try
                 {
-                    _context.Update(vehicle);
+                    var item = _context.Vehicles.Find(vehicle.Id);
+                    item.Brand = vehicle.Brand;
+                    item.Year = vehicle.Year; 
+                    item.Model = vehicle.Model; 
+                    item.Type = vehicle.Type; 
+                    item.ReadyStatus = vehicle.ReadyStatus; 
+                    item.Status = vehicle.Status; 
+                    item.Parts = vehicle.Parts;
+                    item.LastMaintenanceDate = vehicle.LastMaintenanceDate;
+                    item.MaintenanceCycle = vehicle.MaintenanceCycle;
+                    _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

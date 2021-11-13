@@ -57,6 +57,10 @@ namespace TCMS_Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty,"Employee ID is already taken.");
                 }
+                if (_userManager.FindByEmailAsync(model.Email) != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Email is already taken.");
+                }
                 // Copy data from ViewModel to IdentityUser
                 var user = new Employee
                 {

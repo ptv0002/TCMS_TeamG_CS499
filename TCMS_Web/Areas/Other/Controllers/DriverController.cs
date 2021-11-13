@@ -96,7 +96,7 @@ namespace TCMS_Web.Areas.Other.Controllers
                 Brand = vehicle.Brand,
                 Model = vehicle.Model,
                 Type = vehicle.Type,
-                DepartureTime = (DateTime)item.DepartureTime,
+                DepartureTime = item.DepartureTime,
                 AssignmentDetails = Assignmentdetails
             };
             return View(model);

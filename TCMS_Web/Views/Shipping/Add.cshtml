@@ -1,4 +1,4 @@
-﻿@model TCMS_Web.Models.ShippingViewModel
+﻿@model Models.ShippingAssignment
 
     @{
         ViewData["Title"] = "Add Shipping Assignment";
@@ -9,14 +9,12 @@
             <form asp-action="Add">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="VehicleID" class="control-label"></label>
-                    <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId"></select>
-                    <span asp-validation-for="VehicleID" class="text-danger"></span>
+                    <label asp-for="VehicleId" class="control-label"></label>
+                    <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId"></select>
                 </div>
                 <div class="form-group">
-                    <label asp-for="EmployeeID" class="control-label"></label>
-                    <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                    <span asp-validation-for="EmployeeID" class="text-danger"></span>
+                    <label asp-for="EmployeeId" class="control-label"></label>
+                    <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="DepartureTime" class="control-label"></label>
@@ -25,7 +23,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" />
+                    <input asp-for="Status" class="form-control" required/>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
                 <div class="form-group">

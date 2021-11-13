@@ -22,76 +22,76 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="Id" type="hidden" />
             <dl class="row">
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.EmployeeID)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     <select asp-for="EmployeeID" class="form-control" asp-items="ViewBag.EmployeeId"></select>
                     <span asp-validation-for="EmployeeID" class="text-danger"></span>
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.FirstName)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.FirstName)
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.LastName)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.LastName)
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.PhoneNumber)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.PhoneNumber)
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.VehicleID)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     <select asp-for="VehicleID" class="form-control" asp-items="ViewBag.VehicleId"></select>
                     <span asp-validation-for="VehicleID" class="text-danger"></span>
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.Brand)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Brand)
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.Model)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Model)
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.Type)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Type)
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.DepartureTime)
                 </dt>
-                <dd class="col-sm-10">
-                    <input asp-for="DepartureTime" class="form-control" />
+                <dd class="col-sm-9">
+                    <input asp-for="DepartureTime" class="form-control" required/>
                     <span asp-validation-for="DepartureTime" class="text-danger"></span>
                 </dd>
 
-                <dt class="col-sm-2">
+                <dt class="col-sm-3 font-weight-bold">
                     @Html.DisplayNameFor(model => model.Status)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-9">
                     <input type="text" asp-for="Status" class="form-control" required />
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </dd>
