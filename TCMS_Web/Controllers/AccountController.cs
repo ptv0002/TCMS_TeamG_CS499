@@ -53,10 +53,10 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
                 // Check if Employee ID is already in the DB, if yes, insert a different ID
-                if (await _context.Employees.FindAsync(model.Id) != null)
+                if (await _context.Employees.AnyAsync(m => m.Id == model.Id))
                 {
                     ModelState.AddModelError(string.Empty,"Employee ID '" + model.Id + "' is already taken.");
-                    if (_userManager.FindByEmailAsync(model.Email) != null)
+                    if (await _context.Employees.AnyAsync(m => m.Email == model.Email))
                     {
                         ModelState.AddModelError(string.Empty, "Email '" + model.Email + "' is already taken.");
                     }

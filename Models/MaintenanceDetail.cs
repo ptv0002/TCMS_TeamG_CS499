@@ -9,7 +9,7 @@ namespace Models
     [Table("MaintenanceDetail")]
     public class MaintenanceDetail
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int? MaintenanceInfoId { get; set; }
         public string Service { get; set; }
         [Display(Name = "Estimated Cost")]

@@ -46,7 +46,7 @@
             </li>
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.DActive">
                 <a class="nav-link" asp-controller="Home" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
@@ -64,7 +64,7 @@
                 Human Resources
             </li>
             <!-- Nav Item - Employee -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.EActive">
                 <a class="nav-link" asp-controller="Employee" asp-action="Index">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Employee</span>
@@ -85,7 +85,7 @@
                 Maintenance Management
             </li>
             <!-- Nav Item - Maintenance -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.MActive">
                 <a class="nav-link" asp-controller="Maintenance" asp-action="Index">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Maintenance</span>
@@ -94,7 +94,7 @@
             </li>
 
             <!-- Nav Item - Vehicle -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.VActive">
                 <a class="nav-link" asp-controller="Vehicle" asp-action="Index">
                     <i class="fas fa-fw fa-car"></i>
                     <span>Vehicle</span>
@@ -115,7 +115,7 @@
                 Shipping Management
             </li>
             <!-- Nav Item - Shipping Assignment -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.SActive">
                 <a class="nav-link" asp-controller="Shipping" asp-action="Index">
                     <i class="fas fa-fw fa-box-open"></i>
                     <span>Shipping Assignment</span>
@@ -123,7 +123,7 @@
             </li>
 
             <!-- Nav Item - Order Info -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.OActive">
                 <a class="nav-link" asp-controller="OrderInfo" asp-action="Index">
                     <i class="fas fa-fw fa-sticky-note"></i>
                     <span>Order Info</span>
@@ -131,7 +131,7 @@
             </li>
 
             <!-- Nav Item - Company -->
-            <li class="nav-item">
+            <li class="nav-item @ViewBag.CActive">
                 <a class="nav-link" asp-controller="Company" asp-action="Index">
                     <i class="fas fa-fw fa-building"></i>
                     <span>Company</span>

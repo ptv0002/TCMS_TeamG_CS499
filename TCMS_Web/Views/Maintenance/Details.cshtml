@@ -6,6 +6,7 @@
     if (Model.Status == true) status = "Active";
     else if (Model.Status == false) status = "Inactive";
     else status = "Null";
+    ViewBag.MActive = "active";
 }
 <div>
     <ul class="nav nav-tabs" role="tablist">
@@ -125,24 +126,24 @@
                     if (item.Status == true) dStatus = "Active";
                     else if (item.Status == false) dStatus = "Inactive";
                     else dStatus = "Null";
-                <tr>
+                    <tr>
 
-                    <td>
-                        <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id">Edit</a>
-                    </td>
-                    <td>
-                        @item.Service
-                    </td>
-                    <td>
-                        $@item.EstimateCost
-                    </td>
-                    <td>
-                        @item.Notes
-                    </td>
-                    <td>
-                        @dStatus
-                    </td>
-                </tr>
+                        <td>
+                            <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id">Edit</a>
+                        </td>
+                        <td>
+                            @item.Service
+                        </td>
+                        <td>
+                            $@item.EstimateCost
+                        </td>
+                        <td>
+                            @item.Notes
+                        </td>
+                        <td>
+                            @dStatus
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

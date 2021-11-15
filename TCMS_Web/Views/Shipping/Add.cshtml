@@ -1,40 +1,41 @@
 ﻿@model Models.ShippingAssignment
 
-    @{
-        ViewData["Title"] = "Add Shipping Assignment";
-    }
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Add">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="VehicleId" class="control-label font-weight-bold"></label>
-                    <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId"></select>
+@{
+    ViewData["Title"] = "Add Shipping Assignment";
+    ViewBag.SActive = "active";
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="VehicleId" class="control-label font-weight-bold"></label>
+                <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label font-weight-bold"></label>
+                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartureTime" class="control-label font-weight-bold"></label>
+                <input asp-for="DepartureTime" class="form-control" />
+                <span asp-validation-for="DepartureTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label font-weight-bold"></label>
+                <div>
+                    @Html.DropDownList("Status", new List<SelectListItem>{
+                       new SelectListItem{ Text="Active", Value = "true" },
+                       new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
                 </div>
-                <div class="form-group">
-                    <label asp-for="EmployeeId" class="control-label font-weight-bold"></label>
-                    <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DepartureTime" class="control-label font-weight-bold"></label>
-                    <input asp-for="DepartureTime" class="form-control" />
-                    <span asp-validation-for="DepartureTime" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Status" class="control-label font-weight-bold"></label>
-                    <div>
-                        @Html.DropDownList("Status", new List<SelectListItem>{
-                           new SelectListItem{ Text="Active", Value = "true" },
-                           new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Add" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>

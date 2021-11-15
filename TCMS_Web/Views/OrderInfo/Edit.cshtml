@@ -2,11 +2,19 @@
 
 @{
     ViewData["Title"] = "Edit Order Info";
+    ViewBag.OActive = "active";
 }
 <hr />
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label class="control-label font-weight-bold">Order ID</label>
+        <input type="hidden" asp-for="Id" />
+        <div class="col-sm-12">
+            @Html.DisplayFor(model => model.Id)
+        </div>
+    </div>
     <div class="form-group">
         <label class="control-label font-weight-bold">Source Company</label>
         <select asp-for="SourceId" class="form-control" asp-items="ViewBag.SourceId"></select>
@@ -68,17 +76,17 @@
     </div>
     <div class="form-group">
         <label asp-for="TotalOrder" class="control-label font-weight-bold"></label>
-        <input asp-for="TotalOrder" class="form-control" required/>
+        <input asp-for="TotalOrder" class="form-control" required />
         <span asp-validation-for="TotalOrder" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="ShippingFee" class="control-label font-weight-bold"></label>
-        <input asp-for="ShippingFee" class="form-control" required/>
+        <input asp-for="ShippingFee" class="form-control" required />
         <span asp-validation-for="ShippingFee" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="EstimateArrivalTime" class="control-label font-weight-bold"></label>
-        <input asp-for="EstimateArrivalTime" class="form-control" required/>
+        <input asp-for="EstimateArrivalTime" class="form-control" required />
         <span asp-validation-for="EstimateArrivalTime" class="text-danger"></span>
     </div>
     <div class="form-group">

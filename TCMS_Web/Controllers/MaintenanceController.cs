@@ -166,11 +166,11 @@ namespace TCMS_Web.Controllers
         {
             if (vehicleId != null)
             {
-                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", vehicleId);
+                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id", vehicleId);
             }
             else
             {
-                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id");
+                ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id");
             }
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
             return View(new MaintenanceInfo());
@@ -185,30 +185,22 @@ namespace TCMS_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var item = new MaintenanceInfo
-                {
-                    VehicleId = maintenanceInfo.VehicleId,
-                    EmployeeId = maintenanceInfo.EmployeeId,
-                    Datetime = maintenanceInfo.Datetime,
-                    Notes = maintenanceInfo.Notes,
-                    Status = maintenanceInfo.Status,
-                };
-                _context.Add(item);
+                _context.Add(maintenanceInfo);
 
                 // Find the most recent maintenance date in MaintenanceInfo
-                var lastMaintenance = _context.MaintenanceInfos.Where(m => m.Status == true && m.VehicleId == item.VehicleId)
+                var lastMaintenance = _context.MaintenanceInfos.Where(m => m.Status == true && m.VehicleId == maintenanceInfo.VehicleId)
                     .Max(m => m.Datetime);
                 // Update LastMaintenanceDate for Vehicle
-                var vehicle = _context.Vehicles.Find(item.VehicleId);
+                var vehicle = _context.Vehicles.Find(maintenanceInfo.VehicleId);
                 vehicle.LastMaintenanceDate = lastMaintenance;
                 _context.Vehicles.Update(vehicle);
                 await _context.SaveChangesAsync();
 
                 var newItem = await _context.MaintenanceInfos.OrderBy(m => m.Id).LastAsync();
-                return RedirectToAction("Edit", "Maintenance", new { id = newItem.Id });
+                return RedirectToAction(nameof(Edit), new { id = newItem.Id });
             }
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.VehicleId);
             return View(maintenanceInfo);
         }
         // GET: Maintenance/Edit/5
@@ -250,7 +242,7 @@ namespace TCMS_Web.Controllers
                 MaintenanceDetails = Maintenancedetails
             };
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.VehicleId);
             return View(model);
         }
         // POST: Maintenance/Edit/5
@@ -302,7 +294,7 @@ namespace TCMS_Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeID);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", maintenanceInfo.VehicleID);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.VehicleID);
             return View(maintenanceInfo);
         }
         private bool MaintenanceInfoExists(int id)

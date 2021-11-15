@@ -48,6 +48,7 @@ namespace TCMS_Web.Controllers
             {
                 var item = new MaintenanceDetail
                 {
+                    Id = null,
                     MaintenanceInfoId = maintenanceDetail.MaintenanceInfoId,
                     Service = maintenanceDetail.Service,
                     EstimateCost = maintenanceDetail.EstimateCost,
@@ -55,7 +56,7 @@ namespace TCMS_Web.Controllers
                     Status = maintenanceDetail.Status,
                 };
 
-                _context.Add(maintenanceDetail);
+                _context.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Maintenance", new {id = maintenanceDetail.MaintenanceInfoId});
             }
@@ -125,7 +126,7 @@ namespace TCMS_Web.Controllers
             ViewData["MaintenanceInfoId"] = new SelectList(_context.MaintenanceInfos.Where(m => m.Status == true), "Id", "Id", maintenanceDetail.MaintenanceInfoId);
             return View(maintenanceDetail);
         }
-        private bool MaintenanceDetailExists(int id)
+        private bool MaintenanceDetailExists(int? id)
         {
             return _context.MaintenanceDetails.Any(e => e.Id == id);
         }
