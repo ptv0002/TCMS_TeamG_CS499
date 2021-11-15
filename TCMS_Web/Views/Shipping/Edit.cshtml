@@ -111,11 +111,18 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th></th>
                     <th>
-
+                        Source Address
                     </th>
                     <th>
-                        OrderInfo
+                        Destination Address
+                    </th>
+                    <th>
+                        Pay Status
+                    </th>
+                    <th>
+                        Shipping Fee
                     </th>
                     <th>
                         InShipping
@@ -140,7 +147,16 @@
                         <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id" asp-route-EditShippingAssignment="True">Edit</a>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.OrderInfoId)
+                        @Html.DisplayFor(modelItem => item.OrderInfo.SourceAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInfo.DestinationAddresss)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInfo.PayStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInfo.ShippingFee)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.InShipping)
