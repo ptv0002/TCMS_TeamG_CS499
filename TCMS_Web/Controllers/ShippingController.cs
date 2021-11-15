@@ -94,7 +94,7 @@ namespace TCMS_Web.Controllers
             });
         }
         public IActionResult Add()
-        { 
+        {
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id");
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id");
             return View(new ShippingAssignment());
@@ -102,7 +102,7 @@ namespace TCMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add (ShippingAssignment shippingassignment)
+        public async Task<ActionResult> Add(ShippingAssignment shippingassignment)
         {
             if (ModelState.IsValid)
             {
@@ -130,19 +130,27 @@ namespace TCMS_Web.Controllers
                 return NotFound();
             }
 
-            var shippingassignment = await _context.ShippingAssignments.FindAsync(Id);
-            if (shippingassignment == null)
+            var item = await _context.ShippingAssignments.FindAsync(Id);
+            if (item == null)
             {
                 return NotFound();
             }
-                var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
-                var employee = await _context.Employees.FindAsync(item.EmployeeId);
-                var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
-                List<AssignmentDetail> Assignmentdetails = new();
-                foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id))
+            var employee = await _context.Employees.FindAsync(item.EmployeeId);
+            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            List<AssignmentDetail> Assignmentdetails = new List<AssignmentDetail>();
+            foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id).Include(m => m.OrderInfo))
+            {
+                var currentorder = _context.OrderInfos.Where(m => m.Id == Detail.OrderInfoId).Include(m => m.Source).Include(m => m.Destination);
+                if (Detail.OrderInfo.SourceAddress == null)
                 {
-                    Assignmentdetails.Add(Detail);
+                    Detail.OrderInfo.SourceAddress = currentorder.First().Source.Address;
                 }
+                if (Detail.OrderInfo.DestinationAddresss == null)
+                {
+                    Detail.OrderInfo.DestinationAddresss = currentorder.First().Destination.Address;
+                }
+                Assignmentdetails.Add(Detail);
+            }
 
             var model = new ShippingViewModel
             {
@@ -159,14 +167,14 @@ namespace TCMS_Web.Controllers
                 DepartureTime = item.DepartureTime,
                 AssignmentDetails = Assignmentdetails
             };
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", item.VehicleId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", item.EmployeeId);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id,  ShippingViewModel shippingassignment)
+        public async Task<IActionResult> Edit(int Id, ShippingViewModel shippingassignment)
         {
             if (Id != shippingassignment.Id)
             {
@@ -182,8 +190,6 @@ namespace TCMS_Web.Controllers
                     item.EmployeeId = shippingassignment.EmployeeID;
                     item.DepartureTime = shippingassignment.DepartureTime;
                     item.Status = shippingassignment.Status;
-
-
                     _context.ShippingAssignments.Update(item);
                     var result = await _context.SaveChangesAsync();
                 }
@@ -209,13 +215,22 @@ namespace TCMS_Web.Controllers
             if (Id == null)
             {
                 return NotFound();
-            }            
+            }
             var item = await _context.ShippingAssignments.FirstOrDefaultAsync(m => m.Id == Id);
             var employee = await _context.Employees.FindAsync(item.EmployeeId);
             var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
             List<AssignmentDetail> Assignmentdetails = new();
             foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == Id).Include(m => m.OrderInfo))
             {
+                var currentorder = _context.OrderInfos.Where(m => m.Id == Detail.OrderInfoId).Include(m => m.Source).Include(m => m.Destination);
+                if (Detail.OrderInfo.SourceAddress == null)
+                {
+                    Detail.OrderInfo.SourceAddress = currentorder.First().Source.Address;
+                }
+                if (Detail.OrderInfo.DestinationAddresss == null)
+                {
+                    Detail.OrderInfo.DestinationAddresss = currentorder.First().Destination.Address;
+                }
                 Assignmentdetails.Add(Detail);
             }
 
@@ -235,7 +250,7 @@ namespace TCMS_Web.Controllers
             };
             return View(model);
         }
- 
+
         private bool ShippingAssignmentExists(int Id)
         {
             return _context.ShippingAssignments.Any(e => e.Id == Id);

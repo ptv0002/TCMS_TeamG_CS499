@@ -113,11 +113,21 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th></th>
                     <th>
-
+                        Order ID
                     </th>
                     <th>
-                        OrderInfo
+                        Source Address
+                    </th>
+                    <th>
+                        Destination Address
+                    </th>
+                    <th>
+                        Pay Status
+                    </th>
+                    <th>
+                        Shipping Fee
                     </th>
                     <th>
                         InShipping
@@ -148,6 +158,18 @@
                         <td>
                             @item.OrderInfoId
                         </td>
+                        <td>
+                            @item.OrderInfo.SourceAddress
+                        </td>
+                        <td>
+                            @item.OrderInfo.DestinationAddresss
+                        </td>
+                        <td>
+                            @item.OrderInfo.PayStatus
+                        </td>
+                        <td>
+                            @item.OrderInfo.ShippingFee
+                        </td>   
                         <td>
                             @item.InShipping
                         </td>

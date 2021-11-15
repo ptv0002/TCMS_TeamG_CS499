@@ -216,9 +216,8 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            var item = await _context.MaintenanceInfos.FirstOrDefaultAsync(m => m.Id == id);
-            var employee = await _context.Employees.FindAsync(item.EmployeeId);
-            var vehicle = await _context.Vehicles.FindAsync(item.VehicleId);
+            var employee = await _context.Employees.FindAsync(maintenanceInfo.EmployeeId);
+            var vehicle = await _context.Vehicles.FindAsync(maintenanceInfo.VehicleId);
             List<MaintenanceDetail> Maintenancedetails = new List<MaintenanceDetail>();
             foreach (MaintenanceDetail Detail in _context.MaintenanceDetails.Where(m => m.MaintenanceInfoId == id))
             {
@@ -236,9 +235,9 @@ namespace TCMS_Web.Controllers
                 Brand = vehicle.Brand,
                 Model = vehicle.Model,
                 Type = vehicle.Type,
-                DateTime = item.Datetime,
-                Notes = item.Notes,
-                Status = item.Status,
+                DateTime = maintenanceInfo.Datetime,
+                Notes = maintenanceInfo.Notes,
+                Status = maintenanceInfo.Status,
                 MaintenanceDetails = Maintenancedetails
             };
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeId);
