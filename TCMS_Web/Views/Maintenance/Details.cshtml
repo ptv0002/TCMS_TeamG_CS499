@@ -96,15 +96,9 @@
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="second">
-        <p>
-            <a asp-action="Add" asp-controller="MaintenanceDetail" asp-route-id="@Model.Id">Add</a>
-        </p>
         <table class="table">
             <thead>
                 <tr>
-                    <th>
-
-                    </th>
                     <th>
                         Service 
                     </th>
@@ -127,10 +121,6 @@
                     else if (item.Status == false) dStatus = "Inactive";
                     else dStatus = "Null";
                     <tr>
-
-                        <td>
-                            <a asp-action="Edit" asp-controller="MaintenanceDetail" asp-route-id="@item.Id">Edit</a>
-                        </td>
                         <td>
                             @item.Service
                         </td>

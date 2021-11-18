@@ -186,7 +186,7 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(maintenanceInfo);
-
+                await _context.SaveChangesAsync();
                 // Find the most recent maintenance date in MaintenanceInfo
                 var lastMaintenance = _context.MaintenanceInfos.Where(m => m.Status == true && m.VehicleId == maintenanceInfo.VehicleId)
                     .Max(m => m.Datetime);
@@ -268,7 +268,7 @@ namespace TCMS_Web.Controllers
                     item.Status = maintenanceInfo.Status;
 
                     _context.Update(item);
-
+                    await _context.SaveChangesAsync();
                     // Find the most recent maintenance date in MaintenanceInfo
                     var lastMaintenance = _context.MaintenanceInfos.Where(m => m.Status == true && m.VehicleId == item.VehicleId)
                         .Max(m => m.Datetime);
@@ -290,7 +290,7 @@ namespace TCMS_Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { id });
             }
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.EmployeeID);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true), "Id", "Id", maintenanceInfo.VehicleID);

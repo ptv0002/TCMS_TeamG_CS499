@@ -19,17 +19,6 @@ namespace TCMS_Web.Controllers
             _context = context;
         }
 
-        // GET: MaintenanceDetail
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: MaintenanceDetail/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: MaintenanceDetail/Create
         public IActionResult Add(int ? id)
@@ -58,9 +47,8 @@ namespace TCMS_Web.Controllers
 
                 _context.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Maintenance", new {id = maintenanceDetail.MaintenanceInfoId});
+                return RedirectToAction("Edit", "Maintenance", new {id = maintenanceDetail.MaintenanceInfoId});
             }
-            ViewData["MaintenanceInfoId"] = new SelectList(_context.MaintenanceInfos.Where(m => m.Status == true), "Id", "Id", maintenanceDetail.MaintenanceInfoId);
             return View(maintenanceDetail);
         }
 
@@ -77,7 +65,6 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaintenanceInfoId"] = new SelectList(_context.MaintenanceInfos.Where(m => m.Status == true), "Id", "Id", maintenanceDetail.MaintenanceInfoId);
             return View(maintenanceDetail);
         }
 
@@ -86,7 +73,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, bool? EditMaintenance ,MaintenanceDetail maintenanceDetail)
+        public async Task<IActionResult> Edit(int id, MaintenanceDetail maintenanceDetail)
         {
             if (id != maintenanceDetail.Id)
             {
@@ -117,13 +104,9 @@ namespace TCMS_Web.Controllers
                         throw;
                     }
                 }
-                if (EditMaintenance == true)
-                {
-                    return RedirectToAction("Edit", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId});
-                }
-                return RedirectToAction("Details", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId });
+               
+                return RedirectToAction("Edit", "Maintenance", new { id = maintenanceDetail.MaintenanceInfoId });
             }
-            ViewData["MaintenanceInfoId"] = new SelectList(_context.MaintenanceInfos.Where(m => m.Status == true), "Id", "Id", maintenanceDetail.MaintenanceInfoId);
             return View(maintenanceDetail);
         }
         private bool MaintenanceDetailExists(int? id)

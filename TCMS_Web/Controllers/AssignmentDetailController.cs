@@ -18,18 +18,6 @@ namespace TCMS_Web.Controllers
         {
             _context = context;
         }
-        // GET: AssignmentDetailController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: AssignmentDetailController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: AssignmentDetailController/Create
         public ActionResult Add(int ?Id)
         {
@@ -55,14 +43,14 @@ namespace TCMS_Web.Controllers
 
                 _context.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Shipping", new { id = assignmentdetail.ShippingAssignmentId});
+                return RedirectToAction("Edit", "Shipping", new { id = assignmentdetail.ShippingAssignmentId});
             }
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);
         }
 
         // GET: AssignmentDetailController/Edit/5
-        public async Task<IActionResult> Edit(int? Id, bool? EditShippingAssignment)
+        public async Task<IActionResult> Edit(int? Id)
         {
             if (Id == null)
             {
@@ -80,7 +68,7 @@ namespace TCMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, bool? EditShippingAssignment, AssignmentDetail assignmentdetail)
+        public async Task<IActionResult> Edit(int Id, AssignmentDetail assignmentdetail)
         {
             if (Id != assignmentdetail.Id)
             {
@@ -112,12 +100,8 @@ namespace TCMS_Web.Controllers
                         throw;
                     }
                 }
-                if (EditShippingAssignment == true)
-                {
-                    return RedirectToAction("Edit", "Shipping", new { id = assignmentdetail.ShippingAssignmentId });
-                }
-                else
-                return RedirectToAction("Details", "Shipping", new { id = assignmentdetail.ShippingAssignmentId });
+                
+                return RedirectToAction("Edit", "Shipping", new { id = assignmentdetail.ShippingAssignmentId });
             }
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);

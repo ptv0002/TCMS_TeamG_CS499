@@ -117,7 +117,7 @@ namespace TCMS_Web.Controllers
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 var newassignment = await _context.ShippingAssignments.OrderBy(m => m.Id).LastAsync();
-                return RedirectToAction("Edit", "Shipping", new { id = newassignment.Id });
+                return RedirectToAction(nameof(Edit), new { id = newassignment.Id });
             }
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleId);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeId);
@@ -191,7 +191,7 @@ namespace TCMS_Web.Controllers
                     item.DepartureTime = shippingassignment.DepartureTime;
                     item.Status = shippingassignment.Status;
                     _context.ShippingAssignments.Update(item);
-                    var result = await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -204,10 +204,11 @@ namespace TCMS_Web.Controllers
                         throw;
                     }
                 }
+                return RedirectToAction(nameof(Edit), new { id = Id });
             }
             ViewData["VehicleId"] = new SelectList(_context.Vehicles.Where(m => m.Status == true && m.ReadyStatus == true), "Id", "Id", shippingassignment.VehicleID);
             ViewData["EmployeeId"] = new SelectList(_context.Employees.Where(m => m.Status == true), "Id", "Id", shippingassignment.EmployeeID);
-            return RedirectToAction("Edit", "Shipping", new { id = Id });
+            return View(shippingassignment);
         }
 
         public async Task<IActionResult> Details(int? Id)

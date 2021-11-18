@@ -97,13 +97,12 @@
         </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="second">
-        <p>
-            <a asp-action="Add" asp-controller="AssignmentDetail" asp-route-Id="@Model.Id">Add</a>
-        </p>
         <table class="table">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>
+                        Order ID
+                    </th>
                     <th>
                         Source Address
                     </th>
@@ -139,7 +138,7 @@
                     else dStatus = "Null";
                     <tr>
                         <td>
-                            <a asp-action="Edit" asp-controller="AssignmentDetail" asp-route-id="@item.Id">Edit</a>
+                            @item.OrderInfoId
                         </td>
                         <td>
                             @item.OrderInfo.SourceAddress
