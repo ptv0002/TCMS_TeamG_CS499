@@ -28,6 +28,9 @@
                 Status
             </th>
             <th>
+                File
+            </th>
+            <th>
                 Source Pay
             </th>
             <th>
@@ -53,10 +56,24 @@
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
                 <td>
+                    @if (item.SourceAddress == null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Source.Address)
+                    }
+                    else
+                    {
                     @Html.DisplayFor(modelItem => item.SourceAddress)
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DestinationAddresss)
+                    @if (item.DestinationAddresss == null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Destination.Address)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.DestinationAddresss)
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)

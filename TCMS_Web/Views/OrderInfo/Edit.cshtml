@@ -4,8 +4,11 @@
     ViewData["Title"] = "Edit Order Info";
 }
 <hr />
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="DocData" type="hidden" />
+    <input asp-for="DocType" type="hidden" />
+    <input asp-for="DocName" type="hidden" />
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label asp-for="SourceId" class="control-label"></label>
@@ -29,49 +32,51 @@
     </div>
     <div class="form-group">
         <label asp-for="Status" class="control-label"></label>
-        <input asp-for="Status" class="form-control" required/>
+        <input asp-for="Status" class="form-control" required />
         <span asp-validation-for="Status" class="text-danger"></span>
     </div>
-    @*
+    <div class="form-group">
+        <label class="control-label"> Receipt file</label>
+        <input asp-for="Doc" class="form-control" />
+        <span asp-validation-for="Doc" class="text-danger"></span>
+    </div>
+    @if (Model.DocData != null)
+    {
         <div class="form-group">
-            <label asp-for="DocName" class="control-label"></label>
-            <input asp-for="DocName" class="form-control" />
-            <span asp-validation-for="DocName" class="text-danger"></span>
+            <label class="control-label col-12">File Name</label>
+            @Html.DisplayFor(model => model.DocName)
         </div>
         <div class="form-group">
-            <label asp-for="DocType" class="control-label"></label>
-            <input asp-for="DocType" class="form-control" />
-            <span asp-validation-for="DocType" class="text-danger"></span>
+            <label class="control-label col-12"> Attached File</label>
+            <img src="@ViewBag.ImageDataURL" />
         </div>
         <div class="form-group">
-            <label asp-for="DocData" class="control-label"></label>
-            <input asp-for="DocData" class="form-control" />
-            <span asp-validation-for="DocData" class="text-danger"></span>
+            <a class="btn btn-danger" asp-action="DeleteImage" asp-route-id ="@Model.Id">Remove Image</a>
         </div>
-    *@
+    }
     <div class="form-group">
         <label asp-for="SourcePay" class="control-label"></label>
-        <input asp-for="SourcePay" class="form-control" required/>
+        <input asp-for="SourcePay" class="form-control" required />
         <span asp-validation-for="SourcePay" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="PayStatus" class="control-label"></label>
-        <input asp-for="PayStatus" class="form-control" required/>
+        <input asp-for="PayStatus" class="form-control" required />
         <span asp-validation-for="PayStatus" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="TotalOrder" class="control-label"></label>
-        <input asp-for="TotalOrder" class="form-control" required/>
+        <input asp-for="TotalOrder" class="form-control" required />
         <span asp-validation-for="TotalOrder" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="ShippingFee" class="control-label"></label>
-        <input asp-for="ShippingFee" class="form-control" required/>
+        <input asp-for="ShippingFee" class="form-control" required />
         <span asp-validation-for="ShippingFee" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="EstimateArrivalTime" class="control-label"></label>
-        <input asp-for="EstimateArrivalTime" class="form-control" required/>
+        <input asp-for="EstimateArrivalTime" class="form-control" required />
         <span asp-validation-for="EstimateArrivalTime" class="text-danger"></span>
     </div>
     <div class="form-group">
