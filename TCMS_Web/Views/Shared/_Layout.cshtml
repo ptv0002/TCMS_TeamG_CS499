@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using Models 
+@using Models
 @inject SignInManager<Employee> signInManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,16 +71,16 @@
                     <span>Employee</span>
                 </a>
 
-            </li>
+                </li>
             }
-        @if (signInManager.IsSignedIn(User) &&
-            (!User.IsInRole("Driver")))
-        {
-            <!-- Divider -->
-            <li>
-                <hr class="sidebar-divider">
-            </li>
-            <!-- Heading -->
+            @if (signInManager.IsSignedIn(User) &&
+               (!User.IsInRole("Driver")))
+            {
+                <!-- Divider -->
+                <li>
+                    <hr class="sidebar-divider">
+                </li>
+                <!-- Heading -->
 
             <li class="sidebar-heading">
                 Maintenance Management
@@ -91,7 +92,7 @@
                     <span>Maintenance</span>
                 </a>
 
-            </li>
+                </li>
 
             <!-- Nav Item - Vehicle -->
             <li class="nav-item @ViewBag.VActive">
@@ -100,16 +101,16 @@
                     <span>Vehicle</span>
                 </a>
 
-            </li>
+                </li>
             }
-        @if (signInManager.IsSignedIn(User) &&
-            (User.IsInRole("Shipping") || User.IsInRole("Full Access")))
-        {
-            <!-- Divider -->
-            <li>
-                <hr class="sidebar-divider">
-            </li>
-            <!-- Heading -->
+            @if (signInManager.IsSignedIn(User) &&
+               (User.IsInRole("Shipping") || User.IsInRole("Full Access")))
+            {
+                <!-- Divider -->
+                <li>
+                    <hr class="sidebar-divider">
+                </li>
+                <!-- Heading -->
 
             <li class="sidebar-heading">
                 Shipping Management

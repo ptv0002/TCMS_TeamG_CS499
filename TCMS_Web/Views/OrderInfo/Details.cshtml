@@ -35,26 +35,19 @@
         <dd class="col-sm-9">
             @status
         </dd>
-        @*
+        
         <dt class = "col-sm-3 font-weight-bold">
-            @Html.DisplayNameFor(model => model.DocName)
+            File Name
         </dt>
         <dd class = "col-sm-9">
             @Html.DisplayFor(model => model.DocName)
         </dd>
         <dt class = "col-sm-3 font-weight-bold">
-            @Html.DisplayNameFor(model => model.DocType)
+            Attached File
         </dt>
         <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.DocType)
+            <img src= "@ViewBag.ImageDataURL" />
         </dd>
-        <dt class = "col-sm-3 font-weight-bold">
-            @Html.DisplayNameFor(model => model.DocData)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.DocData)
-        </dd>
-        *@
         <dt class="col-sm-3 font-weight-bold">
             @Html.DisplayNameFor(model => model.SourcePay)
         </dt>

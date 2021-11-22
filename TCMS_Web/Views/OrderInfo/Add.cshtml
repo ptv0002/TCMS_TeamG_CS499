@@ -5,8 +5,11 @@
     ViewBag.OActive = "active";
 }
 <hr />
-<form asp-action="Add">
+<form asp-action="Add" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="DocData" type="hidden" />
+    <input asp-for="DocType" type="hidden" />
+    <input asp-for="DocName" type="hidden" />
     <div class="form-group">
         <label class="control-label font-weight-bold">Source Company</label>
         <select asp-for="SourceId" class="form-control" asp-items="ViewBag.SourceId"></select>
@@ -32,6 +35,11 @@
                new SelectListItem{ Text="Active", Value = "true" },
                new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
         </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Receipt File</label>
+        <input asp-for="Doc" class="form-control font-weight-bold" multiple />
+        <span asp-validation-for="Doc" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="SourcePay" class="control-label font-weight-bold"></label>

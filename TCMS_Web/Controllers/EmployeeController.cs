@@ -94,7 +94,7 @@ namespace TCMS_Web.Controllers
                 FirstName = m.FirstName,
                 LastName = m.LastName,
                 Id = m.Id,
-                Compensation = Math.Round((decimal)(m.PayRate / 12), 2),
+                Compensation = Math.Round((decimal)(m.PayRate / 12),2),
                 Position = m.Position
             }).ToList();
             
@@ -116,9 +116,6 @@ namespace TCMS_Web.Controllers
 
             return View(model);
         }
-
-
-
         // GET: EmployeeController/Edit/5
         public async Task<IActionResult> Edit(string id)
         {

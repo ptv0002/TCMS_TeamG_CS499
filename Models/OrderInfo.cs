@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,6 +25,8 @@ namespace Models
         public bool? Status { get; set; }
         public string DocName { get; set; }
         public string DocType { get; set; }
+        [NotMapped]
+        public IFormFile Doc { get; set; }
         public byte[] DocData { get; set; }
         [Display(Name = "Source Pay")]
         public bool? SourcePay { get; set; }

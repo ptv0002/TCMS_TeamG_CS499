@@ -64,10 +64,24 @@
                     @item.Id
                 </td>
                 <td>
-                    @item.SourceAddress
+                    @if (item.SourceAddress == null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Source.Address)
+                    }
+                    else
+                    {
+                    @Html.DisplayFor(modelItem => item.SourceAddress)
+                    }
                 </td>
                 <td>
-                    @item.DestinationAddresss
+                    @if (item.DestinationAddresss == null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Destination.Address)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.DestinationAddresss)
+                    }
                 </td>
                 <td>
                     @status
