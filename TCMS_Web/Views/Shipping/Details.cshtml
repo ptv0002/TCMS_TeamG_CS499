@@ -138,7 +138,7 @@
                     else dStatus = "Null";
                     <tr>
                         <td>
-                            @item.OrderInfoId
+                            <a asp-action="Details" asp-controller="OrderInfo" asp-route-id="@item.OrderInfoId">@item.OrderInfoId</a>
                         </td>
                         <td>
                             @item.OrderInfo.SourceAddress
