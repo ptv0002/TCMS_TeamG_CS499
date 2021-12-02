@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TCMS_Web.Models;
@@ -116,6 +117,12 @@ namespace TCMS_Web.Areas.Other.Controllers
             {
                 return NotFound();
             }
+            if (assignmentdetail.DocData != null)
+            {
+                string image64basedata = Convert.ToBase64String(assignmentdetail.DocData);
+                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                ViewBag.ImageDataURL = imageurl;
+            }
 
             var orderInfo = await _context.OrderInfos.FindAsync(assignmentdetail.OrderInfoId);
             assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
@@ -138,14 +145,42 @@ namespace TCMS_Web.Areas.Other.Controllers
             {
                 try
                 {
+                    
                     var item = await _context.AssignmentDetails.FindAsync(id);
                     item.OrderInfoId = assignmentdetail.OrderInfoId;
                     item.InShipping = assignmentdetail.InShipping;
-                    item.ArrivalConfirm = true;
-                    item.ArrivalTime = DateTime.Now;
                     item.Status = assignmentdetail.Status;
                     item.ShippingAssignmentId = assignmentdetail.ShippingAssignmentId;
-
+                    item.Notes = assignmentdetail.Notes;
+                    if (assignmentdetail.ArrivalConfirm == true)
+                    {
+                        item.ArrivalConfirm = true;
+                        item.ArrivalTime = DateTime.Now;
+                    }
+                    if (assignmentdetail.Doc != null)
+                    {
+                        item.DocName = assignmentdetail.Doc.FileName;
+                        if (assignmentdetail.Doc.ContentType == "image/png")
+                        {
+                            item.DocType = assignmentdetail.Doc.ContentType;
+                            using (var ms = new MemoryStream())
+                            {
+                                assignmentdetail.Doc.CopyTo(ms);
+                                var fileBytes = ms.ToArray();
+                                item.DocData = new byte[fileBytes.Length];
+                                fileBytes.CopyTo(item.DocData, 0);
+                            }
+                        }
+                        else
+                        {
+                            assignmentdetail.DocData = new byte[] { };
+                            string image64BaseData = Convert.ToBase64String(assignmentdetail.DocData);
+                            string imageURL = string.Format("data:image/png;base64, {0}", image64BaseData);
+                            ViewBag.ImageDataURL = imageURL;
+                            ModelState.AddModelError(string.Empty, "Incompatible file type");
+                            return View(assignmentdetail);
+                        }
+                    }
                     _context.Update(item);
                     await _context.SaveChangesAsync();
 
@@ -164,7 +199,23 @@ namespace TCMS_Web.Areas.Other.Controllers
                 }
                 return RedirectToAction("Details", new { id = assignmentdetail.ShippingAssignmentId });
             }
+            if (assignmentdetail.DocData != null)
+            {
+                string image64basedata = Convert.ToBase64String(assignmentdetail.DocData);
+                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                ViewBag.ImageDataURL = imageurl;
+            }
             return View(assignmentdetail);
+        }
+        public async Task<IActionResult> DeleteImage(int? id)
+        {
+            var item = await _context.AssignmentDetails.FindAsync(id);
+            item.DocName = null;
+            item.DocData = null;
+            item.DocType = null;
+            _context.Update(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new { id });
         }
         private bool AssignmentDetailExists(int Id)
         {

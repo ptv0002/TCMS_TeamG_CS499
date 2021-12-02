@@ -261,9 +261,12 @@ namespace TCMS_Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            string image64basedata = Convert.ToBase64String(orderInfo.DocData);
-            string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
-            ViewBag.ImageDataURL = imageurl;
+            if (orderInfo.DocData != null)
+            {
+                string image64basedata = Convert.ToBase64String(orderInfo.DocData);
+                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                ViewBag.ImageDataURL = imageurl;
+            }
             ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);

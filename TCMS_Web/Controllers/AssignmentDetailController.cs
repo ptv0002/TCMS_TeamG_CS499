@@ -38,7 +38,9 @@ namespace TCMS_Web.Controllers
                     ArrivalConfirm = assignmentdetail.ArrivalConfirm,
                     ArrivalTime = assignmentdetail.ArrivalTime,
                     Status = assignmentdetail.Status,
-                    ShippingAssignmentId = assignmentdetail.ShippingAssignmentId
+                    InShipping = assignmentdetail.InShipping,
+                    ShippingAssignmentId = assignmentdetail.ShippingAssignmentId,
+                    Notes = assignmentdetail.Notes
                 };
 
                 _context.Add(item);
@@ -61,6 +63,16 @@ namespace TCMS_Web.Controllers
             if (assignmentdetail == null)
             {
                 return NotFound();
+            }
+            if (assignmentdetail.DocData != null)
+            {
+                string image64basedata = Convert.ToBase64String(assignmentdetail.DocData);
+                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                ViewBag.ImageDataURL = imageurl;
+            }
+            else
+            {
+                ViewBag.ImageDataURL = null;
             }
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);
@@ -85,7 +97,7 @@ namespace TCMS_Web.Controllers
                     item.ArrivalTime = assignmentdetail.ArrivalTime;
                     item.Status = assignmentdetail.Status;
                     item.ShippingAssignmentId = assignmentdetail.ShippingAssignmentId;
-
+                    item.Notes = assignmentdetail.Notes;
                     _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
@@ -102,6 +114,17 @@ namespace TCMS_Web.Controllers
                 }
                 
                 return RedirectToAction("Edit", "Shipping", new { id = assignmentdetail.ShippingAssignmentId });
+            }
+            if (assignmentdetail.DocData == null)
+            {
+                ViewBag.ImageDataURL = null;
+                //return NotFound(); 
+            }
+            else
+            {
+                string image64basedata = Convert.ToBase64String(assignmentdetail.DocData);
+                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                ViewBag.ImageDataURL = imageurl;
             }
             ViewData["OrderInfoId"] = new SelectList(_context.OrderInfos.Where(m => m.Status == true), "Id", "Id");
             return View(assignmentdetail);

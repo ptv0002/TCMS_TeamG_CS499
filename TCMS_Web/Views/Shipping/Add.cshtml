@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="DepartureTime" class="control-label font-weight-bold"></label>
-                <input asp-for="DepartureTime" class="form-control" />
+                <input asp-for="DepartureTime" class="form-control" required  value="@DateTime.Now"/>
                 <span asp-validation-for="DepartureTime" class="text-danger"></span>
             </div>
             <div class="form-group">

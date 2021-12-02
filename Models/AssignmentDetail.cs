@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,7 +23,13 @@ namespace Models
         public DateTime? ArrivalTime { get; set; }
         public bool? Status { get; set; }
         public int? ShippingAssignmentId { get; set; }
-        
+        public string Notes { get; set; }
+        public string DocName { get; set; }
+        public string DocType { get; set; }
+        [NotMapped]
+        public IFormFile Doc { get; set; }
+        public byte[] DocData { get; set; }
+
         public virtual OrderInfo OrderInfo { get; set; }
         public virtual ShippingAssignment ShippingAssignment { get; set; }
     }

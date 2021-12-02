@@ -9,6 +9,9 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="ShippingAssignmentId" />
+    <input asp-for="DocData" type="hidden" />
+    <input asp-for="DocType" type="hidden" />
+    <input asp-for="DocName" type="hidden" />
     <div class="form-group">
         <label asp-for="OrderInfoId" class="control-label font-weight-bold"></label>
         <select asp-for="OrderInfoId" class="form-control" asp-items="ViewBag.OrderInfoId"></select>
@@ -41,6 +44,22 @@
                 new SelectListItem{ Text="Active", Value = "true" },
                 new SelectListItem{ Text="Inactive", Value = "false" }}, new { @class = "form-control" })
         </div>
+    </div>
+    @if (Model.DocData != null)
+    {
+        <div class="form-group">
+            <label class="control-label col-12">File Name</label>
+            @Html.DisplayFor(model => model.DocName)
+        </div>
+        <div class="form-group">
+            <label class="control-label col-12">Proof picture</label>
+            <img src="@ViewBag.ImageDataURL" width="600" />
+        </div>
+    }
+    <div class="form-group">
+        <label asp-for="Notes" class="control-label font-weight-bold"></label>
+        <input asp-for="Notes" class="form-control" />
+        <span asp-validation-for="Notes" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />

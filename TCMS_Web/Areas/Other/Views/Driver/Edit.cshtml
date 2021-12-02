@@ -13,11 +13,14 @@
     <input type="hidden" asp-for="OrderInfoId" />
     <input type="hidden" asp-for="InShipping" />
     <input type="hidden" asp-for="Status" />
-    <div class="form-group">
+    <input asp-for="DocData" type="hidden" />
+    <input asp-for="DocType" type="hidden" />
+    <input asp-for="DocName" type="hidden" />
+    <div class="form-group row">
         <label asp-for="OrderInfoId" class="col-sm-3 font-weight-bold"></label>
         <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfoId)</span>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
         <label class="col-sm-3 font-weight-bold">Address</label>
         @if (Model.InShipping == true)
         {
@@ -28,16 +31,43 @@
             <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfo.DestinationAddresss)</span>
         }
     </div>
-    <div class="form-group">
+    <div class="form-group row">
         <label asp-for="ArrivalConfirm" class="col-sm-3 font-weight-bold"></label>
-        <input type="submit" value="Delivered" class="btn btn-primary" />
+        @Html.DropDownList("ArrivalConfirm", new List<SelectListItem>{
+               new SelectListItem{ Text="Not Delivered", Value = "false" },
+               new SelectListItem{ Text="Delivered", Value = "true" }}, new { @class = "form-control col-sm-9" })
     </div>
-    <div class="form-group">
+    <div class="form-group row">
         <label class="col-sm-3 font-weight-bold">Estimated Arrival Time</label>
         <span class="col-sm-9">@Html.DisplayFor(model => model.OrderInfo.EstimateArrivalTime)</span>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-3 font-weight-bold">Notes</label>
+        <textarea asp-for="Notes" class="form-control col-sm-9"></textarea>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-3 font-weight-bold">Proof picture</label>
+        <input asp-for="Doc" class="form-control col-sm-9" />
+    </div>
+    @if (Model.DocData != null)
+    {
+        <div class="form-group row">
+            <label class="col-sm-3 font-weight-bold">File Name</label>
+            <span class="col-sm-9">@Html.DisplayFor(model => model.DocName)</span>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 font-weight-bold">Attached File</label>
+            <span class="col-sm-9"><img src="@ViewBag.ImageDataURL" width="600" /></span>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-danger" asp-action="DeleteImage" asp-route-id="@Model.Id">Remove Image</a>
+        </div>
+    }
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
     </div>
 </form>
 
 <div>
-    <a asp-action="Details" asp-route-id=@Model.ShippingAssignmentId> Back to List</a>
+    <a asp-action="Details" asp-route-id=@Model.ShippingAssignmentId>Back to List</a>
 </div>

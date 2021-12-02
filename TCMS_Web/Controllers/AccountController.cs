@@ -20,7 +20,6 @@ namespace TCMS_Web.Controllers
         private readonly UserManager<Employee> _userManager;
         private readonly SignInManager<Employee> _signInManager;
         private readonly ISendMailService _sendMailService;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly TCMS_Context _context;
         public AccountController(UserManager<Employee> userManager,SignInManager<Employee> signInManager, 
             ISendMailService sendMailService, RoleManager<IdentityRole> roleManager, TCMS_Context context)
@@ -28,7 +27,6 @@ namespace TCMS_Web.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _sendMailService = sendMailService;
-            _roleManager = roleManager;
             _context = context;
         }
         public IActionResult AccessDenied()
