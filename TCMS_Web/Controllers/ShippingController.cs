@@ -145,9 +145,9 @@ namespace TCMS_Web.Controllers
                 {
                     Detail.OrderInfo.SourceAddress = currentorder.First().Source.Address;
                 }
-                if (Detail.OrderInfo.DestinationAddresss == null)
+                if (Detail.OrderInfo.DestinationAddress == null)
                 {
-                    Detail.OrderInfo.DestinationAddresss = currentorder.First().Destination.Address;
+                    Detail.OrderInfo.DestinationAddress = currentorder.First().Destination.Address;
                 }
                 Assignmentdetails.Add(Detail);
             }
@@ -228,9 +228,9 @@ namespace TCMS_Web.Controllers
                 {
                     Detail.OrderInfo.SourceAddress = currentorder.First().Source.Address;
                 }
-                if (Detail.OrderInfo.DestinationAddresss == null)
+                if (Detail.OrderInfo.DestinationAddress == null)
                 {
-                    Detail.OrderInfo.DestinationAddresss = currentorder.First().Destination.Address;
+                    Detail.OrderInfo.DestinationAddress = currentorder.First().Destination.Address;
                 }
                 Assignmentdetails.Add(Detail);
             }

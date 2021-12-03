@@ -88,10 +88,10 @@ namespace TCMS_Web.Areas.Other.Controllers
                     var source = await _context.Companies.FindAsync(Detail.OrderInfo.SourceId);
                     Detail.OrderInfo.SourceAddress = source.Address;
                 }
-                if (Detail.OrderInfo.DestinationAddresss == null)
+                if (Detail.OrderInfo.DestinationAddress == null)
                 {
                     var destination = await _context.Companies.FindAsync(Detail.OrderInfo.DestinationId);
-                    Detail.OrderInfo.DestinationAddresss = destination.Address;
+                    Detail.OrderInfo.DestinationAddress = destination.Address;
                 }
                 Assignmentdetails.Add(Detail);
             }
@@ -141,12 +141,12 @@ namespace TCMS_Web.Areas.Other.Controllers
                 assignmentdetail.OrderInfo.SourceAddress = source.Address;
             }
             else assignmentdetail.OrderInfo.SourceAddress = orderInfo.SourceAddress;
-            if (orderInfo.DestinationAddresss == null)
+            if (orderInfo.DestinationAddress == null)
             {
                 var destination = await _context.Companies.FindAsync(orderInfo.DestinationId);
-                assignmentdetail.OrderInfo.DestinationAddresss = destination.Address;
+                assignmentdetail.OrderInfo.DestinationAddress = destination.Address;
             }
-            else assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
+            else assignmentdetail.OrderInfo.DestinationAddress = orderInfo.DestinationAddress;
             
             assignmentdetail.OrderInfo.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
             return View(assignmentdetail);
@@ -210,12 +210,12 @@ namespace TCMS_Web.Areas.Other.Controllers
                                 assignmentdetail.OrderInfo.SourceAddress = source.Address;
                             }
                             else assignmentdetail.OrderInfo.SourceAddress = orderInfo.SourceAddress;
-                            if (orderInfo.DestinationAddresss == null)
+                            if (orderInfo.DestinationAddress == null)
                             {
                                 var destination = await _context.Companies.FindAsync(orderInfo.DestinationId);
-                                assignmentdetail.OrderInfo.DestinationAddresss = destination.Address;
+                                assignmentdetail.OrderInfo.DestinationAddress = destination.Address;
                             }
-                            else assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
+                            else assignmentdetail.OrderInfo.DestinationAddress = orderInfo.DestinationAddress;
 
                             assignmentdetail.OrderInfo.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
                             return View(assignmentdetail);

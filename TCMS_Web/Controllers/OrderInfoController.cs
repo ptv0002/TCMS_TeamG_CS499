@@ -86,9 +86,9 @@ namespace TCMS_Web.Controllers
             {
                 orderInfo.SourceAddress = orderInfo.Source.Address;
             }
-            if (orderInfo.DestinationAddresss == null)
+            if (orderInfo.DestinationAddress == null)
             {
-                orderInfo.DestinationAddresss = orderInfo.Destination.Address;
+                orderInfo.DestinationAddress = orderInfo.Destination.Address;
             }
             if (orderInfo.DocData != null)
             {
@@ -124,7 +124,7 @@ namespace TCMS_Web.Controllers
                     SourceId = orderInfo.SourceId,
                     DestinationId = orderInfo.DestinationId,
                     SourceAddress = orderInfo.SourceAddress,
-                    DestinationAddresss = orderInfo.DestinationAddresss,
+                    DestinationAddress = orderInfo.DestinationAddress,
                     Status = orderInfo.Status,
                     DocName = orderInfo.Doc.FileName,
                     DocType = orderInfo.Doc.ContentType,
@@ -192,7 +192,7 @@ namespace TCMS_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SourceId,DestinationId,SourceAddress,DestinationAddresss,Status,Doc,DocName,DocType,DocData,SourcePay,PayStatus,TotalOrder,ShippingFee,EstimateArrivalTime")] OrderInfo orderInfo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SourceId,DestinationId,SourceAddress,DestinationAddress,Status,Doc,DocName,DocType,DocData,SourcePay,PayStatus,TotalOrder,ShippingFee,EstimateArrivalTime")] OrderInfo orderInfo)
         {
             if (id != orderInfo.Id)
             {
@@ -207,7 +207,7 @@ namespace TCMS_Web.Controllers
                     item.SourceId = orderInfo.SourceId;
                     item.DestinationId = orderInfo.DestinationId;
                     item.SourceAddress = orderInfo.SourceAddress;
-                    item.DestinationAddresss = orderInfo.DestinationAddresss;
+                    item.DestinationAddress = orderInfo.DestinationAddress;
                     item.Status = orderInfo.Status;
 
                     if (orderInfo.Doc != null)
