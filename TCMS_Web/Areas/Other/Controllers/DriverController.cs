@@ -83,6 +83,16 @@ namespace TCMS_Web.Areas.Other.Controllers
             List<AssignmentDetail> Assignmentdetails = new();
             foreach (AssignmentDetail Detail in _context.AssignmentDetails.Where(m => m.ShippingAssignmentId == id).Include(m => m.OrderInfo))
             {
+                if (Detail.OrderInfo.SourceAddress == null)
+                {
+                    var source = await _context.Companies.FindAsync(Detail.OrderInfo.SourceId);
+                    Detail.OrderInfo.SourceAddress = source.Address;
+                }
+                if (Detail.OrderInfo.DestinationAddresss == null)
+                {
+                    var destination = await _context.Companies.FindAsync(Detail.OrderInfo.DestinationId);
+                    Detail.OrderInfo.DestinationAddresss = destination.Address;
+                }
                 Assignmentdetails.Add(Detail);
             }
 
@@ -125,8 +135,19 @@ namespace TCMS_Web.Areas.Other.Controllers
             }
 
             var orderInfo = await _context.OrderInfos.FindAsync(assignmentdetail.OrderInfoId);
-            assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
-            assignmentdetail.OrderInfo.SourceAddress = orderInfo.SourceAddress;
+            if (orderInfo.SourceAddress == null)
+            {
+                var source = await _context.Companies.FindAsync(orderInfo.SourceId);
+                assignmentdetail.OrderInfo.SourceAddress = source.Address;
+            }
+            else assignmentdetail.OrderInfo.SourceAddress = orderInfo.SourceAddress;
+            if (orderInfo.DestinationAddresss == null)
+            {
+                var destination = await _context.Companies.FindAsync(orderInfo.DestinationId);
+                assignmentdetail.OrderInfo.DestinationAddresss = destination.Address;
+            }
+            else assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
+            
             assignmentdetail.OrderInfo.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
             return View(assignmentdetail);
         }
@@ -159,9 +180,9 @@ namespace TCMS_Web.Areas.Other.Controllers
                     }
                     if (assignmentdetail.Doc != null)
                     {
-                        item.DocName = assignmentdetail.Doc.FileName;
                         if (assignmentdetail.Doc.ContentType == "image/png")
                         {
+                            item.DocName = assignmentdetail.Doc.FileName;
                             item.DocType = assignmentdetail.Doc.ContentType;
                             using (var ms = new MemoryStream())
                             {
@@ -173,11 +194,30 @@ namespace TCMS_Web.Areas.Other.Controllers
                         }
                         else
                         {
-                            assignmentdetail.DocData = new byte[] { };
-                            string image64BaseData = Convert.ToBase64String(assignmentdetail.DocData);
-                            string imageURL = string.Format("data:image/png;base64, {0}", image64BaseData);
-                            ViewBag.ImageDataURL = imageURL;
+                            if (item.DocData != null)
+                            {
+                                string image64basedata = Convert.ToBase64String(item.DocData);
+                                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                                ViewBag.ImageDataURL = imageurl;
+                            }
+                            else ViewBag.ImageDataURL = null;
                             ModelState.AddModelError(string.Empty, "Incompatible file type");
+                            var orderInfo = await _context.OrderInfos.FindAsync(assignmentdetail.OrderInfoId);
+                            assignmentdetail.OrderInfo = new OrderInfo();
+                            if (orderInfo.SourceAddress == null)
+                            {
+                                var source = await _context.Companies.FindAsync(orderInfo.SourceId);
+                                assignmentdetail.OrderInfo.SourceAddress = source.Address;
+                            }
+                            else assignmentdetail.OrderInfo.SourceAddress = orderInfo.SourceAddress;
+                            if (orderInfo.DestinationAddresss == null)
+                            {
+                                var destination = await _context.Companies.FindAsync(orderInfo.DestinationId);
+                                assignmentdetail.OrderInfo.DestinationAddresss = destination.Address;
+                            }
+                            else assignmentdetail.OrderInfo.DestinationAddresss = orderInfo.DestinationAddresss;
+
+                            assignmentdetail.OrderInfo.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
                             return View(assignmentdetail);
                         }
                     }

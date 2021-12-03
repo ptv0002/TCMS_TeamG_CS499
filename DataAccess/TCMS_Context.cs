@@ -24,14 +24,6 @@ namespace DataAccess
         public virtual DbSet<ShippingAssignment> ShippingAssignments { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Data Source=.; Initial Catalog=TCMS_DB;Integrated Security=True;MultipleActiveResultSets=True");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Generate AspNet Identity entities

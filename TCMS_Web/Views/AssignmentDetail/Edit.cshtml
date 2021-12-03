@@ -48,17 +48,21 @@
     @if (Model.DocData != null)
     {
         <div class="form-group">
-            <label class="control-label col-12">File Name</label>
-            @Html.DisplayFor(model => model.DocName)
+            <label class="control-label font-weight-bold">File Name</label>
+            <div class="col-sm-12">
+                @Html.DisplayFor(model => model.DocName)
+            </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-12">Proof picture</label>
-            <img src="@ViewBag.ImageDataURL" width="600" />
+            <label class="control-label font-weight-bold">Proof picture</label>
+            <div class="col-sm-12">
+                <img src="@ViewBag.ImageDataURL" width="600" />
+            </div>
         </div>
     }
     <div class="form-group">
         <label asp-for="Notes" class="control-label font-weight-bold"></label>
-        <input asp-for="Notes" class="form-control" />
+        <textarea asp-for="Notes" class="form-control"></textarea>
         <span asp-validation-for="Notes" class="text-danger"></span>
     </div>
     <div class="form-group">

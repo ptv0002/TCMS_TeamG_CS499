@@ -90,17 +90,13 @@ namespace TCMS_Web.Controllers
             {
                 orderInfo.DestinationAddresss = orderInfo.Destination.Address;
             }
-            if (orderInfo.DocData == null)
-            {
-                ViewBag.ImageDataURL = null;
-                //return NotFound(); 
-            }
-            else
+            if (orderInfo.DocData != null)
             {
                 string image64basedata = Convert.ToBase64String(orderInfo.DocData);
                 string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
                 ViewBag.ImageDataURL = imageurl;
             }
+            else ViewBag.ImageDataURL = null;
             return View(orderInfo);
         }
 
@@ -116,7 +112,6 @@ namespace TCMS_Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        //[Bind("SourceId,DestinationId,SourceAddress,DestinationAddresss,Status,Doc,DocName,DocType,DocData,SourcePay,PayStatus,TotalOrder,ShippingFee,EstimateArrivalTime")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(OrderInfo orderInfo)
@@ -184,8 +179,9 @@ namespace TCMS_Web.Controllers
                 string image64basedata = Convert.ToBase64String(orderInfo.DocData);
                 string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
                 ViewBag.ImageDataURL = imageurl;
-            }    
-            
+            } 
+            else ViewBag.ImageDataURL = null;
+
             ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);
@@ -216,9 +212,9 @@ namespace TCMS_Web.Controllers
 
                     if (orderInfo.Doc != null)
                     {
-                        item.DocName = orderInfo.Doc.FileName;
                         if (orderInfo.Doc.ContentType == "image/png")
                         {
+                            item.DocName = orderInfo.Doc.FileName;
                             item.DocType = orderInfo.Doc.ContentType;
                             using (var ms = new MemoryStream())
                             {
@@ -230,10 +226,14 @@ namespace TCMS_Web.Controllers
                         }
                         else
                         {
-                            orderInfo.DocData = new byte[] { };
-                            string image64BaseData = Convert.ToBase64String(orderInfo.DocData);
-                            string imageURL = string.Format("data:image/png;base64, {0}", image64BaseData);
-                            ViewBag.ImageDataURL = imageURL;
+                            if (item.DocData != null)
+                            {
+                                string image64basedata = Convert.ToBase64String(item.DocData);
+                                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                                ViewBag.ImageDataURL = imageurl;
+                            }
+                            else ViewBag.ImageDataURL = null;
+                            
                             ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
                             ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
                             ModelState.AddModelError(string.Empty, "Incompatible file type");
@@ -267,6 +267,7 @@ namespace TCMS_Web.Controllers
                 string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
                 ViewBag.ImageDataURL = imageurl;
             }
+            else ViewBag.ImageDataURL = null;
             ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);
