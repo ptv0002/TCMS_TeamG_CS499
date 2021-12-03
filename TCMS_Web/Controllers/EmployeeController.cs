@@ -134,7 +134,8 @@ namespace TCMS_Web.Controllers
             {
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
-                    ViewBag.UserRoles += role.Name + ". ";
+                    ViewBag.UserRoles += role.Name;
+                    break;
                 }
 
             }
@@ -235,29 +236,19 @@ namespace TCMS_Web.Controllers
             {
                 return NotFound();
             }
-            var model = new List<UserRolesViewModel>();
+            var model = new UserRolesViewModel();
             foreach (var role in _roleManager.Roles)
             {
-                var userRolesViewModel = new UserRolesViewModel
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name
-                };
-
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
-                    userRolesViewModel.IsSelected = true;
+                    model.RoleName = role.Name;
                 }
-                else
-                {
-                    userRolesViewModel.IsSelected = false;
-                }
-                model.Add(userRolesViewModel);
+                break;
             }
             return View(model);
         }
         [HttpPost, ActionName("ManageUserRoles")]
-        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        public async Task<IActionResult> ManageUserRoles(UserRolesViewModel model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -269,16 +260,15 @@ namespace TCMS_Web.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, "Cannot remove user existing roles");
+                ModelState.AddModelError(string.Empty, "Cannot remove user existing role");
                 return View(model);
             }
 
-            result = await _userManager.AddToRolesAsync(user,
-                model.Where(x => x.IsSelected).Select(y => y.RoleName));
+            result = await _userManager.AddToRoleAsync(user, model.RoleName);
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, "Cannot add selected roles to user");
+                ModelState.AddModelError(string.Empty, "Cannot add selected role to user");
                 return View(model);
             }
             return RedirectToAction("Edit", new { Id = userId });
