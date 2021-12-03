@@ -16,6 +16,7 @@ namespace Models
         public int Id { get; set; }
         [Display(Name = "Order ID")]
         public int? OrderInfoId { get; set; }
+        [Display(Name = "Incoming Shipment")]
         public bool? InShipping { get; set; }
         [Display(Name = "Arrival Confirmation")]
         public bool? ArrivalConfirm { get; set; }
