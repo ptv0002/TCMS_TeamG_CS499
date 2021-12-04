@@ -119,41 +119,48 @@ namespace TCMS_Web.Controllers
             if (ModelState.IsValid)
             {
 
-                var order = new OrderInfo
+                var item = new OrderInfo
                 {
                     SourceId = orderInfo.SourceId,
                     DestinationId = orderInfo.DestinationId,
                     SourceAddress = orderInfo.SourceAddress,
                     DestinationAddress = orderInfo.DestinationAddress,
                     Status = orderInfo.Status,
-                    DocName = orderInfo.Doc.FileName,
-                    DocType = orderInfo.Doc.ContentType,
                     SourcePay = orderInfo.SourcePay,
                     PayStatus = orderInfo.PayStatus,
                     TotalOrder = orderInfo.TotalOrder,
                     ShippingFee = orderInfo.ShippingFee,
                     EstimateArrivalTime = orderInfo.EstimateArrivalTime
                 };
-
-                if(order.DocType == "image/png")
+                if (orderInfo.Doc != null)
                 {
-                    using(var ms = new MemoryStream())
+                    if (orderInfo.Doc.ContentType == "image/png")
                     {
-                        orderInfo.Doc.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        order.DocData = new byte[fileBytes.Length];
-                        fileBytes.CopyTo(order.DocData, 0);
-                        _context.Add(order);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        item.DocName = orderInfo.Doc.FileName;
+                        item.DocType = orderInfo.Doc.ContentType;
+                        using (var ms = new MemoryStream())
+                        {
+                            orderInfo.Doc.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            item.DocData = new byte[fileBytes.Length];
+                            fileBytes.CopyTo(item.DocData, 0);
+                        }
                     }
-                }
-                else
-                {
-                    ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name");
-                    ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name");
-                    ModelState.AddModelError(string.Empty, "Incompatible file type");
-                    return View(orderInfo);
+                    else
+                    {
+                        if (item.DocData != null)
+                        {
+                            string image64basedata = Convert.ToBase64String(item.DocData);
+                            string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                            ViewBag.ImageDataURL = imageurl;
+                        }
+                        else ViewBag.ImageDataURL = null;
+
+                        ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
+                        ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
+                        ModelState.AddModelError(string.Empty, "Incompatible file type");
+                        return View(orderInfo);
+                    }
                 }
             }
             ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
@@ -209,6 +216,11 @@ namespace TCMS_Web.Controllers
                     item.SourceAddress = orderInfo.SourceAddress;
                     item.DestinationAddress = orderInfo.DestinationAddress;
                     item.Status = orderInfo.Status;
+                    item.SourcePay = orderInfo.SourcePay;
+                    item.PayStatus = orderInfo.PayStatus;
+                    item.TotalOrder = orderInfo.TotalOrder;
+                    item.ShippingFee = orderInfo.ShippingFee;
+                    item.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
 
                     if (orderInfo.Doc != null)
                     {
@@ -240,11 +252,6 @@ namespace TCMS_Web.Controllers
                             return View(orderInfo);
                         }
                     }
-                    item.SourcePay = orderInfo.SourcePay;
-                    item.PayStatus = orderInfo.PayStatus;
-                    item.TotalOrder = orderInfo.TotalOrder;
-                    item.ShippingFee = orderInfo.ShippingFee;
-                    item.EstimateArrivalTime = orderInfo.EstimateArrivalTime;
                     _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
