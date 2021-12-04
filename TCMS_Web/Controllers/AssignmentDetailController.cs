@@ -95,6 +95,7 @@ namespace TCMS_Web.Controllers
                     item.OrderInfoId = assignmentdetail.OrderInfoId;
                     item.InShipping = assignmentdetail.InShipping;
                     item.ArrivalTime = assignmentdetail.ArrivalTime;
+                    item.ArrivalConfirm = assignmentdetail.ArrivalConfirm;
                     item.Status = assignmentdetail.Status;
                     item.ShippingAssignmentId = assignmentdetail.ShippingAssignmentId;
                     item.Notes = assignmentdetail.Notes;

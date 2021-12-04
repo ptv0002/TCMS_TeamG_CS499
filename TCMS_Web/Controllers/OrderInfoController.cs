@@ -162,7 +162,18 @@ namespace TCMS_Web.Controllers
                         return View(orderInfo);
                     }
                 }
+
+                _context.Add(item);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
+            if (orderInfo.DocData != null)
+            {
+                string image64basedata = Convert.ToBase64String(orderInfo.DocData);
+                string imageurl = string.Format("data:image/png;base64, {0}", image64basedata);
+                ViewBag.ImageDataURL = imageurl;
+            }
+            else ViewBag.ImageDataURL = null;
             ViewData["DestinationId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.DestinationId);
             ViewData["SourceId"] = new SelectList(_context.Companies.Where(m => m.Status == true), "Id", "Name", orderInfo.SourceId);
             return View(orderInfo);
