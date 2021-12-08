@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * Maintenance Controller  
+ * Author: Nathan McGee
+ * Date: 10/15/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Vehicle model/class: 
+ * Adding, Editing, and Viewing the Details of a Vehicle instance 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

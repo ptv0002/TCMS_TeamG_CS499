@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * Vehicle Model
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides Vehicle model information that will be used to get 
+ * Vehicle information and set Vehicle information in our SQL database 
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

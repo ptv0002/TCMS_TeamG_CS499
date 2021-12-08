@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * Company Controller  
+ * Author: Nicholas DeSanctis
+ * Date: 10/18/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Company model/class: 
+ * Adding, Editing, and Viewing the Details of a Company instance 
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

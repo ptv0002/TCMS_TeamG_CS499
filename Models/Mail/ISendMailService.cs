@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * ISendMailService 
+ * Author: Veronica Vu
+ * Date: 10/13/2021
+ * Purpose: 
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

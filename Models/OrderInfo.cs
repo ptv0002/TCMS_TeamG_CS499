@@ -1,4 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/*
+ * Order Info Model
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides Order Info model information that will be used to get 
+ * Order Info information and set Order Info information in our SQL database 
+ * 
+ */
+
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

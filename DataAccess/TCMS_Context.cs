@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿/*
+ * TCMS_Context 
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides the framework for the database that is used for this project  
+ * 
+ */
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;

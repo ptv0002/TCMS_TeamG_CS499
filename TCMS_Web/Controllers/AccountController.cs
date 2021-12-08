@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*
+ * Account Controller  
+ * Author: Veronica Vu
+ * Date: 10/5/2021
+ * Purpose: Provides all the functionality that is related to a user's Account: Register Account, Forgot Password, Login, and etc.
+ */
+
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;

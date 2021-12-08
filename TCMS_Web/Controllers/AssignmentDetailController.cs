@@ -1,4 +1,12 @@
-﻿using DataAccess;
+﻿/*
+ * Assignment Detail Controller  
+ * Author: Paul Ryan
+ * Date: 10/17/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Assignment Detail model/class: 
+ * Adding, Editing, and Viewing the Details of an Assignment Detail instance 
+ */
+
+using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

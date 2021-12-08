@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * Maintenance Detail Controller  
+ * Author: Nicholas DeSanctis 
+ * Date: 11/2/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Maintenance Detail model/class: 
+ * Adding, Editing, and Viewing the Details of a Maintenance Detail instance 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

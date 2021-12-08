@@ -1,4 +1,12 @@
-﻿using DataAccess;
+﻿/*
+ * Shipping Controller  
+ * Author: Paul Ryan 
+ * Date: 11/11/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Shipping Assignment model/class: 
+ * Adding, Editing, and Viewing the Details of a Shipping Assignment instance 
+ */
+
+using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

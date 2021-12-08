@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * Employee Model
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides Employee model information that will be used to get Employee information and set Employee information in our SQL database 
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

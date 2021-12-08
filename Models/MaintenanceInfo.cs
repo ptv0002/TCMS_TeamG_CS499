@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * Maintenance Model
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides Maintenance model information that will be used to get 
+ * Maintenance Detail information and set Maintenance Detail information in our SQL database 
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

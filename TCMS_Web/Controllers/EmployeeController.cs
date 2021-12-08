@@ -1,4 +1,12 @@
-﻿using DataAccess;
+﻿/*
+ * Employee Controller  
+ * Author: Veronica Vu 
+ * Date: 10/7/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Employee model/class: 
+ * Adding, Editing, and Viewing the Details of an Employee instance 
+ */
+
+using DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿/*
+ * Database Intializer 
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Intializes the database used for this project 
+ */
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;

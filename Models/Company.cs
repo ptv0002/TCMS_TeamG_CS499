@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * Company Model 
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides Company model information that will be used to get Company information and set Company information in our SQL database 
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

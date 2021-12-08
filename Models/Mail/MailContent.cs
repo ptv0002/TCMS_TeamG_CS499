@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Mail Content
+ * Author: Veronica Vu
+ * Date: 9/2/2021
+ * Purpose: Provides basic foundation for the emails: To, Subject, and Body parts of an email 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

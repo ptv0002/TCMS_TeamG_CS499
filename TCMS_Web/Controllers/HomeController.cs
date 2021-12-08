@@ -1,4 +1,12 @@
-﻿using DataAccess;
+﻿/*
+ * Home Controller  
+ * Author: Nicholas DeSanctis
+ * Date: 10/18/2021
+ * Purpose: Provides all the functionality that is associated with the Home Page that user is presented with
+ * after successfully logging in 
+ */
+
+using DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +25,7 @@ using TCMS_Web.Models;
 
 namespace TCMS_Web.Controllers
 {
-    [Authorize(Roles = "Full Access,Shipping,Maintenance")]
+    [Authorize(Roles = "Full Access,Shipping,Maintenance")] 
     public class HomeController : Controller
     {
         private readonly TCMS_Context _context;

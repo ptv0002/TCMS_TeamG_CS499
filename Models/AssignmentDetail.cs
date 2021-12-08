@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/*
+ * Assignment Detail Model 
+ * Author: Veronica 
+ * Date: 9/2/2021
+ * Purpose: Provides Assignment Detail model information that will be used to get information and set information in our SQL database 
+ * 
+ */
+
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

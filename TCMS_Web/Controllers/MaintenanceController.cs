@@ -1,4 +1,12 @@
-﻿using DataAccess;
+﻿/*
+ * Maintenance Controller  
+ * Author: Nicholas DeSanctis
+ * Date: 11/12/2021
+ * Purpose: Provides all the functionality that is associated with manipulating the Maintenance Info model/class: 
+ * Adding, Editing, and Viewing the Details of a Maintenance Info instance 
+ */
+
+using DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

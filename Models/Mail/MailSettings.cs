@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Mail Settings 
+ * Author: Veronica Vu 
+ * Date: 9/3/2021
+ * Purpose: Provides the settings need to send the email confirmation link 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
