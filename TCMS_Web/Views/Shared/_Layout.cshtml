@@ -56,25 +56,23 @@
 
 
             @if (signInManager.IsSignedIn(User) && User.IsInRole("Full Access"))
-        {
-            <!-- Divider -->
-            <li>
-                <hr class="sidebar-divider">
-            </li>
-            <li class="sidebar-heading">
-                Human Resources
-            </li>
-            <!-- Nav Item - Employee -->
-            <li class="nav-item @ViewBag.EActive">
-                <a class="nav-link" asp-controller="Employee" asp-action="Index">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Employee</span>
-                </a>
-
+            {
+                <!-- Divider -->
+                <li>
+                    <hr class="sidebar-divider">
+                </li>
+                <li class="sidebar-heading">
+                    Human Resources
+                </li>
+                <!-- Nav Item - Employee -->
+                <li class="nav-item @ViewBag.EActive">
+                    <a class="nav-link" asp-controller="Employee" asp-action="Index">
+                        <i class="fas fa-fw fa-users"></i>
+                        <span>Employee</span>
+                    </a>
                 </li>
             }
-            @if (signInManager.IsSignedIn(User) &&
-               (!User.IsInRole("Driver")))
+            @if (signInManager.IsSignedIn(User) && !User.IsInRole("Driver"))
             {
                 <!-- Divider -->
                 <li>
@@ -82,25 +80,24 @@
                 </li>
                 <!-- Heading -->
 
-            <li class="sidebar-heading">
-                Maintenance Management
-            </li>
-            <!-- Nav Item - Maintenance -->
-            <li class="nav-item @ViewBag.MActive">
-                <a class="nav-link" asp-controller="Maintenance" asp-action="Index">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Maintenance</span>
-                </a>
-
+                <li class="sidebar-heading">
+                    Maintenance Management
                 </li>
+                <!-- Nav Item - Maintenance -->
+                <li class="nav-item @ViewBag.MActive">
+                    <a class="nav-link" asp-controller="Maintenance" asp-action="Index">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Maintenance</span>
+                    </a>
 
-            <!-- Nav Item - Vehicle -->
-            <li class="nav-item @ViewBag.VActive">
-                <a class="nav-link" asp-controller="Vehicle" asp-action="Index">
-                    <i class="fas fa-fw fa-car"></i>
-                    <span>Vehicle</span>
-                </a>
+                    </li>
 
+                <!-- Nav Item - Vehicle -->
+                <li class="nav-item @ViewBag.VActive">
+                    <a class="nav-link" asp-controller="Vehicle" asp-action="Index">
+                        <i class="fas fa-fw fa-car"></i>
+                        <span>Vehicle</span>
+                    </a>
                 </li>
             }
             @if (signInManager.IsSignedIn(User) &&
@@ -112,32 +109,32 @@
                 </li>
                 <!-- Heading -->
 
-            <li class="sidebar-heading">
-                Shipping Management
-            </li>
-            <!-- Nav Item - Shipping Assignment -->
-            <li class="nav-item @ViewBag.SActive">
-                <a class="nav-link" asp-controller="Shipping" asp-action="Index">
-                    <i class="fas fa-fw fa-box-open"></i>
-                    <span>Shipping Assignment</span>
-                </a>
-            </li>
+                <li class="sidebar-heading">
+                    Shipping Management
+                </li>
+                <!-- Nav Item - Shipping Assignment -->
+                <li class="nav-item @ViewBag.SActive">
+                    <a class="nav-link" asp-controller="Shipping" asp-action="Index">
+                        <i class="fas fa-fw fa-box-open"></i>
+                        <span>Shipping Assignment</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Order Info -->
-            <li class="nav-item @ViewBag.OActive">
-                <a class="nav-link" asp-controller="OrderInfo" asp-action="Index">
-                    <i class="fas fa-fw fa-sticky-note"></i>
-                    <span>Order Info</span>
-                </a>
-            </li>
+                <!-- Nav Item - Order Info -->
+                <li class="nav-item @ViewBag.OActive">
+                    <a class="nav-link" asp-controller="OrderInfo" asp-action="Index">
+                        <i class="fas fa-fw fa-sticky-note"></i>
+                        <span>Order Info</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Company -->
-            <li class="nav-item @ViewBag.CActive">
-                <a class="nav-link" asp-controller="Company" asp-action="Index">
-                    <i class="fas fa-fw fa-building"></i>
-                    <span>Company</span>
-                </a>
-            </li>
+                <!-- Nav Item - Company -->
+                <li class="nav-item @ViewBag.CActive">
+                    <a class="nav-link" asp-controller="Company" asp-action="Index">
+                        <i class="fas fa-fw fa-building"></i>
+                        <span>Company</span>
+                    </a>
+                </li>
             } 
             <!-- Sidebar Toggler (Sidebar) -->
             <li class="text-center d-none d-md-inline">

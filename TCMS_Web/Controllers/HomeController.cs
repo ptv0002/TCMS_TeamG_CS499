@@ -1,6 +1,6 @@
 ﻿/*
  * Home Controller  
- * Author: Nicholas DeSanctis
+ * Author: Veronica Vu
  * Date: 10/18/2021
  * Purpose: Provides all the functionality that is associated with the Home Page that user is presented with
  * after successfully logging in 

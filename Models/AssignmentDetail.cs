@@ -1,6 +1,6 @@
 ﻿/*
  * Assignment Detail Model 
- * Author: Veronica 
+ * Author: Veronica Vu
  * Date: 9/2/2021
  * Purpose: Provides Assignment Detail model information that will be used to get information and set information in our SQL database 
  * 
